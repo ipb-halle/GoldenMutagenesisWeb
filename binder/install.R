@@ -4,7 +4,7 @@ install.packages("stringr")
 install.packages("devtools")
 install.packages("shinyalert")
 install.packages("rlist")
-install.packages("RColorBrewer)
+install.packages("RColorBrewer")
 ## BioC dependencies
 
 #install.packages("BiocManager")
