@@ -41,16 +41,16 @@ spec:
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
-  name: gmweb-traefik
+  name: gmweb-nginx
   annotations:
      nginx.ingress.kubernetes.io/affinity: cookie
 spec:
   rules:
-  - host: gmweb.10.22.12.3.nip.io
+  - host: gmweb.10.22.12.12.nip.io
     http:
       paths:
       - backend:
           serviceName: gmweb-service
           servicePort: 80
-        path: /GoldenMutagenesisWeb/
+        path: /
 
