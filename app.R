@@ -207,7 +207,7 @@ ui <- fluidPage(
   #titlePanel("GoldenMutagenesis Webtool Beta"),
   
   # Application title
-  titlePanel(ipbheader),
+  titlePanel(ipbheader, windowTitle = "GoldenMutagenesis"),
   
    navlistPanel(id="MainNav", widths = c(4, 7),
      tabPanel("Welcome", h4("Welcome to the GoldenMutagenesis Webtool."), h4("Please select the desired task.")),
