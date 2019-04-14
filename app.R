@@ -195,8 +195,8 @@ base_distribution_shiny<-function(input_sequence, ab1file, replacements, trace_c
 
 
 ## Read IPB coorporate identity
-ipbheader <- HTML(readLines("/home/sneumann/src/R/ipb-shiny/ipbheader.html"))
-ipbfooter <- HTML(readLines("/home/sneumann/src/R/ipb-shiny/ipbfooter.html"))
+ipbheader <- HTML(readLines("ipbheader.html"))
+ipbfooter <- HTML(readLines("ipbfooter.html"))
 
 ui <- fluidPage(
   useShinyalert(),
