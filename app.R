@@ -194,11 +194,21 @@ base_distribution_shiny<-function(input_sequence, ab1file, replacements, trace_c
 }
 
 
+## Read IPB coorporate identity
+ipbheader <- HTML(readLines("/home/sneumann/src/R/ipb-shiny/ipbheader.html"))
+ipbfooter <- HTML(readLines("/home/sneumann/src/R/ipb-shiny/ipbfooter.html"))
 
 ui <- fluidPage(
   useShinyalert(),
-   # Application title
-   titlePanel("GoldenMutagenesis Webtool Beta"),
+  # IPB header 
+  tags$head(tags$link(rel = "stylesheet", type = "text/css", 
+                      href = "css/ipb-styles.css")),
+  # Application title
+  #titlePanel("GoldenMutagenesis Webtool Beta"),
+  
+  # Application title
+  titlePanel(ipbheader),
+  
    navlistPanel(id="MainNav", widths = c(4, 7),
      tabPanel("Welcome", h4("Welcome to the GoldenMutagenesis Webtool."), h4("Please select the desired task.")),
      "Pre- and Postprocessing",
@@ -366,8 +376,9 @@ ui <- fluidPage(
                                                   )
                                         )
      )
-  )
-
+  ),
+  # Application footer
+  fluidRow(ipbfooter)
 )
 
 # Define server logic
