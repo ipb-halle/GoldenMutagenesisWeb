@@ -16,6 +16,9 @@ body{
     font-size: 13px;
     position: relative;
 }
+.row{
+    background:#ffffff ;
+}
 a{
     color: #0C66AD;
     text-decoration: none;
