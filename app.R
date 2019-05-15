@@ -962,7 +962,7 @@ server <- function(input, output, session) {
        }
        else{
          updateTabsetPanel(session, "ms_p", "Results")
-         rv$ms_primers<-msd_mutate(input$ms_seq, prefix = input$ms_prefix, restriction_enzyme = input$ms_re_enzyme, suffix = input$ms_suffix, vector = c(input$ms_v1, input$ms_v2), replacements = rv$ms_mutations,  binding_min_length = input$ms_binding_min_length, target_temp = input$ms_temperature, primer_length = input$ms_primer_length)
+         rv$ms_primers<-mutate_msd(input$ms_seq, prefix = input$ms_prefix, restriction_enzyme = input$ms_re_enzyme, suffix = input$ms_suffix, vector = c(input$ms_v1, input$ms_v2), replacements = rv$ms_mutations,  binding_min_length = input$ms_binding_min_length, target_temp = input$ms_temperature, primer_length = input$ms_primer_length)
          if(input$ms_level=="lv0") {
            if(input$ms_prepare_lvl2==TRUE) {
              print("prepare lv0")
