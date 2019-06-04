@@ -5,12 +5,10 @@ install.packages("devtools")
 install.packages("shinyalert")
 install.packages("rlist")
 install.packages("RColorBrewer")
+install.packages("BiocManager")
 ## BioC dependencies
 
-#install.packages("BiocManager")
-#BiocManager::install(c("Biostrings", "sangerseqR"))
+install.packages("BiocManager")
+BiocManager::install(c("Biostrings", "sangerseqR"))
 
-source("https://bioconductor.org/biocLite.R")
-biocLite(c("Biostrings", "sangerseqR"))
-
-devtools::install_github("ipb-halle/GoldenMutagenesis", ref="prerelease-dev")
+devtools::install_github("ipb-halle/GoldenMutagenesis@1.1.1")
