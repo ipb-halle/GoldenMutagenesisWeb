@@ -8,5 +8,4 @@ ADD binder/install.R /tmp
 RUN R -e "source('/tmp/install.R')"
 
 ADD GoldenMutagenesisWeb /srv/shiny-server/
-ADD www /srv/shiny-server/
 
