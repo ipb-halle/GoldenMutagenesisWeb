@@ -8,4 +8,6 @@ ADD binder/install.R /tmp
 RUN R -e "source('/tmp/install.R')"
 
 ADD app.R /srv/shiny-server/
+ADD *.html /srv/shiny-server/
+ADD www /srv/shiny-server/
 
