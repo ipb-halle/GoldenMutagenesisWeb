@@ -7,5 +7,5 @@ RUN apt-get -y update && apt-get -y install libssl-dev libxml2-dev
 ADD binder/install.R /tmp
 RUN R -e "source('/tmp/install.R')"
 
-ADD GoldenMutagenesisWeb /srv/shiny-server/
+ADD GoldenMutagenesisWeb /srv/shiny-server/GoldenMutagenesisWeb
 
