@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gmweb-deployment
+  labels:
+    app: gmweb
+spec:
+  replicas: 1 
+  selector:
+    matchLabels:
+      app: gmweb
+  template:
+    metadata:
+      labels:
+        app: gmweb
+    spec:
+      containers:
+      - name: gmweb
+        image: sneumann/goldenmutagenesisweb
+        ports:
+        - containerPort: 3838
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: gmweb-service
+  labels:
+    app: gmweb
+spec:
+  selector:
+    app: gmweb
+  ports:
+  - port: 80
+    targetPort: 3838
+    protocol: TCP
+
+---
+
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: gmweb-nginx
+  annotations:
+     nginx.ingress.kubernetes.io/affinity: cookie
+spec:
+  rules:
+  - host: gmweb.10.22.12.12.nip.io
+    http:
+      paths:
+      - backend:
+          serviceName: gmweb-service
+          servicePort: 80
+        path: /
+
