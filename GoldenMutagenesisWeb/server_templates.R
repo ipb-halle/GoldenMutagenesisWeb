@@ -67,10 +67,10 @@ generic_simple_preview_logic<-function(prefix){
     output[[paste(prefix, "aa", sep="_")]]<-renderUI({
       HTML(aaa(translate(s2c(sequence_check(input[[paste(prefix, "input_sequence", sep="_")]])[as.numeric(input[[paste(prefix, "codonpos", sep="_")]])]))))}
     )
-    if(length(rv[[paste(prefix, "domestication_mutations", sep="_")]])>0){
+    if(length(rv[[paste(prefix, "mutations", sep="_")]])>0){
       positions_aa<-c()
-      for(i in 1:length(rv[[paste(prefix, "domestication_mutations", sep="_")]])) {
-        position_aa<-as.numeric(rv$domestication_mutations[[i]][1])
+      for(i in 1:length(rv[[paste(prefix, "mutations", sep="_")]])) {
+        position_aa<-as.numeric(rv[[paste(prefix, "mutations", sep="_")]][[i]][1])
         positions_aa<-c(positions_aa, position_aa)
       }
       #print(positions_aa)

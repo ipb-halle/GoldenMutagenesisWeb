@@ -93,7 +93,7 @@ levelsettings<-function(prefix){
 #############################
 ###########SIMPLE############
 generic_preview<-function(prefix){
-  if(!exists(paste(prefix, "mutations", sep="_"), where=rv)){
+  if(!(paste(prefix, "mutations", sep="_") %in% names(rv))){
     rv[[paste(prefix, "mutations", sep="_")]]<-list()
   }
   output[[paste(prefix, "preview", sep="_")]]<-renderUI(print_sequence(sequence = input[[paste(prefix, "input_sequence", sep="_")]], mutations = rv[[paste(prefix, "mutations", sep="_")]]))
