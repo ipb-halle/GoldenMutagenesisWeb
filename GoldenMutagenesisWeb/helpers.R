@@ -1,4 +1,3 @@
-ns.sep<-"_"
 sequence_check<-function(input_sequence){
   input_sequence<-str_to_upper(input_sequence)
   if(nchar(input_sequence)%%3!=0) {

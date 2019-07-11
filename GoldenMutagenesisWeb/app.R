@@ -60,9 +60,7 @@ ui <- fluidPage(
           )),
      tabPanel("Quick-Quality-Control", 
               tabsetPanel(id="qqc", type="tabs", tabPanel("Configuration",
-                          wellPanel(style="background: #c9ffe6", textAreaInput("qqc_seq", h4("Enter your sequence"), cols=60, rows = 10, resize = "both",
-                                                                                            placeholder = "ATGGTGAGCAAGGGCGAGGAGGATAACATGGCCATCATCAAGGAGTTCATGCGCTTCAAGGTGCACATGGAGGGCTCCGTGAACGGCCACGAGTTCGAGATCGAGGGCGAGGGCGAGGGCCGCCCCTACGAGGGCACCCAGACCGCCAAGCTGAAGGTGACCAAGGGTGGCCCCCTGCCCTTCGCCTGGGACATCCTGTCCCCTCAGTTCATGTACGGCTCCAAGGCCTACGTGAAGCACCCCGCCGACATCCCCGACTACTTGAAGCTGTCCTTCCCCGAGGGCTTCAAGTGGGAGCGCGTGATGAACTTCGAGGACGGCGGCGTGGTGACCGTGACCCAGGACTCCTCCCTGCAGGACGGCGAGTTCATCTACAAGGTGAAGCTGCGCGGCACCAACTTCCCCTCCGACGGCCCCGTAATGCAGAAGAAGACGATGGGCTGGGAGGCCTCCTCCGAGCGGATGTACCCCGAGGACGGCGCCCTGAAGGGCGAGATCAAGCAGAGGCTGAAGCTGAAGGACGGCGGCCACTACGACGCTGAGGTCAAGACCACCTACAAGGCCAAGAAGCCCGTGCAGCTGCCCGGCGCCTACAACGTCAACATCAAGTTGGACATCACCTCCCACAACGAGGACTACACCATCGTGGAACAGTACGAACGCGCCGAGGGCCGCCACTCCACCGGCGGCATGGACGAGCTGTACAAGGTCGACAAGCTTGCGGCCGCACTCGAGTGA")
-                                                 ), 
+                          wellPanel(style="background: #c9ffe6",  uiOutput("qqc_input_panel")),
                           wellPanel(style="background: #75ffbf", fileInput("qqc_file", h4("Select .ab1/.abf"), multiple = FALSE, accept = c(".ab1", ".abf"), width = NULL)),
                           wellPanel(style="background: #1df28f", h4("Mutation Positions"), fluidRow(column(3,numericInput("qqc_pos", "Sequence Position", value=1)), column(1,actionButton("qqc_add","Add")),column(1,actionButton("qqc_remove","Remove"))),
                                     fluidRow(uiOutput("qqc_mut_display"))),
@@ -249,7 +247,8 @@ server <- function(input, output, session) {
      ####################################
      ######Quick Quality Control #######
      #####################################
-     observeEvent(input$qqc_add, {
+    generic_sequence_input("qqc", button=F,default_value = "ATGGTGAGCAAGGGCGAGGAGGATAACATGGCCATCATCAAGGAGTTCATGCGCTTCAAGGTGCACATGGAGGGCTCCGTGAACGGCCACGAGTTCGAGATCGAGGGCGAGGGCGAGGGCCGCCCCTACGAGGGCACCCAGACCGCCAAGCTGAAGGTGACCAAGGGTGGCCCCCTGCCCTTCGCCTGGGACATCCTGTCCCCTCAGTTCATGTACGGCTCCAAGGCCTACGTGAAGCACCCCGCCGACATCCCCGACTACTTGAAGCTGTCCTTCCCCGAGGGCTTCAAGTGGGAGCGCGTGATGAACTTCGAGGACGGCGGCGTGGTGACCGTGACCCAGGACTCCTCCCTGCAGGACGGCGAGTTCATCTACAAGGTGAAGCTGCGCGGCACCAACTTCCCCTCCGACGGCCCCGTAATGCAGAAGAAGACGATGGGCTGGGAGGCCTCCTCCGAGCGGATGTACCCCGAGGACGGCGCCCTGAAGGGCGAGATCAAGCAGAGGCTGAAGCTGAAGGACGGCGGCCACTACGACGCTGAGGTCAAGACCACCTACAAGGCCAAGAAGCCCGTGCAGCTGCCCGGCGCCTACAACGTCAACATCAAGTTGGACATCACCTCCCACAACGAGGACTACACCATCGTGGAACAGTACGAACGCGCCGAGGGCCGCCACTCCACCGGCGGCATGGACGAGCTGTACAAGGTCGACAAGCTTGCGGCCGCACTCGAGTGA") 
+    observeEvent(input$qqc_add, {
        rv$qqc_mutations<-union(rv$qqc_mutations, input$qqc_pos)
        print(paste(rv$qqc_mutations, collapse = " "))
        output$qqc_mut_display<-renderUI(paste(rv$qqc_mutations, collapse = " "))
@@ -262,10 +261,11 @@ server <- function(input, output, session) {
      })
      observeEvent(input$qqc_next,{
        updateTabsetPanel(session, "qqc", "Results")
-       base_distribution_shiny(input$qqc_seq, input$qqc_file$datapath, replacements = rv$qqc_mutations)
+       base_distribution_shiny(input$qqc_input_sequence, input$qqc_file$datapath, replacements = rv$qqc_mutations)
         #browser()
         rv$plots<-renderUI({
           output_list<-lapply(rv[["plotlist"]], function(i){renderPlotly(rv[[i]])})
+          output_list<-lapply(output_list, function(i){attr(i, 'outputArgs')<-list(height="700px"); return(i)})
           return(do.call(tagList, output_list))
           })
         #browser()
