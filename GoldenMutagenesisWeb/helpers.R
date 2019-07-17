@@ -1,5 +1,6 @@
 sequence_check<-function(input_sequence){
   input_sequence<-str_to_upper(input_sequence)
+  print(input_sequence)
   if(nchar(input_sequence)%%3!=0) {
     stop(paste("The length of the sequence is no factor of 3. Please check your sequence.", "The length of the sequence was:", nchar(input_sequence),  sep=" "))
   }

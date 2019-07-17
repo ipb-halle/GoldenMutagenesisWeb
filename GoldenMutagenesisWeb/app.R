@@ -34,7 +34,7 @@ ui <- fluidPage(
   # Application title
   titlePanel(ipbheader, windowTitle = "GoldenMutagenesis"),
     navlistPanel(id="MainNav", widths = c(4, 7),
-     tabPanel("Welcome", h4("Welcome to the GoldenMutagenesis Webtool."), h4("Please select the desired task.")), "Pre- and Postprocessing",
+     tabPanel("Welcome", h4("Welcome to the GoldenMutagenesis Webtool."), h4("Please select the desired task."), p("AppVersion: 2019-07-17")), "Pre- and Postprocessing",
         tabPanel("Domestication", 
           mainPanel(width = 15,
             tabsetPanel(id="domestication",type="tabs",
@@ -55,7 +55,9 @@ ui <- fluidPage(
                 tabPanel("Preview and Selection",
                          uiOutput("domestication_preview_complete")),
                 tabPanel("Results", 
-                         uiOutput("domestication_primer_complete"),br(),fluidRow(column(5, actionButton("domestication_result_spm", "PointMutagenesis: Keep Mutations and Sequence"))),fluidRow(column(3, actionButton("domestication_result_spm_sequence", "PointMutagenesis: Keep Sequence"))), fluidRow(column(3, actionButton("domestication_result_msd_sequence", "SaturationMutagenesis: Keep Sequence"))))
+                         uiOutput("domestication_primer_complete"),br()
+                         #fluidRow(column(5, actionButton("domestication_result_spm", "PointMutagenesis: Keep Mutations and Sequence"))),fluidRow(column(3, actionButton("domestication_result_spm_sequence", "PointMutagenesis: Keep Sequence"))), fluidRow(column(3, actionButton("domestication_result_msd_sequence", "SaturationMutagenesis: Keep Sequence")))
+                         )
                 )
           )),
      tabPanel("Quick-Quality-Control", 
@@ -121,6 +123,7 @@ server <- function(input, output, session) {
  #####################################
  #########INPUT##########
   generic_sequence_input("domestication", default_value = "ATGGTGAGCAAGGGCGAGGAGGATAACATGGCCATCATCAAGGAGTTCATGCGCTTCAAGGTGCACATGGAGGGCTCCGTGAACGGCCACGAGTTCGAGATCGAGGGCGAGGGCGAGGGCCGCCCCTACGAGGGCACCCAGACCGCCAAGCTGAAGGTGACCAAGGGTGGCCCCCTGCCCTTCGCCTGGGACATCCTGTCCCCTCAGTTCATGTACGGCTCCAAGGCCTACGTGAAGCACCCCGCCGACATCCCCGACTACTTGAAGCTGTCCTTCCCCGAGGGCTTCAAGTGGGAGCGCGTGATGAACTTCGAGGACGGCGGCGTGGTGACCGTGACCCAGGACTCCTCCCTGCAGGACGGCGAGTTCATCTACAAGGTGAAGCTGCGCGGCACCAACTTCCCCTCCGACGGCCCCGTAATGCAGAAGAAGACGATGGGCTGGGAGGCCTCCTCCGAGCGGATGTACCCCGAGGACGGCGCCCTGAAGGGCGAGATCAAGCAGAGGCTGAAGCTGAAGGACGGCGGCCACTACGACGCTGAGGTCAAGACCACCTACAAGGCCAAGAAGCCCGTGCAGCTGCCCGGCGCCTACAACGTCAACATCAAGTTGGACATCACCTCCCACAACGAGGACTACACCATCGTGGAACAGTACGAACGCGCCGAGGGCCGCCACTCCACCGGCGGCATGGACGAGCTGTACAAGGTCGACAAGCTTGCGGCCGCACTCGAGTGA")
+  generic_process_input("domestication", default_value = "ATGGTGAGCAAGGGCGAGGAGGATAACATGGCCATCATCAAGGAGTTCATGCGCTTCAAGGTGCACATGGAGGGCTCCGTGAACGGCCACGAGTTCGAGATCGAGGGCGAGGGCGAGGGCCGCCCCTACGAGGGCACCCAGACCGCCAAGCTGAAGGTGACCAAGGGTGGCCCCCTGCCCTTCGCCTGGGACATCCTGTCCCCTCAGTTCATGTACGGCTCCAAGGCCTACGTGAAGCACCCCGCCGACATCCCCGACTACTTGAAGCTGTCCTTCCCCGAGGGCTTCAAGTGGGAGCGCGTGATGAACTTCGAGGACGGCGGCGTGGTGACCGTGACCCAGGACTCCTCCCTGCAGGACGGCGAGTTCATCTACAAGGTGAAGCTGCGCGGCACCAACTTCCCCTCCGACGGCCCCGTAATGCAGAAGAAGACGATGGGCTGGGAGGCCTCCTCCGAGCGGATGTACCCCGAGGACGGCGCCCTGAAGGGCGAGATCAAGCAGAGGCTGAAGCTGAAGGACGGCGGCCACTACGACGCTGAGGTCAAGACCACCTACAAGGCCAAGAAGCCCGTGCAGCTGCCCGGCGCCTACAACGTCAACATCAAGTTGGACATCACCTCCCACAACGAGGACTACACCATCGTGGAACAGTACGAACGCGCCGAGGGCCGCCACTCCACCGGCGGCATGGACGAGCTGTACAAGGTCGACAAGCTTGCGGCCGCACTCGAGTGA")
   #########CONFIGURATION##########
   generic_mut_conf("domestication")
   generic_template_selection("domestication")
@@ -180,19 +183,27 @@ server <- function(input, output, session) {
   ###########RESULTS################
   generic_results("domestication")
   generic_primer_output("domestication")
+  #Does not work correclty, because UIOutput is triggered by clicking on the tabset. Therefore the TextAreaInput is not exisiting at this step. 
   observeEvent(input$domestication_result_spm, {
-    updateTextInput(session, "spm_input_sequence", value = rv$domestication_primers@oldsequence)
-    rv$spm_mutations<-rv$domestication_mutations
     updateTabsetPanel(session, "MainNav", selected = "Point-Mutagenesis")
+    updateTabsetPanel(session, "spm", selected = "Sequence Input")
     updateTabsetPanel(session, "spm", selected = "Configuration")
+    #generic_sequence_input("spm")
+    updateTextAreaInput(session, "spm_input_sequence", value = rv$domestication_primers@oldsequence)
+    rv$spm_mutations<-rv$domestication_mutations
+    updateTabsetPanel(session, "spm", selected = "Sequence Input")
+    updateTabsetPanel(session, "spm", selected = "Configuration")
+
   })
   observeEvent(input$domestication_result_spm_sequence, {
-    updateTextInput(session, "spm_input_sequence", value = rv$domestication_primers@newsequence)
+    generic_sequence_input("spm")
+    updateTextAreaInput(session, "spm_input_sequence", value = as.character(rv$domestication_primers@newsequence))
     updateTabsetPanel(session, "MainNav", selected = "Point-Mutagenesis")
-    updateTabsetPanel(session, "spm", selected = "Configuration")
+    updateTabsetPanel(session, "spm", selected = "Sequence Input")
   })
   observeEvent(input$domestication_result_msd_sequence, {
-    updateTextInput(session, "msd_input_sequence", value = rv$domestication_primers@newsequence)
+    generic_sequence_input("msd")
+    updateTextAreaInput(session, "msd_input_sequence", value = rv$domestication_primers@newsequence)
     updateTabsetPanel(session, "MainNav", selected = "Saturation-Mutagenesis")
     updateTabsetPanel(session, "msd", selected = "Configuration")
   })
@@ -201,6 +212,7 @@ server <- function(input, output, session) {
   #####################################
   #########INPUT##########
   generic_sequence_input("spm")
+  generic_process_input("spm")
   ########Configuration#######
   generic_mut_conf("spm")
   generic_template_selection("spm")
@@ -225,7 +237,8 @@ server <- function(input, output, session) {
    #####################################
    #########INPUT##########
     generic_sequence_input("msd", default_value = "ATGTCTCAGGTTCAGAGTGGCATTTTGCCAGAACATTGCCGCGCGGCGATTTGGATCGAAGCCAACGTGAAAGGGGAAGTTGACGCCCTGCGTGCGGCCAGTAAAACATTTGCCGACAAACTGGCAACTTTTGAAGCGAAATTCCCGGACGCGCATCTTGGTGCGGTGGTTGCCTTTGGTAACAACACCTGGCGCGCTCTGAGCGGCGGCGTTGGGGCAGAAGAGCTGAAAGATTTTCCGGGCTACGGTAAAGGCCTTGCGCCGACGACCCAGTTCGATGTGTTGATCCACATTCTTTCTCTGCGTCACGACGTAAACTTCTCTGTCGCCCAGGCGGCGATGGAAGCCTTTGGTGACTGCATTGAAGTGAAAGAAGAGATCCACGGCTTCCGTTGGGTTGAAGAGCGTGACCTGAGCGGCTTTGTTGACGGTACGGAAAACCCGGCGGGTGAAGAGACGCGTCGCGAAGTGGCGGTTATCAAAGACGGCGTGGATGCGGGCGGCAGCTATGTGTTTGTCCAGCGTTGGGAACACAACCTGAAGCAGCTCAACCGGATGAGCGTTCACGATCAGGAGATGGTGATCGGGCGCACCAAAGAGGCCAACGAAGAGATCGACGGCGACGAACGTCCGGAAACCTCTCACCTCACCCGCGTTGATCTGAAAGAAGATGGCAAAGGGCTGAAGATTGTTCGCCAGAGCCTGCCGTACGGCACTGCCAGTGGCACTCACGGTCTGTACTTCTGCGCCTACTGCGCGCGTCTGCATAACATTGAGCAGCAACTGCTGAGCATGTTTGGCGATACCGATGGTAAGCGTGATGCGATGTTGCGTTTCACCAAACCGGTAACCGGCGGCTATTATTTCGCACCGTCGCTGGACAAGTTGATGGCGCTGTAA")
-   ########Configuration#######
+    generic_process_input("msd", default_value = "ATGTCTCAGGTTCAGAGTGGCATTTTGCCAGAACATTGCCGCGCGGCGATTTGGATCGAAGCCAACGTGAAAGGGGAAGTTGACGCCCTGCGTGCGGCCAGTAAAACATTTGCCGACAAACTGGCAACTTTTGAAGCGAAATTCCCGGACGCGCATCTTGGTGCGGTGGTTGCCTTTGGTAACAACACCTGGCGCGCTCTGAGCGGCGGCGTTGGGGCAGAAGAGCTGAAAGATTTTCCGGGCTACGGTAAAGGCCTTGCGCCGACGACCCAGTTCGATGTGTTGATCCACATTCTTTCTCTGCGTCACGACGTAAACTTCTCTGTCGCCCAGGCGGCGATGGAAGCCTTTGGTGACTGCATTGAAGTGAAAGAAGAGATCCACGGCTTCCGTTGGGTTGAAGAGCGTGACCTGAGCGGCTTTGTTGACGGTACGGAAAACCCGGCGGGTGAAGAGACGCGTCGCGAAGTGGCGGTTATCAAAGACGGCGTGGATGCGGGCGGCAGCTATGTGTTTGTCCAGCGTTGGGAACACAACCTGAAGCAGCTCAACCGGATGAGCGTTCACGATCAGGAGATGGTGATCGGGCGCACCAAAGAGGCCAACGAAGAGATCGACGGCGACGAACGTCCGGAAACCTCTCACCTCACCCGCGTTGATCTGAAAGAAGATGGCAAAGGGCTGAAGATTGTTCGCCAGAGCCTGCCGTACGGCACTGCCAGTGGCACTCACGGTCTGTACTTCTGCGCCTACTGCGCGCGTCTGCATAACATTGAGCAGCAACTGCTGAGCATGTTTGGCGATACCGATGGTAAGCGTGATGCGATGTTGCGTTTCACCAAACCGGTAACCGGCGGCTATTATTTCGCACCGTCGCTGGACAAGTTGATGGCGCTGTAA")
+    ########Configuration#######
     generic_mut_conf("msd")
     generic_template_selection("msd")
     generic_re_selection("msd")
@@ -260,6 +273,8 @@ server <- function(input, output, session) {
        output$qqc_mut_display<-renderUI(paste(rv$qqc_mutations, collapse = " "))
      })
      observeEvent(input$qqc_next,{
+       rv$plots<-NULL
+       rv$plotlist<-NULL
        updateTabsetPanel(session, "qqc", "Results")
        base_distribution_shiny(input$qqc_input_sequence, input$qqc_file$datapath, replacements = rv$qqc_mutations)
         #browser()

@@ -1,11 +1,11 @@
 #INPUT SEQUENCE PROCESSING
-generic_process_input<-function(prefix, default_value="ATGGTGAGCAAGGGCGAGGAGGATAACATGGCCATCATCAAGGAGTTCATGCGCTTCAAGGTGCACATGGAGGGCTCCGTGAACGGCCACGAGTTCGAGATCGAGGGCGAGGGCGAGGGCCGCCCCTACGAGGGCACCCAGACCGCCAAGCTGAAGGTGACCAAGGGTGGCCCCCTGCCCTTCGCCTGGGACATCCTGTCCCCTCAGTTCATGTACGGCTCCAAGGCCTACGTGAAGCACCCCGCCGACATCCCCGACTACTTGAAGCTGTCCTTCCCCGAGGGCTTCAAGTGGGAGCGCGTGATGAACTTCGAGGACGGCGGCGTGGTGACCGTGACCCAGGACTCCTCCCTGCAGGACGGCGAGTTCATCTACAAGGTGAAGCTGCGCGGCACCAACTTCCCCTCCGACGGCCCCGTAATGCAGAAGAAGACGATGGGCTGGGAGGCCTCCTCCGAGCGGATGTACCCCGAGGACGGCGCCCTGAAGGGCGAGATCAAGCAGAGGCTGAAGCTGAAGGACGGCGGCCACTACGACGCTGAGGTCAAGACCACCTACAAGGCCAAGAAGCCCGTGCAGCTGCCCGGCGCCTACAACGTCAACATCAAGTTGGACATCACCTCCCACAACGAGGACTACACCATCGTGGAACAGTACGAACGCGCCGAGGGCCGCCACTCCACCGGCGGCATGGACGAGCTGTACAAGGTCGACAAGCTTGCGGCCGCACTCGAGTGA"){
-observeEvent(input[[paste(prefix, "seq_next", sep="_")]], {
-    if(input$d_seq == "") {
+generic_process_input<-function(prefix, next_panel="Configuration", default_value="ATGGTGAGCAAGGGCGAGGAGGATAACATGGCCATCATCAAGGAGTTCATGCGCTTCAAGGTGCACATGGAGGGCTCCGTGAACGGCCACGAGTTCGAGATCGAGGGCGAGGGCGAGGGCCGCCCCTACGAGGGCACCCAGACCGCCAAGCTGAAGGTGACCAAGGGTGGCCCCCTGCCCTTCGCCTGGGACATCCTGTCCCCTCAGTTCATGTACGGCTCCAAGGCCTACGTGAAGCACCCCGCCGACATCCCCGACTACTTGAAGCTGTCCTTCCCCGAGGGCTTCAAGTGGGAGCGCGTGATGAACTTCGAGGACGGCGGCGTGGTGACCGTGACCCAGGACTCCTCCCTGCAGGACGGCGAGTTCATCTACAAGGTGAAGCTGCGCGGCACCAACTTCCCCTCCGACGGCCCCGTAATGCAGAAGAAGACGATGGGCTGGGAGGCCTCCTCCGAGCGGATGTACCCCGAGGACGGCGCCCTGAAGGGCGAGATCAAGCAGAGGCTGAAGCTGAAGGACGGCGGCCACTACGACGCTGAGGTCAAGACCACCTACAAGGCCAAGAAGCCCGTGCAGCTGCCCGGCGCCTACAACGTCAACATCAAGTTGGACATCACCTCCCACAACGAGGACTACACCATCGTGGAACAGTACGAACGCGCCGAGGGCCGCCACTCCACCGGCGGCATGGACGAGCTGTACAAGGTCGACAAGCTTGCGGCCGCACTCGAGTGA"){
+  observeEvent(input[[paste(prefix, "sequence_next", sep="_")]], {
+    if(input[[paste(prefix, "input_sequence", sep="_")]] == "") {
       shinyalert("No Sequence!", "You have not entered a sequence. The default value will be used!", type = "warning")
-      updateTextAreaInput(session, paste(prefix,"seq_input",sep="_"), value = default_value)
+      updateTextAreaInput(session, paste(prefix, "input_sequence", sep="_"), value = default_value)
     }
-    updateTabsetPanel(session, prefix, "Configuration")
+    updateTabsetPanel(session, prefix, next_panel)
   })
 }
 
@@ -196,9 +196,9 @@ observeEvent(input[[paste(prefix, "selection_next", sep="_")]], {
       updateTabsetPanel(session, prefix, panel)
       #print(input[[paste(prefix, "input_sequence", sep="_")]])
       if(spm==T){
-        rv[[paste(prefix, "primers", sep="_")]]<-mutate_spm(input[[paste(prefix, "input_sequence", sep="_")]], prefix = input[[paste(prefix, "prefix", sep="_")]], restriction_enzyme = input[[paste(prefix, "re_enzyme", sep="_")]], suffix = input[[paste(prefix, "suffix", sep="_")]], vector = c(input[[paste(prefix, "v1", sep="_")]], input[[paste(prefix, "v2", sep="_")]]), replacements = rv[[paste(prefix, "mutations", sep="_")]],  binding_min_length = input[[paste(prefix, "binding_min_length", sep="_")]], target_temp = input[[paste(prefix, "temperature", sep="_")]], cuf = input[[paste(prefix, "cuf", sep="_")]], binding_max_length = input[[paste(prefix, "binding_max_length", sep="_")]])
+        rv[[paste(prefix, "primers", sep="_")]]<-mutate_spm(input[[paste(prefix, "input_sequence", sep="_")]], prefix = input[[paste(prefix, "prefix", sep="_")]], restriction_enzyme = input[[paste(prefix, "re_enzyme", sep="_")]], suffix = input[[paste(prefix, "suffix", sep="_")]], vector = c(input[[paste(prefix, "v1", sep="_")]], input[[paste(prefix, "v2", sep="_")]]), replacements = rv[[paste(prefix, "mutations", sep="_")]],  binding_min_length = input[[paste(prefix, "binding_min_length", sep="_")]], target_temp = input[[paste(prefix, "temperature", sep="_")]], cuf = input[[paste(prefix, "cuf", sep="_")]], binding_max_length = input[[paste(prefix, "binding_max_length", sep="_")]], replacement_range = input[[paste(prefix, "replacement_range", sep="_")]],  fragment_min_size = input[[paste(prefix, "fragment_min_size", sep="_")]])
       } else {
-        rv[[paste(prefix, "primers", sep="_")]]<-mutate_msd(input[[paste(prefix, "input_sequence", sep="_")]], prefix = input[[paste(prefix, "prefix", sep="_")]], restriction_enzyme = input[[paste(prefix, "re_enzyme", sep="_")]], suffix = input[[paste(prefix, "suffix", sep="_")]], vector = c(input[[paste(prefix, "v1", sep="_")]], input[[paste(prefix, "v2", sep="_")]]), replacements = rv[[paste(prefix, "mutations", sep="_")]],  binding_min_length = input[[paste(prefix, "binding_min_length", sep="_")]], target_temp = input[[paste(prefix, "temperature", sep="_")]], binding_max_length = input[[paste(prefix, "binding_max_length", sep="_")]])
+        rv[[paste(prefix, "primers", sep="_")]]<-mutate_msd(input[[paste(prefix, "input_sequence", sep="_")]], prefix = input[[paste(prefix, "prefix", sep="_")]], restriction_enzyme = input[[paste(prefix, "re_enzyme", sep="_")]], suffix = input[[paste(prefix, "suffix", sep="_")]], vector = c(input[[paste(prefix, "v1", sep="_")]], input[[paste(prefix, "v2", sep="_")]]), replacements = rv[[paste(prefix, "mutations", sep="_")]],  binding_min_length = input[[paste(prefix, "binding_min_length", sep="_")]], target_temp = input[[paste(prefix, "temperature", sep="_")]], binding_max_length = input[[paste(prefix, "binding_max_length", sep="_")]], replacement_range = input[[paste(prefix, "replacement_range", sep="_")]], fragment_min_size = input[[paste(prefix, "fragment_min_size", sep="_")]])
       }
       if(input[[paste(prefix, "level", sep="_")]]=="lv0") {
         if(input[[paste(prefix, "prepare_lvl2", sep="_")]]==TRUE) {
@@ -265,6 +265,9 @@ base_distribution_shiny<-function(input_sequence, ab1file, replacements, trace_c
   tracematrix_subject<-sangerseqR::traceMatrix(sanger_seq)[sangerseqR::peakPosMatrix(sanger_seq)[subject_pos],]
   sums_row<-which(rowSums(tracematrix_subject)>=trace_cutoff)
   tracematrix_subject<-as.data.frame(tracematrix_subject[sums_row,])
+  if(length(setdiff(replacements, unique(ceiling(pattern_pos/3))))){
+    shinyalert(paste("Could not find mutations for position(s):",paste(sapply(setdiff(replacements, unique(ceiling(pattern_pos/3))), function(i){paste(aaa(translate(s2c(input_sequence))[i]), i, sep=" ")}), collapse = "\n"), sep="\n"), type = "warning")
+  }
   local({
     for(element in sums_row) {
       # plotting as pie chart

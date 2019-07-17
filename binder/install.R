@@ -12,4 +12,4 @@ install.packages("plotly")
 install.packages("BiocManager")
 BiocManager::install(c("Biostrings", "sangerseqR"))
 
-devtools::install_github("ipb-halle/GoldenMutagenesis@1.1.2")
+devtools::install_github("ipb-halle/GoldenMutagenesis")

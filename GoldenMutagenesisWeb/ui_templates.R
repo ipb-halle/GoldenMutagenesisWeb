@@ -1,5 +1,5 @@
 ####GENRIC SEQUENCE INPUT#####
-generic_sequence_input<-function(prefix, button=T ,next_panel="Configuration", default_value="ATGGTGAGCAAGGGCGAGGAGGATAACATGGCCATCATCAAGGAGTTCATGCGCTTCAAGGTGCACATGGAGGGCTCCGTGAACGGCCACGAGTTCGAGATCGAGGGCGAGGGCGAGGGCCGCCCCTACGAGGGCACCCAGACCGCCAAGCTGAAGGTGACCAAGGGTGGCCCCCTGCCCTTCGCCTGGGACATCCTGTCCCCTCAGTTCATGTACGGCTCCAAGGCCTACGTGAAGCACCCCGCCGACATCCCCGACTACTTGAAGCTGTCCTTCCCCGAGGGCTTCAAGTGGGAGCGCGTGATGAACTTCGAGGACGGCGGCGTGGTGACCGTGACCCAGGACTCCTCCCTGCAGGACGGCGAGTTCATCTACAAGGTGAAGCTGCGCGGCACCAACTTCCCCTCCGACGGCCCCGTAATGCAGAAGAAGACGATGGGCTGGGAGGCCTCCTCCGAGCGGATGTACCCCGAGGACGGCGCCCTGAAGGGCGAGATCAAGCAGAGGCTGAAGCTGAAGGACGGCGGCCACTACGACGCTGAGGTCAAGACCACCTACAAGGCCAAGAAGCCCGTGCAGCTGCCCGGCGCCTACAACGTCAACATCAAGTTGGACATCACCTCCCACAACGAGGACTACACCATCGTGGAACAGTACGAACGCGCCGAGGGCCGCCACTCCACCGGCGGCATGGACGAGCTGTACAAGGTCGACAAGCTTGCGGCCGCACTCGAGTGA") {
+generic_sequence_input<-function(prefix, button=T , default_value="ATGGTGAGCAAGGGCGAGGAGGATAACATGGCCATCATCAAGGAGTTCATGCGCTTCAAGGTGCACATGGAGGGCTCCGTGAACGGCCACGAGTTCGAGATCGAGGGCGAGGGCGAGGGCCGCCCCTACGAGGGCACCCAGACCGCCAAGCTGAAGGTGACCAAGGGTGGCCCCCTGCCCTTCGCCTGGGACATCCTGTCCCCTCAGTTCATGTACGGCTCCAAGGCCTACGTGAAGCACCCCGCCGACATCCCCGACTACTTGAAGCTGTCCTTCCCCGAGGGCTTCAAGTGGGAGCGCGTGATGAACTTCGAGGACGGCGGCGTGGTGACCGTGACCCAGGACTCCTCCCTGCAGGACGGCGAGTTCATCTACAAGGTGAAGCTGCGCGGCACCAACTTCCCCTCCGACGGCCCCGTAATGCAGAAGAAGACGATGGGCTGGGAGGCCTCCTCCGAGCGGATGTACCCCGAGGACGGCGCCCTGAAGGGCGAGATCAAGCAGAGGCTGAAGCTGAAGGACGGCGGCCACTACGACGCTGAGGTCAAGACCACCTACAAGGCCAAGAAGCCCGTGCAGCTGCCCGGCGCCTACAACGTCAACATCAAGTTGGACATCACCTCCCACAACGAGGACTACACCATCGTGGAACAGTACGAACGCGCCGAGGGCCGCCACTCCACCGGCGGCATGGACGAGCTGTACAAGGTCGACAAGCTTGCGGCCGCACTCGAGTGA") {
   output[[paste(prefix, "input_panel", sep="_")]]<-renderUI({tagList(
                             br(), 
                             p("You can paste a sequence into the textbox or upload your own fasta file."),
@@ -20,13 +20,6 @@ generic_sequence_input<-function(prefix, button=T ,next_panel="Configuration", d
                                         }
                             )
                   )})
-                        observeEvent(input[[paste(prefix, "sequence_next", sep="_")]], {
-                          if(input[[paste(prefix, "input_sequence", sep="_")]] == "") {
-                            shinyalert("No Sequence!", "You have not entered a sequence. The default value will be used!", type = "warning")
-                            updateTextAreaInput(session, paste(prefix, "input_sequence", sep="_"), value = default_value)
-                          }
-                          updateTabsetPanel(session, prefix, next_panel)
-                        })
 }
 
 ####MUTAGENESIS TEMPLATE GENERATION####
@@ -63,8 +56,14 @@ generic_mut_conf<-function(prefix){output[[paste(prefix, "mut_conf", sep="_")]]<
                                   "Maximal binding sequence length (AA)", 
                                   value = 9),
                      numericInput(paste(prefix,"temperature",sep="_"), 
-                                  "Target Temperature in Celsius", 
+                                  "Target temperature in Celsius", 
                                   value = 60),
+                     numericInput(paste(prefix, "replacement_range", sep="_"),
+                                  "Maximal distance between [AA] mutation sites to be integrated into one reverse primer",
+                                  value = 3),
+                     numericInput(paste(prefix, "fragment_min_size", sep="_"),
+                                  "Minimum fragment size in BP",
+                                  value = 100),
                      selectInput(paste(prefix,"cuf",sep="_"), "Codon Usage Table", list_cu_table())
            )
     )),
