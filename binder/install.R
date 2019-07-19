@@ -8,6 +8,7 @@ install.packages("RColorBrewer")
 install.packages("BiocManager")
 install.packages("plotly")
 install.packages("DT")
+install.packages("shinyjs")
 ## BioC dependencies
 
 install.packages("BiocManager")
