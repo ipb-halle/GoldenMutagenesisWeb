@@ -1,11 +1,12 @@
 #INPUT SEQUENCE PROCESSING
 generic_process_input<-function(prefix, next_panel="Configuration", default_value="ATGGTGAGCAAGGGCGAGGAGGATAACATGGCCATCATCAAGGAGTTCATGCGCTTCAAGGTGCACATGGAGGGCTCCGTGAACGGCCACGAGTTCGAGATCGAGGGCGAGGGCGAGGGCCGCCCCTACGAGGGCACCCAGACCGCCAAGCTGAAGGTGACCAAGGGTGGCCCCCTGCCCTTCGCCTGGGACATCCTGTCCCCTCAGTTCATGTACGGCTCCAAGGCCTACGTGAAGCACCCCGCCGACATCCCCGACTACTTGAAGCTGTCCTTCCCCGAGGGCTTCAAGTGGGAGCGCGTGATGAACTTCGAGGACGGCGGCGTGGTGACCGTGACCCAGGACTCCTCCCTGCAGGACGGCGAGTTCATCTACAAGGTGAAGCTGCGCGGCACCAACTTCCCCTCCGACGGCCCCGTAATGCAGAAGAAGACGATGGGCTGGGAGGCCTCCTCCGAGCGGATGTACCCCGAGGACGGCGCCCTGAAGGGCGAGATCAAGCAGAGGCTGAAGCTGAAGGACGGCGGCCACTACGACGCTGAGGTCAAGACCACCTACAAGGCCAAGAAGCCCGTGCAGCTGCCCGGCGCCTACAACGTCAACATCAAGTTGGACATCACCTCCCACAACGAGGACTACACCATCGTGGAACAGTACGAACGCGCCGAGGGCCGCCACTCCACCGGCGGCATGGACGAGCTGTACAAGGTCGACAAGCTTGCGGCCGCACTCGAGTGA"){
   observeEvent(input[[paste(prefix, "sequence_next", sep="_")]], {
+    updateTextAreaInput(session, paste(prefix, "input_sequence", sep="_"), value = str_remove_all(input[[paste(prefix, "input_sequence", sep="_")]], "\\s+"))
     if(input[[paste(prefix, "input_sequence", sep="_")]] == "") {
       shinyalert("No Sequence!", "You have not entered a sequence. The default value will be used!", type = "warning")
       updateTextAreaInput(session, paste(prefix, "input_sequence", sep="_"), value = default_value)
     }
-    if(sequence_check(paste(prefix, "input_sequence", sep="_")))
+    sequence_check(input[[paste(prefix, "input_sequence", sep="_")]])
     updateTabsetPanel(session, prefix, next_panel)
   })
 }
