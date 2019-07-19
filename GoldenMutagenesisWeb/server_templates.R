@@ -2,11 +2,15 @@
 generic_process_input<-function(prefix, next_panel="Configuration", default_value="ATGGTGAGCAAGGGCGAGGAGGATAACATGGCCATCATCAAGGAGTTCATGCGCTTCAAGGTGCACATGGAGGGCTCCGTGAACGGCCACGAGTTCGAGATCGAGGGCGAGGGCGAGGGCCGCCCCTACGAGGGCACCCAGACCGCCAAGCTGAAGGTGACCAAGGGTGGCCCCCTGCCCTTCGCCTGGGACATCCTGTCCCCTCAGTTCATGTACGGCTCCAAGGCCTACGTGAAGCACCCCGCCGACATCCCCGACTACTTGAAGCTGTCCTTCCCCGAGGGCTTCAAGTGGGAGCGCGTGATGAACTTCGAGGACGGCGGCGTGGTGACCGTGACCCAGGACTCCTCCCTGCAGGACGGCGAGTTCATCTACAAGGTGAAGCTGCGCGGCACCAACTTCCCCTCCGACGGCCCCGTAATGCAGAAGAAGACGATGGGCTGGGAGGCCTCCTCCGAGCGGATGTACCCCGAGGACGGCGCCCTGAAGGGCGAGATCAAGCAGAGGCTGAAGCTGAAGGACGGCGGCCACTACGACGCTGAGGTCAAGACCACCTACAAGGCCAAGAAGCCCGTGCAGCTGCCCGGCGCCTACAACGTCAACATCAAGTTGGACATCACCTCCCACAACGAGGACTACACCATCGTGGAACAGTACGAACGCGCCGAGGGCCGCCACTCCACCGGCGGCATGGACGAGCTGTACAAGGTCGACAAGCTTGCGGCCGCACTCGAGTGA"){
   observeEvent(input[[paste(prefix, "sequence_next", sep="_")]], {
     updateTextAreaInput(session, paste(prefix, "input_sequence", sep="_"), value = str_remove_all(input[[paste(prefix, "input_sequence", sep="_")]], "\\s+"))
+    rv[[paste(sep="_", prefix, "input_sequence")]]<-str_remove_all(input[[paste(prefix, "input_sequence", sep="_")]], "\\s+")
     if(input[[paste(prefix, "input_sequence", sep="_")]] == "") {
       shinyalert("No Sequence!", "You have not entered a sequence. The default value will be used!", type = "warning")
       updateTextAreaInput(session, paste(prefix, "input_sequence", sep="_"), value = default_value)
+      rv[[paste(sep="_", prefix, "input_sequence")]]<-default_value
+    } else{
+    sequence_check(rv[[paste(prefix, "input_sequence", sep="_")]])
+    #rv[[paste(sep="_", prefix, "input_sequence")]]<-input[[paste(sep="_", prefix, "input_sequence")]]
     }
-    sequence_check(input[[paste(prefix, "input_sequence", sep="_")]])
     updateTabsetPanel(session, prefix, next_panel)
   })
 }
@@ -21,6 +25,7 @@ generic_template_selection<-function(prefix) {
       updateTextInput(session, paste(sep="_", prefix, "v1"), value = "CTCA")
       updateTextInput(session, paste(sep="_", prefix, "v2"), value = "CTCG")
       updateSelectInput(session, paste(sep="_", prefix, "cuf"), selected =  "e_coli_316407.csv")
+      rv[[paste(sep="_", prefix, "addgene_button")]]<-"window.open('https://www.addgene.org/51833/','_blank')"
     }
     if(input[[paste(prefix, "template", sep="_")]] == "2") {
       print("pAGM22082 selected")
@@ -28,7 +33,8 @@ generic_template_selection<-function(prefix) {
       updateSelectInput(session, paste(sep="_", prefix, "re_enzyme_selection"), selected = "bsai")
       updateTextInput(session, paste(sep="_", prefix, "v1"), value = "AATG")
       updateTextInput(session, paste(sep="_", prefix, "v2"), value = "AAGC")
-      updateSelectInput(session, paste(sep="_", prefix, "cuf"), selected =  "e_coli_316407.csv")        
+      updateSelectInput(session, paste(sep="_", prefix, "cuf"), selected =  "e_coli_316407.csv") 
+      rv[[paste(sep="_", prefix, "addgene_button")]]<-"window.open('https://www.addgene.org/117225/','_blank')"
     }
     if(input[[paste(prefix, "template", sep="_")]] == "3") {
       print("pICH86988 selected")
@@ -37,11 +43,18 @@ generic_template_selection<-function(prefix) {
       updateTextInput(session, paste(sep="_", prefix, "v1"), value = "AATG")
       updateTextInput(session, paste(sep="_", prefix, "v2"), value = "AAGC")
       updateSelectInput(session, paste(sep="_", prefix, "cuf"), selected =  "e_coli_316407.csv")
+      rv[[paste(sep="_", prefix, "addgene_button")]]<-"window.open('https://www.addgene.org/48076/','_blank')"
     }
     if(input[[paste(prefix, "template", sep="_")]] == "c") {
+      hide(id = paste(sep="_", prefix, "link"), anim = T)
       print("custom selected")
     }
-  })}
+    else{
+      show(id = paste(sep="_", prefix, "link"), anim = T)
+    }
+  })
+      onclick(paste(sep="_", prefix, "link"), runjs(rv[[paste(sep="_", prefix, "addgene_button")]]))
+  }
 #RESTRICTION ENZYME SELECTION
 generic_re_selection<-function(prefix) {observeEvent(input[[paste(prefix,"re_enzyme_selection",sep="_")]], {
   if(input[[paste(prefix,"re_enzyme_selection",sep="_")]] == "bbsi") {
@@ -67,7 +80,7 @@ generic_re_selection_lvl0<-function(prefix) {observeEvent(input[[paste(prefix,"l
 generic_simple_preview_logic<-function(prefix){
   observeEvent(input[[paste(prefix, "codonpos", sep="_")]], {
     output[[paste(prefix, "aa", sep="_")]]<-renderUI({
-      HTML(aaa(translate(s2c(sequence_check(input[[paste(prefix, "input_sequence", sep="_")]])[as.numeric(input[[paste(prefix, "codonpos", sep="_")]])]))))}
+      HTML(aaa(translate(s2c(sequence_check(rv[[paste(prefix, "input_sequence", sep="_")]])[as.numeric(input[[paste(prefix, "codonpos", sep="_")]])]))))}
     )
     if(length(rv[[paste(prefix, "mutations", sep="_")]])>0){
       positions_aa<-c()
@@ -103,21 +116,21 @@ generic_simple_preview_logic<-function(prefix){
       if(selected==T){
         ind<-which(positions_aa==codon)
         if(length(ind) == 0) {
-          rv[[paste(prefix, "mutations", sep="_")]]<-list.append(rv[[paste(prefix, "mutations", sep="_")]], c(codon, translate(s2c(input[[paste(prefix, "input_sequence", sep="_")]]))[codon]))
+          rv[[paste(prefix, "mutations", sep="_")]]<-list.append(rv[[paste(prefix, "mutations", sep="_")]], c(codon, translate(s2c(rv[[paste(prefix, "input_sequence", sep="_")]]))[codon]))
         }
       }
     } else {
       if(selected==T){
-        rv[[paste(prefix, "mutations", sep="_")]]<-list.append(rv[[paste(prefix, "mutations", sep="_")]], c(codon, translate(s2c(input[[paste(prefix, "input_sequence", sep="_")]]))[codon]))
+        rv[[paste(prefix, "mutations", sep="_")]]<-list.append(rv[[paste(prefix, "mutations", sep="_")]], c(codon, translate(s2c(rv[[paste(prefix, "input_sequence", sep="_")]]))[codon]))
       }
     }
-    output[[paste(prefix, "preview", sep="_")]]<-renderUI(print_sequence(sequence = input[[paste(prefix, "input_sequence", sep="_")]], mutations = rv[[paste(prefix, "mutations", sep="_")]]))
+    output[[paste(prefix, "preview", sep="_")]]<-renderUI(print_sequence(sequence = rv[[paste(prefix, "input_sequence", sep="_")]], mutations = rv[[paste(prefix, "mutations", sep="_")]]))
   })
 }
 generic_complex_preview_logic<-function(prefix, spm=T){
   observeEvent(input[[paste(prefix, "codonpos", sep="_")]], {
     output[[paste(prefix, "aa", sep="_")]]<-renderUI({
-        HTML(aaa(translate(s2c(sequence_check(input[[paste(prefix, "input_sequence", sep="_")]])[as.numeric(input[[paste(prefix, "codonpos", sep="_")]])]))))}
+        HTML(aaa(translate(s2c(sequence_check(rv[[paste(prefix, "input_sequence", sep="_")]])[as.numeric(input[[paste(prefix, "codonpos", sep="_")]])]))))}
     )
     if(length(rv[[paste(prefix, "mutations", sep="_")]])>0){
       positions_aa<-c()
@@ -185,7 +198,7 @@ generic_complex_preview_logic<-function(prefix, spm=T){
         }
       }
     }
-    output[[paste(prefix, "preview", sep="_")]]<-renderUI(print_sequence(sequence = input[[paste(prefix, "input_sequence", sep="_")]], mutations = rv[[paste(prefix, "mutations", sep="_")]]))
+    output[[paste(prefix, "preview", sep="_")]]<-renderUI(print_sequence(sequence = rv[[paste(prefix, "input_sequence", sep="_")]], mutations = rv[[paste(prefix, "mutations", sep="_")]]))
   })
   }
 #Results
@@ -198,9 +211,9 @@ observeEvent(input[[paste(prefix, "selection_next", sep="_")]], {
       updateTabsetPanel(session, prefix, panel)
       #print(input[[paste(prefix, "input_sequence", sep="_")]])
       if(spm==T){
-        rv[[paste(prefix, "primers", sep="_")]]<-mutate_spm(input[[paste(prefix, "input_sequence", sep="_")]], prefix = input[[paste(prefix, "prefix", sep="_")]], restriction_enzyme = input[[paste(prefix, "re_enzyme", sep="_")]], suffix = input[[paste(prefix, "suffix", sep="_")]], vector = c(input[[paste(prefix, "v1", sep="_")]], input[[paste(prefix, "v2", sep="_")]]), replacements = rv[[paste(prefix, "mutations", sep="_")]],  binding_min_length = input[[paste(prefix, "binding_min_length", sep="_")]], target_temp = input[[paste(prefix, "temperature", sep="_")]], cuf = input[[paste(prefix, "cuf", sep="_")]], binding_max_length = input[[paste(prefix, "binding_max_length", sep="_")]], replacement_range = input[[paste(prefix, "replacement_range", sep="_")]],  fragment_min_size = input[[paste(prefix, "fragment_min_size", sep="_")]])
+        rv[[paste(prefix, "primers", sep="_")]]<-mutate_spm(rv[[paste(prefix, "input_sequence", sep="_")]], prefix = input[[paste(prefix, "prefix", sep="_")]], restriction_enzyme = input[[paste(prefix, "re_enzyme", sep="_")]], suffix = input[[paste(prefix, "suffix", sep="_")]], vector = c(input[[paste(prefix, "v1", sep="_")]], input[[paste(prefix, "v2", sep="_")]]), replacements = rv[[paste(prefix, "mutations", sep="_")]],  binding_min_length = input[[paste(prefix, "binding_min_length", sep="_")]], target_temp = input[[paste(prefix, "temperature", sep="_")]], cuf = input[[paste(prefix, "cuf", sep="_")]], binding_max_length = input[[paste(prefix, "binding_max_length", sep="_")]], replacement_range = input[[paste(prefix, "replacement_range", sep="_")]],  fragment_min_size = input[[paste(prefix, "fragment_min_size", sep="_")]])
       } else {
-        rv[[paste(prefix, "primers", sep="_")]]<-mutate_msd(input[[paste(prefix, "input_sequence", sep="_")]], prefix = input[[paste(prefix, "prefix", sep="_")]], restriction_enzyme = input[[paste(prefix, "re_enzyme", sep="_")]], suffix = input[[paste(prefix, "suffix", sep="_")]], vector = c(input[[paste(prefix, "v1", sep="_")]], input[[paste(prefix, "v2", sep="_")]]), replacements = rv[[paste(prefix, "mutations", sep="_")]],  binding_min_length = input[[paste(prefix, "binding_min_length", sep="_")]], target_temp = input[[paste(prefix, "temperature", sep="_")]], binding_max_length = input[[paste(prefix, "binding_max_length", sep="_")]], replacement_range = input[[paste(prefix, "replacement_range", sep="_")]], fragment_min_size = input[[paste(prefix, "fragment_min_size", sep="_")]])
+        rv[[paste(prefix, "primers", sep="_")]]<-mutate_msd(rv[[paste(prefix, "input_sequence", sep="_")]], prefix = input[[paste(prefix, "prefix", sep="_")]], restriction_enzyme = input[[paste(prefix, "re_enzyme", sep="_")]], suffix = input[[paste(prefix, "suffix", sep="_")]], vector = c(input[[paste(prefix, "v1", sep="_")]], input[[paste(prefix, "v2", sep="_")]]), replacements = rv[[paste(prefix, "mutations", sep="_")]],  binding_min_length = input[[paste(prefix, "binding_min_length", sep="_")]], target_temp = input[[paste(prefix, "temperature", sep="_")]], binding_max_length = input[[paste(prefix, "binding_max_length", sep="_")]], replacement_range = input[[paste(prefix, "replacement_range", sep="_")]], fragment_min_size = input[[paste(prefix, "fragment_min_size", sep="_")]])
       }
       if(input[[paste(prefix, "level", sep="_")]]=="lv0") {
         if(input[[paste(prefix, "prepare_lvl2", sep="_")]]==TRUE) {

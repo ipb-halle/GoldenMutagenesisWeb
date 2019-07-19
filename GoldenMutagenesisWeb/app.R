@@ -19,6 +19,7 @@ library(plotly)
 source("helpers.R")
 library("shiny")
 library("DT")
+library(shinyjs)
 
 ## Read IPB coorporate identity
 ipbheader <- HTML(readLines("ipbheader.html"))
@@ -26,6 +27,7 @@ ipbfooter <- HTML(readLines("ipbfooter.html"))
 
 ui <- fluidPage(
   useShinyalert(),
+  useShinyjs(),
   # IPB header 
   tags$head(tags$link(rel = "stylesheet", type = "text/css", 
                       href = "css/ipb-styles.css")),
@@ -58,8 +60,8 @@ ui <- fluidPage(
                 tabPanel("Preview and Selection",
                          wellPanel(style="background: #ffffff",uiOutput("domestication_preview_complete"))),
                 tabPanel("Results", 
-                         wellPanel(style="background: #ffffff",uiOutput("domestication_primer_complete"),br())
-                         #fluidRow(column(5, actionButton("domestication_result_spm", "PointMutagenesis: Keep Mutations and Sequence"))),fluidRow(column(3, actionButton("domestication_result_spm_sequence", "PointMutagenesis: Keep Sequence"))), fluidRow(column(3, actionButton("domestication_result_msd_sequence", "SaturationMutagenesis: Keep Sequence")))
+                         wellPanel(style="background: #ffffff",uiOutput("domestication_primer_complete"),br()),
+                         fluidRow(column(5, actionButton("domestication_result_spm", "PointMutagenesis: Keep Mutations and Sequence"))),fluidRow(column(3, actionButton("domestication_result_spm_sequence", "PointMutagenesis: Keep Sequence"))), fluidRow(column(3, actionButton("domestication_result_msd_sequence", "SaturationMutagenesis: Keep Sequence")))
                          )
                 )
           )),
@@ -178,7 +180,7 @@ server <- function(input, output, session) {
       updateTabsetPanel(session, "domestication", "Preview and Selection")
       rv$domestication_mutations<-list()
       for (rs in rv$restriction_sites) {
-        mutations<-domesticate(input$domestication_input_sequence, rs, cuf = input$domestication_cuf)
+        mutations<-domesticate(rv$domestication_input_sequence, rs, cuf = input$domestication_cuf)
         if(length(mutations)>0){
           rv$domestication_mutations<-c(rv$domestication_mutations, mutations)
         }
@@ -196,26 +198,25 @@ server <- function(input, output, session) {
   #Does not work correclty, because UIOutput is triggered by clicking on the tabset. Therefore the TextAreaInput is not exisiting at this step. 
   observeEvent(input$domestication_result_spm, {
     updateTabsetPanel(session, "MainNav", selected = "Point-Mutagenesis")
-    updateTabsetPanel(session, "spm", selected = "Sequence Input")
-    updateTabsetPanel(session, "spm", selected = "Configuration")
     #generic_sequence_input("spm")
     updateTextAreaInput(session, "spm_input_sequence", value = rv$domestication_primers@oldsequence)
     rv$spm_mutations<-rv$domestication_mutations
-    updateTabsetPanel(session, "spm", selected = "Sequence Input")
     updateTabsetPanel(session, "spm", selected = "Configuration")
-
+    rv[["spm_input_sequence"]]<-rv$domestication_primers@oldsequence
   })
   observeEvent(input$domestication_result_spm_sequence, {
     generic_sequence_input("spm")
     updateTextAreaInput(session, "spm_input_sequence", value = as.character(rv$domestication_primers@newsequence))
     updateTabsetPanel(session, "MainNav", selected = "Point-Mutagenesis")
-    updateTabsetPanel(session, "spm", selected = "Sequence Input")
+    updateTabsetPanel(session, "spm", selected = "Configuration")
+    rv[["spm_input_sequence"]]<-rv$domestication_primers@newsequence
   })
   observeEvent(input$domestication_result_msd_sequence, {
     generic_sequence_input("msd")
     updateTextAreaInput(session, "msd_input_sequence", value = rv$domestication_primers@newsequence)
     updateTabsetPanel(session, "MainNav", selected = "Saturation-Mutagenesis")
     updateTabsetPanel(session, "msd", selected = "Configuration")
+    rv[["msd_input_sequence"]]<-rv$domestication_primers@newsequence
   })
   ####################################
   ######Single Point Mutagenesis#######

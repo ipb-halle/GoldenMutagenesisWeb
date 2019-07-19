@@ -32,10 +32,13 @@ generic_mut_conf<-function(prefix){output[[paste(prefix, "mut_conf", sep="_")]]<
            wellPanel(style = "background: #cce6ff",
                      h2("Primer Configuration"),
                      p("You can select a preconfigured template to set those settings in accordiance to your Golden Gate Mutagenesis."),
-                     selectInput(paste(prefix,"template", sep="_"), "Pre-existing configuration:", c("pAGM9121"="1", 
+                     fluidRow(column(7,selectInput(paste(prefix,"template", sep="_"), "Pre-existing configuration:", c("pAGM9121"="1", 
                                                                                                      "pAGM22082 Red" = "2",
                                                                                                      "pICH86988" = "3",
-                                                                                                     "custom" = "c")),
+                                                                                                     "custom" = "c"))),
+                     column(3, style = "margin-top: 25px;",
+                            actionButton(paste(prefix, "link", sep="_"), label = "View on addgene", style=" background-image: url(../img/addgene.jpg); background-position: left; background-size: contain; background-repeat: no-repeat; padding-left: 40px;"))),
+                     
                      selectInput(paste(prefix,"level",sep="_"), "Golden Gate Level:", c("Level0" = "lv0", "Level2" = "lv2")),
                      selectInput(paste(prefix,"re_enzyme_selection", sep="_"), "Restriction Enzyme:", c("BbsI"="bbsi",
                                                                                                         "BsaI"="bsai", 
@@ -101,11 +104,11 @@ generic_preview<-function(prefix){
   if(!(paste(prefix, "mutations", sep="_") %in% names(rv))){
     rv[[paste(prefix, "mutations", sep="_")]]<-list()
   }
-  output[[paste(prefix, "preview", sep="_")]]<-renderUI(print_sequence(sequence = input[[paste(prefix, "input_sequence", sep="_")]], mutations = rv[[paste(prefix, "mutations", sep="_")]]))
+  output[[paste(prefix, "preview", sep="_")]]<-renderUI(print_sequence(sequence = rv[[paste(prefix, "input_sequence", sep="_")]], mutations = rv[[paste(prefix, "mutations", sep="_")]]))
 }
 generic_simple_selection<-function(prefix){
   output[[paste(prefix, "codonnum", sep="_")]]<-renderUI(
-    selectInput(paste(prefix,"codonpos", sep="_"), "Aminoacid Position", choices = 1:length(translate(s2c(input[[paste(prefix, "input_sequence", sep="_")]]))))
+    selectInput(paste(prefix,"codonpos", sep="_"), "Aminoacid Position", choices = 1:length(translate(s2c(rv[[paste(prefix, "input_sequence", sep="_")]]))))
   )
   output[[paste(prefix, "preview_complete", sep="_")]]<-renderUI({tagList(
          wellPanel(uiOutput(paste(prefix, "preview", sep="_"))), wellPanel(style="background: #b7fff0",
@@ -123,7 +126,7 @@ generic_simple_selection<-function(prefix){
 ###########COMPLEX############
 generic_complex_selection<-function(prefix, spm=T){
   output[[paste(prefix, "codonnum", sep="_")]]<-renderUI(
-    selectInput(paste(prefix,"codonpos", sep="_"), "Aminoacid Position", choices = 1:length(translate(s2c(input[[paste(prefix, "input_sequence", sep="_")]]))))
+    selectInput(paste(prefix,"codonpos", sep="_"), "Aminoacid Position", choices = 1:length(translate(s2c(rv[[paste(prefix, "input_sequence", sep="_")]]))))
   )
   if(spm==T){
     output[[paste(prefix, "m_o", sep="_")]]<-renderUI(selectInput(paste(prefix, "m", sep="_"), "Aminoacid Replacement", choices = c("none", aaa())))
