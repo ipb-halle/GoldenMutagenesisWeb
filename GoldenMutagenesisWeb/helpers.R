@@ -2,25 +2,30 @@ sequence_check<-function(input_sequence){
   input_sequence<-str_to_upper(input_sequence)
   print(input_sequence)
   if(nchar(input_sequence)%%3!=0) {
+    shinyalert("Error", paste("The length of the sequence is no factor of 3. Please check your sequence.", "The length of the sequence was:", nchar(input_sequence),  sep=" "), "error", closeOnEsc = F, showConfirmButton = F)
     stop(paste("The length of the sequence is no factor of 3. Please check your sequence.", "The length of the sequence was:", nchar(input_sequence),  sep=" "))
   }
   codon_seq<-splitseq(s2c(input_sequence))
   met<-which(str_detect(codon_seq, "ATG"))
   if(length(met) == 0) {
+    shinyalert("Error", "No Methionine in the provided sequence. Stopping here. Please check the provided sequence.", "error", closeOnEsc = F, showConfirmButton = F)
     stop("No Methionine in the provided sequence. Stopping here. Please check the provided sequence.")
   }
   
   if(min(met) != 1){
+    shinyalert("Warning", paste("No Methionine at first codon found! Please check the provided sequence! Took codon #", min(met), "as start.", sep=" "), closeOnEsc = F, showConfirmButton = T)
     warning(paste("No Methionine at first codon found! Please check the provided sequence! Took codon #", min(met), "as start.", sep=" "))
     codon_seq<-codon_seq[min(met):length(codon_seq)]
   } #else(codon_seq<-codon_seq[-1])
   
   stop<-which(str_detect(codon_seq, "(TAA)|(TGA)|(TAG)"))
   if(length(stop) == 0) {
+    shinyalert("Error", "No stop codon in the provided sequence. Stopping here. Please check the provided sequence!", "error", closeOnEsc = F, showConfirmButton = F)
     stop("No stop codon in the provided sequence. Stopping here. Please check the provided sequence!")
   }
   
   if(max(stop) != length(codon_seq)) {
+    shinyalert("Warning", paste("There is no stop codon at the end of the sequence. Please check the provided sequence! Took codon #", max(stop), "as end.", sep= " "), closeOnEsc = F, showConfirmButton = T)
     warning(paste("There is no stop codon at the end of the sequence. Please check the provided sequence! Took codon #", max(stop), "as end.", sep= " "))  
     codon_seq<-codon_seq[1:max(stop)]
   }# else {
@@ -61,7 +66,7 @@ print_sequence<-function(sequence, mutations) {
     } else {
       renderlist[[length(renderlist)+1]]<-HTML(paste("<td align=\"center\">", i, "<br>", aa_seq[i], "<br>", codon_seq[i], "</td>" , sep=""))
     }
-    if((i %% 20 == 0) & (i != length(aa_seq))){
+    if((i %% 25 == 0) & (i != length(aa_seq))){
       renderlist[[length(renderlist)+1]]<-HTML(paste("</tr>","<tr>",sep=""))
     }
   }

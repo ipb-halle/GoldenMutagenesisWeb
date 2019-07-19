@@ -1,11 +1,12 @@
 ####GENRIC SEQUENCE INPUT#####
 generic_sequence_input<-function(prefix, button=T , default_value="ATGGTGAGCAAGGGCGAGGAGGATAACATGGCCATCATCAAGGAGTTCATGCGCTTCAAGGTGCACATGGAGGGCTCCGTGAACGGCCACGAGTTCGAGATCGAGGGCGAGGGCGAGGGCCGCCCCTACGAGGGCACCCAGACCGCCAAGCTGAAGGTGACCAAGGGTGGCCCCCTGCCCTTCGCCTGGGACATCCTGTCCCCTCAGTTCATGTACGGCTCCAAGGCCTACGTGAAGCACCCCGCCGACATCCCCGACTACTTGAAGCTGTCCTTCCCCGAGGGCTTCAAGTGGGAGCGCGTGATGAACTTCGAGGACGGCGGCGTGGTGACCGTGACCCAGGACTCCTCCCTGCAGGACGGCGAGTTCATCTACAAGGTGAAGCTGCGCGGCACCAACTTCCCCTCCGACGGCCCCGTAATGCAGAAGAAGACGATGGGCTGGGAGGCCTCCTCCGAGCGGATGTACCCCGAGGACGGCGCCCTGAAGGGCGAGATCAAGCAGAGGCTGAAGCTGAAGGACGGCGGCCACTACGACGCTGAGGTCAAGACCACCTACAAGGCCAAGAAGCCCGTGCAGCTGCCCGGCGCCTACAACGTCAACATCAAGTTGGACATCACCTCCCACAACGAGGACTACACCATCGTGGAACAGTACGAACGCGCCGAGGGCCGCCACTCCACCGGCGGCATGGACGAGCTGTACAAGGTCGACAAGCTTGCGGCCGCACTCGAGTGA") {
   output[[paste(prefix, "input_panel", sep="_")]]<-renderUI({tagList(
+                            h4("Sequence Input"),
                             br(), 
                             p("You can paste a sequence into the textbox or upload your own fasta file."),
                             tabsetPanel(type="pills",
                                         tabPanel("Manual Input",
-                                                 textAreaInput(paste(prefix, "input_sequence", sep="_"), h4("Enter your sequence"), cols=60, rows = 10, resize = "both",
+                                                 textAreaInput(paste(prefix, "input_sequence", sep="_"),label = "Paste in your sequence", cols=60, rows = 10, resize = "both",
                                                                placeholder = default_value)
                                         ),
                                         tabPanel("FASTA Upload",

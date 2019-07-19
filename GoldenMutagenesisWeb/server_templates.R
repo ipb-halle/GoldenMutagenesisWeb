@@ -5,6 +5,7 @@ generic_process_input<-function(prefix, next_panel="Configuration", default_valu
       shinyalert("No Sequence!", "You have not entered a sequence. The default value will be used!", type = "warning")
       updateTextAreaInput(session, paste(prefix, "input_sequence", sep="_"), value = default_value)
     }
+    if(sequence_check(paste(prefix, "input_sequence", sep="_")))
     updateTabsetPanel(session, prefix, next_panel)
   })
 }

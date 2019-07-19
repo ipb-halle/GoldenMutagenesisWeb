@@ -17,7 +17,8 @@ library(RColorBrewer)
 library(graphics)
 library(plotly)
 source("helpers.R")
-
+library("shiny")
+library("DT")
 
 ## Read IPB coorporate identity
 ipbheader <- HTML(readLines("ipbheader.html"))
@@ -32,74 +33,81 @@ ui <- fluidPage(
   #titlePanel("GoldenMutagenesis Webtool Beta"),
   
   # Application title
-  titlePanel(ipbheader, windowTitle = "GoldenMutagenesis"),
-    navlistPanel(id="MainNav", widths = c(4, 7),
+  titlePanel(title=ipbheader, windowTitle = "GoldenMutagenesis"),
+    navlistPanel(id="MainNav", widths = c(2,9), fluid = F,
      tabPanel("Welcome", h4("Welcome to the GoldenMutagenesis Webtool."), h4("Please select the desired task."), p("AppVersion: 2019-07-17")), "Pre- and Postprocessing",
         tabPanel("Domestication", 
-          mainPanel(width = 15,
+          wellPanel(width = 15,
             tabsetPanel(id="domestication",type="tabs",
                         tabPanel("Sequence Input", 
-                        uiOutput("domestication_input_panel")),
+                                 wellPanel(style="background: #ffffff",uiOutput("domestication_input_panel"))),
                         tabPanel("Configuration", 
-                                 fluidRow(h1("Domestication Configuration"), 
+                                 wellPanel(style="background: #ffffff",
+                                          fluidRow(h1("Domestication Configuration"), 
                                           wellPanel(style = "background: #ddffdd", p("Please select the restriction enzymes you want to domesticate."),
                                                     fluidRow(column(6,
                                                                     fluidRow(column(3,checkboxInput("d_bsai", "BsaI",value = T)), column(3,checkboxInput("d_bbsi", "BbsI", value = T))),br(),
                                                                     fluidRow(column(10,textInput("d_cu", "Custom Recognition Site"))),br(),
                                                                     fluidRow(column(2,actionButton("d_add_cu", "Add")), column(2, actionButton("d_rm_cu", "Remove")))),
-                                                             column(6,h4("Restriction Sites"), uiOutput("d_cu_list"))
+                                                             column(6,wellPanel(h4("Selected Restriction Sites"), uiOutput("d_cu_list")))
                                                     )),
-                                 h1("Mutagenesis Configuration"),uiOutput("domestication_mut_conf")
-                   ) 
+                                          h1("Mutagenesis Configuration"),uiOutput("domestication_mut_conf")
+                                        )
+                                  )
                 ),
                 tabPanel("Preview and Selection",
-                         uiOutput("domestication_preview_complete")),
+                         wellPanel(style="background: #ffffff",uiOutput("domestication_preview_complete"))),
                 tabPanel("Results", 
-                         uiOutput("domestication_primer_complete"),br()
+                         wellPanel(style="background: #ffffff",uiOutput("domestication_primer_complete"),br())
                          #fluidRow(column(5, actionButton("domestication_result_spm", "PointMutagenesis: Keep Mutations and Sequence"))),fluidRow(column(3, actionButton("domestication_result_spm_sequence", "PointMutagenesis: Keep Sequence"))), fluidRow(column(3, actionButton("domestication_result_msd_sequence", "SaturationMutagenesis: Keep Sequence")))
                          )
                 )
           )),
      tabPanel("Quick-Quality-Control", 
+              wellPanel(width = 15,
               tabsetPanel(id="qqc", type="tabs", tabPanel("Configuration",
-                          wellPanel(style="background: #c9ffe6",  uiOutput("qqc_input_panel")),
-                          wellPanel(style="background: #75ffbf", fileInput("qqc_file", h4("Select .ab1/.abf"), multiple = FALSE, accept = c(".ab1", ".abf"), width = NULL)),
-                          wellPanel(style="background: #1df28f", h4("Mutation Positions"), fluidRow(column(3,numericInput("qqc_pos", "Sequence Position", value=1)), column(1,actionButton("qqc_add","Add")),column(1,actionButton("qqc_remove","Remove"))),
+                          wellPanel(style="background: #ffffff",  uiOutput("qqc_input_panel")),
+                          wellPanel(style="background: #ffffff", fileInput("qqc_file", h4("Select .ab1/.abf"), multiple = FALSE, accept = c(".ab1", ".abf"), width = NULL)),
+                          wellPanel(style="background: #ffffff", 
+                                    h4("Mutation Positions"), 
+                                    fluidRow(column(6, uiOutput("qqc_mutation_table"))),
+                                    #fluidRow(column(3,numericInput("qqc_pos", "Sequence Position", value=1)), column(1,actionButton("qqc_add","Add")),column(1,actionButton("qqc_remove","Remove"))),
                                     fluidRow(uiOutput("qqc_mut_display"))),
-                          fluidRow(actionButton("qqc_next", "Next"))
+                          fluidRow(column(3,actionButton("qqc_next", "Next")))
               ), tabPanel("Results", uiOutput("plots"))
+              )
               )
             ),
      "Mutagenesis",
      tabPanel("Point-Mutagenesis", 
-              mainPanel(width = 15,
+              wellPanel(width = 15,
                         tabsetPanel(id="spm",type="tabs",
                                     tabPanel("Sequence Input",
-                                      uiOutput("spm_input_panel")
+                                             wellPanel(style="background: #ffffff",uiOutput("spm_input_panel"))
                                     ),                 
-                                    tabPanel("Configuration", h1("Mutagenesis Configuration") , uiOutput("spm_mut_conf")
+                                    tabPanel("Configuration", wellPanel(style="background: #ffffff",h1("Mutagenesis Configuration") , uiOutput("spm_mut_conf"))
                                       ),
                                     tabPanel("Preview and Selection",
-                                             wellPanel(uiOutput("spm_preview_complete"))
+                                             wellPanel(style="background: #ffffff",uiOutput("spm_preview_complete"))
                                     ),
                                     tabPanel("Results",
-                                             uiOutput("spm_primer_complete")
+                                             wellPanel(style="background: #ffffff", uiOutput("spm_primer_complete"))
                                     )
                         )
               )
       ),
-     tabPanel("Saturation-Mutagenesis", mainPanel(width = 15,
+     tabPanel("Saturation-Mutagenesis", wellPanel(width = 15,
                                                   tabsetPanel(id="msd",type="tabs",
                                                               tabPanel("Sequence Input",
-                                                                       uiOutput("msd_input_panel")
+                                                                       wellPanel(style="background: #ffffff",uiOutput("msd_input_panel"))
                                                               ),
-                                                              tabPanel("Configuration", h1("Mutagenesis Configuration") , uiOutput("msd_mut_conf")
+                                                              tabPanel("Configuration", wellPanel(style="background: #ffffff",h1("Mutagenesis Configuration") , uiOutput("msd_mut_conf"))
                                                                        ),
                                                               tabPanel("Preview and Selection",
-                                                                       wellPanel(uiOutput("msd_preview_complete"))
+                                                                       wellPanel(style="background: #ffffff",uiOutput("msd_preview_complete"))
                                                                        ),
                                                               tabPanel("Results",
-                                                                       uiOutput("msd_primer_complete")
+                                                                       wellPanel(style="background: #ffffff",uiOutput("msd_primer_complete"))
                                                                        )
                                                   )
                                         )
@@ -114,6 +122,8 @@ server <- function(input, output, session) {
   rv<-reactiveValues()
   rv$restriction_sites<-c()
   rv$sp_mutations<-list()
+  rv$qqc_mutations_df<-data.frame()
+  rv$qqc_mutations<-c()
   #########APPLY CONFIG TEMPLATES############
   source("server_templates.R", local=T)$value
   source("ui_templates.R", local = T)$value
@@ -261,56 +271,88 @@ server <- function(input, output, session) {
      ######Quick Quality Control #######
      #####################################
     generic_sequence_input("qqc", button=F,default_value = "ATGGTGAGCAAGGGCGAGGAGGATAACATGGCCATCATCAAGGAGTTCATGCGCTTCAAGGTGCACATGGAGGGCTCCGTGAACGGCCACGAGTTCGAGATCGAGGGCGAGGGCGAGGGCCGCCCCTACGAGGGCACCCAGACCGCCAAGCTGAAGGTGACCAAGGGTGGCCCCCTGCCCTTCGCCTGGGACATCCTGTCCCCTCAGTTCATGTACGGCTCCAAGGCCTACGTGAAGCACCCCGCCGACATCCCCGACTACTTGAAGCTGTCCTTCCCCGAGGGCTTCAAGTGGGAGCGCGTGATGAACTTCGAGGACGGCGGCGTGGTGACCGTGACCCAGGACTCCTCCCTGCAGGACGGCGAGTTCATCTACAAGGTGAAGCTGCGCGGCACCAACTTCCCCTCCGACGGCCCCGTAATGCAGAAGAAGACGATGGGCTGGGAGGCCTCCTCCGAGCGGATGTACCCCGAGGACGGCGCCCTGAAGGGCGAGATCAAGCAGAGGCTGAAGCTGAAGGACGGCGGCCACTACGACGCTGAGGTCAAGACCACCTACAAGGCCAAGAAGCCCGTGCAGCTGCCCGGCGCCTACAACGTCAACATCAAGTTGGACATCACCTCCCACAACGAGGACTACACCATCGTGGAACAGTACGAACGCGCCGAGGGCCGCCACTCCACCGGCGGCATGGACGAGCTGTACAAGGTCGACAAGCTTGCGGCCGCACTCGAGTGA") 
-    observeEvent(input$qqc_add, {
-       rv$qqc_mutations<-union(rv$qqc_mutations, input$qqc_pos)
-       print(paste(rv$qqc_mutations, collapse = " "))
-       output$qqc_mut_display<-renderUI(paste(rv$qqc_mutations, collapse = " "))
-     })
+    observeEvent(input$qqc_input_sequence,{
+      if(nchar(input$qqc_input_sequence)>2) {
+        codonseq<-splitseq(s2c(input$qqc_input_sequence))
+        #codonseq<-sequence_check(input$qqc_sequence_input)
+        rv$qqc_mutations_df<-data.frame(Mutations=as.numeric(c()), Codon<-as.character(c()), AminoAcid<-as.character(c()), stringsAsFactors = FALSE)
+        colnames(rv$qqc_mutations_df)<-c("Mutation Position", "Codon", "Amino Acid Residue")
+        
+
+          my.insert.callback.qqc <- function(data, row) {
+            if((data[row,1]>length(codonseq))){
+              stop(paste("Pleaser enter a value between ", "1 and ", length(codonseq), ".", sep=""))
+            }
+            if(data[row,1]<1){
+              stop(paste("Pleaser enter a value between ", "1 and ", length(codonseq), ".", sep=""))
+            }
+            codon<-codonseq[data[row,1]]
+            data[row,2]<-codon
+            data[row,3]<-translate(s2c(codon))
+            rv$qqc_mutations_df <- data
+            return(data)
+          }
+          
+          my.update.callback.qqc <- function(data, olddata, row) {
+            if((data[row,1]>length(codonseq))){
+              stop(paste("Pleaser enter a value between ", "1 and ", length(codonseq), ".", sep=""))
+            }
+            if(data[row,1]<1){
+              stop(paste("Pleaser enter a value between ", "1 and ", length(codonseq), ".", sep=""))
+            }
+            data[row,2] <- codonseq[data[row,1]]
+            data[row,3] <- translate(s2c(data[row,2]))
+            rv$qqc_mutations_df <- data
+            return(data)
+          }
+          my.delete.callback.qqc <- function(data, olddata, row) {
+            data <- data[-c(row),]
+            rv$qqc_mutations_df <- data
+            return(data)
+          }
+          
+          DTedit::dtedit(input, output,
+                     name = 'qqc_mutation_table',
+                     thedata = rv$qqc_mutations_df,
+                     edit.cols = c("Mutation Position"),
+                     input.types = c("Mutation Position" ="numericInput"),
+                     title.add = "Add Mutation",
+                     label.add = "Add Mutation",
+                     callback.update = my.update.callback.qqc,
+                     callback.insert = my.insert.callback.qqc,
+                     callback.delete = my.delete.callback.qqc,
+                     datatable.options = list(searching=FALSE, buttons=c("csv")),
+                     defaultPageLength = 5)
+      }
+      else{
+        output$qqc_mutation_table<-renderUI(p("Pleaser enter a sequence first."))
+      }
+    })
+    
+    #observeEvent(input$qqc_add, {
+    #   rv$qqc_mutations<-union(rv$qqc_mutations, input$qqc_pos)
+    #   print(paste(rv$qqc_mutations, collapse = " "))
+    #   output$qqc_mut_display<-renderUI(paste(rv$qqc_mutations, collapse = " "))
+    # })
      
-     observeEvent(input$qqc_remove, {
-       rv$qqc_mutations<-setdiff(rv$qqc_mutations, input$qqc_pos)
-       print(paste(rv$qqc_mutations, collapse = " "))
-       output$qqc_mut_display<-renderUI(paste(rv$qqc_mutations, collapse = " "))
-     })
+    # observeEvent(input$qqc_remove, {
+    #   rv$qqc_mutations<-setdiff(rv$qqc_mutations, input$qqc_pos)
+    #   print(paste(rv$qqc_mutations, collapse = " "))
+    #   output$qqc_mut_display<-renderUI(paste(rv$qqc_mutations, collapse = " "))
+    # })
+    
      observeEvent(input$qqc_next,{
        rv$plots<-NULL
        rv$plotlist<-NULL
+       rv$qqc_mutations<-as.vector(rv$qqc_mutations_df[,1], mode = "numeric")
        updateTabsetPanel(session, "qqc", "Results")
        base_distribution_shiny(input$qqc_input_sequence, input$qqc_file$datapath, replacements = rv$qqc_mutations)
-        #browser()
         rv$plots<-renderUI({
           output_list<-lapply(rv[["plotlist"]], function(i){renderPlotly(rv[[i]])})
           output_list<-lapply(output_list, function(i){attr(i, 'outputArgs')<-list(height="700px"); return(i)})
           return(do.call(tagList, output_list))
           })
-        #browser()
         output$plots<-rv$plots
-        
-       # output$plotout <- renderUI({
-       #   image_output_list <- 
-       #     lapply(1:length(rv$plots),
-       #            function(i)
-       #            {
-       #              imagename = paste0("image", i)
-       #              imageOutput(imagename)
-       #            })
-       #   
-       #   do.call(tagList, image_output_list)
-       # })
-       # observe({
-       #   for (i in 1:length(rv$plots))
-       #   {
-       #     local({
-       #       my_i <- i
-       #       imagename = paste0("image", my_i)
-       #       output[[imagename]] <- 
-       #         renderImage({
-       #           list(src = rv$plots[my_i],
-       #                alt = "Image failed to render")
-       #         }, deleteFile = FALSE)
-       #     })
-       #   }
-       # })
      })
      
 
