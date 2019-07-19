@@ -61,7 +61,7 @@ ui <- fluidPage(
                          wellPanel(style="background: #ffffff",uiOutput("domestication_preview_complete"))),
                 tabPanel("Results", 
                          wellPanel(style="background: #ffffff",uiOutput("domestication_primer_complete"),br()),
-                         fluidRow(column(5, actionButton("domestication_result_spm", "PointMutagenesis: Keep Mutations and Sequence"))),fluidRow(column(3, actionButton("domestication_result_spm_sequence", "PointMutagenesis: Keep Sequence"))), fluidRow(column(3, actionButton("domestication_result_msd_sequence", "SaturationMutagenesis: Keep Sequence")))
+                         fluidRow(column(5, actionButton("domestication_result_spm", "PointMutagenesis: Keep mutations and old sequence"))),fluidRow(column(3, actionButton("domestication_result_spm_sequence", "PointMutagenesis: Keep new sequence"))), fluidRow(column(3, actionButton("domestication_result_msd_sequence", "SaturationMutagenesis: Keep new sequence")))
                          )
                 )
           )),
