@@ -37,7 +37,7 @@ generic_mut_conf<-function(prefix){output[[paste(prefix, "mut_conf", sep="_")]]<
                                                                                                      "pICH86988" = "3",
                                                                                                      "custom" = "c"))),
                      column(3, style = "margin-top: 25px;",
-                            actionButton(paste(prefix, "link", sep="_"), label = "View on addgene", style=" background-image: url(../img/addgene.jpg); background-position: left; background-size: contain; background-repeat: no-repeat; padding-left: 40px;"))),
+                            actionButton(paste(prefix, "link", sep="_"), label = "View on addgene", style=" background-image: url(./img/addgene.jpg); background-position: left; background-size: contain; background-repeat: no-repeat; padding-left: 40px;"))),
                      
                      selectInput(paste(prefix,"level",sep="_"), "Golden Gate Level:", c("Level0" = "lv0", "Level2" = "lv2")),
                      selectInput(paste(prefix,"re_enzyme_selection", sep="_"), "Restriction Enzyme:", c("BbsI"="bbsi",
@@ -152,6 +152,9 @@ generic_complex_selection<-function(prefix, spm=T){
 #####RESULTS###############
 generic_primer_output<-function(prefix){
   output[[paste(prefix, "primer_complete", sep="_")]]<-renderUI({tagList(
+  fluidRow(column(4, mydlB(paste(sep="_", prefix, "dl_report_pdf"), icon = "dna", lib="font-awesome", label = "Download Primer Report (PDF)")),
+  column(4, mydlB(paste(sep="_", prefix, "dl_protocol_pdf"),icon="flask", lib="font-awesome", label = "Download Mutagenesis Protocol (PDF)"))),
+  fluidRow(column(4, mydlB(paste(sep="_", prefix, "dl_report_txt"), icon="file-alt", lib="font-awesome", label = "Download Primer Report (TXT)"))),
   fluidRow(column(12, h2("Legend")), column(12, HTML(paste("<span style=\"background-color: #fcfc92; font-size: large;\">", "Prefix", "</span>",
                                                            "<span style=\"background-color: #fc9191; font-size: large;\">", "Restriction Enzyme", "</span>",
                                                            "<span style=\"background-color: #e2d544; font-size: large;\">", "Suffix", "</span>",

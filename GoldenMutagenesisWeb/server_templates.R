@@ -226,7 +226,10 @@ observeEvent(input[[paste(prefix, "selection_next", sep="_")]], {
         }
       }
       output[[paste(prefix, "primers", sep="_")]]<-renderUI(print_primer_fancy(rv[[paste(prefix, "primers", sep="_")]]))
-    }
+      output[[paste(sep="_", prefix, "dl_report_pdf")]]<-download_report(rv[[paste(prefix, "primers", sep="_")]])
+      output[[paste(sep="_", prefix, "dl_protocol_pdf")]]<-downloadHandler(filename = "protocol.pdf", content = function(file){file.copy("www/files/protocol.pdf", file)})
+      output[[paste(sep="_", prefix, "dl_report_txt")]]<-download_report_txt(rv[[paste(prefix, "primers", sep="_")]])
+      }
   })
 }
 

@@ -1,3 +1,10 @@
+mydlB<-function (outputId, label = "Download", icon="download", lib = "font-awesome" , class = NULL, ...) 
+{
+  aTag <- tags$a(id = outputId, class = paste("btn btn-default shiny-download-link", 
+                                              class), href = "", target = "_blank", download = NA, 
+                 icon(icon, lib=lib), label, ...)
+}
+
 sequence_check<-function(input_sequence){
   input_sequence<-str_to_upper(input_sequence)
   print(input_sequence)
@@ -103,4 +110,37 @@ print_primer_fancy<-function(primerset) {
   }
   return(renderlist)
 }
-
+download_report<-function(primerset) {
+  return(
+    downloadHandler(
+      filename="report.pdf",
+      content = function(file) {
+        tempReport<-file.path(tempdir(), "primer.Rmd")
+        tempReportsu<-file.path(tempdir(), "primer_subunit.Rmd")
+        tempReportsty<-file.path(tempdir(), "analysis.sty")
+        tempReportprimers<-file.path(tempdir(), "primers.Rdata")
+        primers<-primerset
+        save(primers, file=tempReportprimers)
+        file.copy("primer.Rmd", tempReport, overwrite = TRUE)
+        file.copy("primer_subunit.Rmd", tempReportsu, overwrite = TRUE)
+        file.copy("analysis.sty", tempReportsty, overwrite = TRUE)
+        file.copy("figures", tempdir(), recursive = T)
+        params <- list(path = tempReportprimers)
+        rmarkdown::render(tempReport, output_file = file, output_dir = tempdir(), params = params,knit_root_dir=tempdir(),envir = new.env(parent = globalenv()))
+        #knitr::knitr(input=tempReport, output=file, envir=new.env(parent = globalenv()))
+      }
+    )
+  )
+}
+download_report_txt<-function(primerset) {
+  return(
+    downloadHandler(
+      filename="report.txt",
+      content = function(file) {
+        sink(file, append = F, split = F)
+        print_primer(primerset)
+        sink()
+      }
+    )
+  )
+}

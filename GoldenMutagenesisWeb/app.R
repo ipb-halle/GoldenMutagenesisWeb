@@ -37,7 +37,7 @@ ui <- fluidPage(
   # Application title
   titlePanel(title=ipbheader, windowTitle = "GoldenMutagenesis"),
     navlistPanel(id="MainNav", widths = c(2,9), fluid = F,
-     tabPanel("Welcome", h4("Welcome to the GoldenMutagenesis Webtool."), h4("Please select the desired task."), p("AppVersion: 2019-07-17")), "Pre- and Postprocessing",
+     tabPanel("Welcome", h4("Welcome to the GoldenMutagenesis Webtool."), h4("Please select the desired task."), p("AppVersion: 2019-07-22")), "Pre- and Postprocessing",
         tabPanel("Domestication", 
           wellPanel(width = 15,
             tabsetPanel(id="domestication",type="tabs",
