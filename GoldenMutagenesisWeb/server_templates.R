@@ -14,6 +14,15 @@ generic_process_input<-function(prefix, next_panel="Configuration", default_valu
     updateTabsetPanel(session, prefix, next_panel)
   })
 }
+generic_process_fasta_input<-function(prefix,next_panel="Configuration"){
+  observeEvent(input[[paste(prefix, "sequence_fasta_next", sep="_")]],{
+    fasta<-read.fasta(file=input[[paste(prefix, "sequence_file", sep="_")]]$datapath, seqtype = "DNA", as.string = T, seqonly = T)
+    updateTextAreaInput(session, paste(prefix, "input_sequence", sep="_"), value = fasta[[1]])
+    rv[[paste(sep="_", prefix, "input_sequence")]]<-fasta[[1]]
+    sequence_check(rv[[paste(prefix, "input_sequence", sep="_")]])
+    updateTabsetPanel(session, prefix, next_panel)
+  })
+}
 
 #MUTAGENESIS TEMPLATE SELECTION
 generic_template_selection<-function(prefix) {

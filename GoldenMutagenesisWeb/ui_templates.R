@@ -5,20 +5,26 @@ generic_sequence_input<-function(prefix, button=T , default_value="ATGGTGAGCAAGG
                             br(), 
                             p("You can paste a sequence into the textbox or upload your own fasta file."),
                             tabsetPanel(type="pills",
-                                        tabPanel("Manual Input",
+                                        tabPanel("Manual Input", wellPanel(
                                                  textAreaInput(paste(prefix, "input_sequence", sep="_"),label = "Paste in your sequence", cols=60, rows = 10, resize = "both",
-                                                               placeholder = default_value)
-                                        ),
-                                        tabPanel("FASTA Upload",
+                                                               placeholder = default_value),
+                                          if(button==T){
+                                            fluidRow(column(2,actionButton(inputId = paste(prefix, "sequence_next", sep="_"), 'Next')))
+                                          }
+                                          else{
+                                             htmlOutput("")
+                                          }
+                                        )),
+                                        tabPanel("FASTA Upload", wellPanel(
                                                  p("If your fasta file has more than one sequence, only the first one will be used."),
-                                                 fileInput(paste(prefix, "sequence_file", sep=""), h4("Select .FA/.FASTA"), multiple = FALSE, accept = c(".fa", ".fasta"), width = NULL)
-                                        ),
-                                        if(button==T){
-                                          fluidRow(column(2,actionButton(inputId = paste(prefix, "sequence_next", sep="_"), 'Next')))
-                                        }
-                                        else{
-                                          htmlOutput("")
-                                        }
+                                                 fluidRow(column(5,fileInput(paste(prefix, "sequence_file", sep="_"), h4("Select .FA/.FASTA"), multiple = FALSE, accept = c(".fa", ".fasta"), width = NULL))),
+                                                 if(button==T){
+                                                   fluidRow(column(2,actionButton(inputId = paste(prefix, "sequence_fasta_next", sep="_"), 'Next')))
+                                                 }
+                                                 else{
+                                                   htmlOutput("")
+                                                 }
+                                        ))
                             )
                   )})
 }
