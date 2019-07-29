@@ -78,133 +78,194 @@ generic_re_selection_lvl0<-function(prefix) {observeEvent(input[[paste(prefix,"l
 }
 #Preview
 generic_simple_preview_logic<-function(prefix){
-  observeEvent(input[[paste(prefix, "codonpos", sep="_")]], {
-    output[[paste(prefix, "aa", sep="_")]]<-renderUI({
-      HTML(aaa(translate(s2c(sequence_check(rv[[paste(prefix, "input_sequence", sep="_")]])[as.numeric(input[[paste(prefix, "codonpos", sep="_")]])]))))}
-    )
-    if(length(rv[[paste(prefix, "mutations", sep="_")]])>0){
-      positions_aa<-c()
-      for(i in 1:length(rv[[paste(prefix, "mutations", sep="_")]])) {
-        position_aa<-as.numeric(rv[[paste(prefix, "mutations", sep="_")]][[i]][1])
-        positions_aa<-c(positions_aa, position_aa)
-      }
-      #print(positions_aa)
-      if(as.numeric(input[[paste(prefix, "codonpos", sep="_")]]) %in% positions_aa) {
-        #print("check")
-        updateCheckboxInput(session, paste(prefix, "sm", sep="_"), value=T)
-      }
-      else {
-        updateCheckboxInput(session, paste(prefix, "sm", sep="_"), value=F)
-      }
-    }
-  })
-  observeEvent(input[[paste(prefix, "sm_apply", sep="_")]], {
-    codon<-as.numeric(input[[paste(prefix, "codonpos", sep="_")]])
-    positions_aa<-c()
-    selected<-input[[paste(prefix, "sm", sep="_")]]
-    if(length(rv[[paste(prefix, "mutations", sep="_")]])>0){
-      for(i in 1:length(rv[[paste(prefix, "mutations", sep="_")]])) {
-        position_aa<-as.numeric(rv[[paste(prefix, "mutations", sep="_")]][[i]][1])
-        positions_aa<-c(positions_aa, position_aa)
-      }
-      if(selected==F){
-        ind<-which(positions_aa==codon)
-        if(length(ind) > 0) { 
-          rv[[paste(prefix, "mutations", sep="_")]]<-list.remove(rv[[paste(prefix, "mutations", sep="_")]], ind)
-        }
-      }
-      if(selected==T){
-        ind<-which(positions_aa==codon)
-        if(length(ind) == 0) {
-          rv[[paste(prefix, "mutations", sep="_")]]<-list.append(rv[[paste(prefix, "mutations", sep="_")]], c(codon, translate(s2c(rv[[paste(prefix, "input_sequence", sep="_")]]))[codon]))
-        }
-      }
-    } else {
-      if(selected==T){
-        rv[[paste(prefix, "mutations", sep="_")]]<-list.append(rv[[paste(prefix, "mutations", sep="_")]], c(codon, translate(s2c(rv[[paste(prefix, "input_sequence", sep="_")]]))[codon]))
-      }
-    }
-    output[[paste(prefix, "preview", sep="_")]]<-renderUI(print_sequence(sequence = rv[[paste(prefix, "input_sequence", sep="_")]], mutations = rv[[paste(prefix, "mutations", sep="_")]]))
-  })
-}
-generic_complex_preview_logic<-function(prefix, spm=T){
-  observeEvent(input[[paste(prefix, "codonpos", sep="_")]], {
-    output[[paste(prefix, "aa", sep="_")]]<-renderUI({
-        HTML(aaa(translate(s2c(sequence_check(rv[[paste(prefix, "input_sequence", sep="_")]])[as.numeric(input[[paste(prefix, "codonpos", sep="_")]])]))))}
-    )
-    if(length(rv[[paste(prefix, "mutations", sep="_")]])>0){
-      positions_aa<-c()
-      names_aa<-c()
-      for(i in 1:length(rv[[paste(prefix, "mutations", sep="_")]])) {
-        position_aa<-as.numeric(rv[[paste(prefix, "mutations", sep="_")]][[i]][1])
-        name_aa<-rv[[paste(prefix, "mutations", sep="_")]][[i]][2]
-        positions_aa<-c(positions_aa, position_aa)
-        names_aa<-c(names_aa, name_aa)
-      }
-      #print(positions_aa)
-      if(as.numeric(input[[paste(prefix, "codonpos", sep="_")]]) %in% positions_aa) {
-        #print("check")
-        ind<-which(positions_aa == as.numeric(input[[paste(prefix, "codonpos", sep="_")]]))
-        if(spm==T){
-          updateSelectInput(session, inputId = paste(prefix,"m", sep="_"), selected = aaa(names_aa[ind]))
-        }
-        else{
-          updateSelectInput(session, inputId = paste(prefix,"m", sep="_"), selected = names_aa[ind])
-        }
-      }
-      else{
-        updateSelectInput(session, inputId = paste(prefix, "m", sep="_"), selected = "none")
-      }
-    }
-  })
-  
-  observeEvent(input[[paste(prefix, "m_apply", sep="_")]], {
-    #browser()
-    codon<-as.numeric(input[[paste(prefix, "codonpos", sep = "_")]])
-    positions_aa<-c()
-    selected<-input[[paste(prefix, "m", sep="_")]]
-    if(length(rv[[paste(prefix, "mutations", sep="_")]])>0){
-      positions_aa<-c()
-      names_aa<-c()
-      for(i in 1:length(rv[[paste(prefix, "mutations", sep="_")]])) {
-        position_aa<-as.numeric(rv[[paste(prefix, "mutations", sep="_")]][[i]][1])
-        name_aa<-rv[[paste(prefix, "mutations", sep="_")]][[i]][2]
-        positions_aa<-c(positions_aa, position_aa)
-        names_aa<-c(names_aa, name_aa)
-      }
-    }
-    if(selected=="none"){
-      ind<-which(positions_aa==codon)
-      if(length(ind) > 0) { 
-        rv[[paste(prefix, "mutations", sep="_")]]<-list.remove(rv[[paste(prefix, "mutations", sep="_")]], ind)
-      }
-    }
-    if(selected!="none"){
-      ind<-which(positions_aa==codon)
-      if(length(ind) == 0) {
-        if(spm==T){
-          rv[[paste(prefix, "mutations", sep="_")]]<-list.append(rv[[paste(prefix, "mutations", sep="_")]], c(codon, a(selected)))
-        }
-        else {
-          rv[[paste(prefix, "mutations", sep="_")]]<-list.append(rv[[paste(prefix, "mutations", sep="_")]], c(codon, selected))
-        }
-      }
-      else{
-        rv[[paste(prefix, "mutations", sep="_")]]<-list.remove(rv[[paste(prefix, "mutations", sep="_")]], ind)
-        if(spm==T){
-          rv[[paste(prefix, "mutations", sep="_")]]<-list.append(rv[[paste(prefix, "mutations", sep="_")]], c(codon, a(selected)))
-        } else{
-          rv[[paste(prefix, "mutations", sep="_")]]<-list.append(rv[[paste(prefix, "mutations", sep="_")]], c(codon, selected))
-        }
-      }
-    }
-    output[[paste(prefix, "preview", sep="_")]]<-renderUI(print_sequence(sequence = rv[[paste(prefix, "input_sequence", sep="_")]], mutations = rv[[paste(prefix, "mutations", sep="_")]]))
-  })
+  codonseq<-splitseq(s2c(rv[[paste(prefix, "input_sequence", sep="_")]]))
+  if(length(rv[[paste(sep="_", prefix, "mutations")]])>0) {
+    pos<-sapply(rv[[paste(prefix, "mutations", sep="_")]], function(x) as.numeric(x[1]))
+    codon<-sapply(rv[[paste(prefix, "mutations", sep="_")]], function(x) as.character(x[2]))
+    rv[[paste(sep="_", prefix, "mutations_df")]]<-data.frame(Mutations=pos, Codon=codonseq[pos], AminoAcid=codon, stringsAsFactors = FALSE)       
+  } else {
+    rv[[paste(sep="_", prefix, "mutations_df")]]<-data.frame(Mutations=as.numeric(c()), Codon=as.character(c()), AminoAcid=as.character(c()), stringsAsFactors = FALSE)
   }
+  colnames(rv[[paste(sep="_", prefix, "mutations_df")]])<-c("Mutation Position", "Codon", "Amino Acid Residue")
+  my.insert.callback.local <- function(data, row) {
+    if((data[row,1]>length(codonseq))){
+      stop(paste("Pleaser enter a value between ", "1 and ", length(codonseq), ".", sep=""))
+    }
+    if(data[row,1]<1){
+      stop(paste("Pleaser enter a value between ", "1 and ", length(codonseq), ".", sep=""))
+    }
+    codon<-codonseq[data[row,1]]
+    data[row,2]<-as.character(codon)
+    data[row,3]<-translate(s2c(codon))
+    rv[[paste(sep="_", prefix, "mutations_df")]] <- data
+    rv[[paste(prefix, "mutations", sep="_")]]<-alply(rv[[paste(sep="_", prefix, "mutations_df")]], 1, function(x) as.character(c(x[1], x[3])))
+    output[[paste(prefix, "preview", sep="_")]]<-renderUI(print_sequence(sequence = rv[[paste(prefix, "input_sequence", sep="_")]], mutations = rv[[paste(prefix, "mutations", sep="_")]]))
+    return(data)
+  }
+  
+  my.update.callback.local <- function(data, olddata, row) {
+    if((data[row,1]>length(codonseq))){
+      stop(paste("Pleaser enter a value between ", "1 and ", length(codonseq), ".", sep=""))
+    }
+    if(data[row,1]<1){
+      stop(paste("Pleaser enter a value between ", "1 and ", length(codonseq), ".", sep=""))
+    }
+    data[row,2] <- codonseq[data[row,1]]
+    data[row,3] <- translate(s2c(data[row,2]))
+    rv[[paste(sep="_", prefix, "mutations_df")]] <- data
+    rv[[paste(prefix, "mutations", sep="_")]]<-alply(rv[[paste(sep="_", prefix, "mutations_df")]], 1, function(x) as.character(c(x[1], x[3])))
+    output[[paste(prefix, "preview", sep="_")]]<-renderUI(print_sequence(sequence = rv[[paste(prefix, "input_sequence", sep="_")]], mutations = rv[[paste(prefix, "mutations", sep="_")]]))
+    return(data)
+  }
+  my.delete.callback.local <- function(data, olddata, row) {
+    data <- data[-c(row),]
+    rv[[paste(sep="_", prefix, "mutations_df")]] <- data
+    rv[[paste(prefix, "mutations", sep="_")]]<-alply(rv[[paste(sep="_", prefix, "mutations_df")]], 1, function(x) as.character(c(x[1], x[3])))
+    output[[paste(prefix, "preview", sep="_")]]<-renderUI(print_sequence(sequence = rv[[paste(prefix, "input_sequence", sep="_")]], mutations = rv[[paste(prefix, "mutations", sep="_")]]))
+    return(data)
+  }
+  DTedit::dtedit(input, output,
+                 name = paste(prefix, "mutation_table", sep="_"),
+                 thedata = rv[[paste(sep="_", prefix, "mutations_df")]],
+                 edit.cols = c("Mutation Position"),
+                 input.types = c("Mutation Position" ="numericInput"),
+                 title.add = "Add Mutation",
+                 label.add = "Add Mutation",
+                 callback.update = my.update.callback.local,
+                 callback.insert = my.insert.callback.local,
+                 callback.delete = my.delete.callback.local,
+                 datatable.options = list(searching=FALSE, buttons=c("csv")),
+                 show.copy = F,
+                 defaultPageLength = 5)
+}
+
+generic_complex_preview_logic<-function(prefix, spm=T){
+  codonseq<-splitseq(s2c(rv[[paste(prefix, "input_sequence", sep="_")]]))
+  if(length(rv[[paste(sep="_", prefix, "mutations")]])>0) {
+    pos<-sapply(rv[[paste(prefix, "mutations", sep="_")]], function(x) as.numeric(x[1]))
+    codon<-sapply(rv[[paste(prefix, "mutations", sep="_")]], function(x) as.character(x[2]))
+    if(spm==T){
+      rv[[paste(sep="_", prefix, "mutations_df")]]<-data.frame(Mutations=pos, Codon=codonseq[pos], AminoAcid=aaa(codon), Replacement=factor(aaa(codon), levels=aaa()), stringsAsFactors = FALSE) 
+    } else{
+      rv[[paste(sep="_", prefix, "mutations_df")]]<-data.frame(Mutations=pos, Codon=codonseq[pos], AminoAcid=aaa(codon), Replacement=factor(aaa(codon), levels=c("NNN", "NNK", "NNS", "NDT", "DBK", "NRT")), stringsAsFactors = FALSE) 
+    }
+  } else {
+    if(spm==T){
+      rv[[paste(sep="_", prefix, "mutations_df")]]<-data.frame(Mutations=as.numeric(c()), Codon=as.character(c()), AminoAcid=as.character(c()),Replacement=factor(as.character(c()), levels=aaa()), stringsAsFactors = FALSE)
+    } else {
+      rv[[paste(sep="_", prefix, "mutations_df")]]<-data.frame(Mutations=as.numeric(c()), Codon=as.character(c()), AminoAcid=as.character(c()),Replacement=factor(as.character(c()), levels=c("NNN", "NNK", "NNS", "NDT", "DBK", "NRT")), stringsAsFactors = FALSE)
+    }
+  }
+  colnames(rv[[paste(sep="_", prefix, "mutations_df")]])<-c("Mutation Position", "Codon", "Amino Acid Residue", "Mutation")
+  my.insert.callback.local <- function(data, row) {
+    if((data[row,1]>length(codonseq))){
+      stop(paste("Pleaser enter a value between ", "1 and ", length(codonseq), ".", sep=""))
+    }
+    if(data[row,1]<1){
+      stop(paste("Pleaser enter a value between ", "1 and ", length(codonseq), ".", sep=""))
+    }
+    codon<-codonseq[data[row,1]]
+    data[row,2]<-as.character(codon)
+    data[row,3]<-aaa(translate(s2c(codon)))
+    rv[[paste(sep="_", prefix, "mutations_df")]] <- data
+    rv[[paste(prefix, "mutations", sep="_")]]<-alply(rv[[paste(sep="_", prefix, "mutations_df")]], 1, function(x) as.character(c(x[1], a(as.character(x[,4])))))
+    output[[paste(prefix, "preview", sep="_")]]<-renderUI(print_sequence(sequence = rv[[paste(prefix, "input_sequence", sep="_")]], mutations = rv[[paste(prefix, "mutations", sep="_")]]))
+    return(data)
+  }
+  
+  my.update.callback.local <- function(data, olddata, row) {
+    if((data[row,1]>length(codonseq))){
+      stop(paste("Pleaser enter a value between ", "1 and ", length(codonseq), ".", sep=""))
+    }
+    if(data[row,1]<1){
+      stop(paste("Pleaser enter a value between ", "1 and ", length(codonseq), ".", sep=""))
+    }
+    data[row,2] <- codonseq[data[row,1]]
+    data[row,3] <- aaa(translate(s2c(data[row,2])))
+    rv[[paste(sep="_", prefix, "mutations_df")]] <- data
+    rv[[paste(prefix, "mutations", sep="_")]]<-alply(rv[[paste(sep="_", prefix, "mutations_df")]], 1, function(x) as.character(c(x[1], a(as.character(x[,4])))))
+    output[[paste(prefix, "preview", sep="_")]]<-renderUI(print_sequence(sequence = rv[[paste(prefix, "input_sequence", sep="_")]], mutations = rv[[paste(prefix, "mutations", sep="_")]]))
+    return(data)
+  }
+  my.delete.callback.local <- function(data, olddata, row) {
+    data <- data[-c(row),]
+    rv[[paste(sep="_", prefix, "mutations_df")]] <- data
+    rv[[paste(prefix, "mutations", sep="_")]]<-alply(rv[[paste(sep="_", prefix, "mutations_df")]], 1, function(x) as.character(c(x[1], a(as.character(x[,4])))))
+    output[[paste(prefix, "preview", sep="_")]]<-renderUI(print_sequence(sequence = rv[[paste(prefix, "input_sequence", sep="_")]], mutations = rv[[paste(prefix, "mutations", sep="_")]]))
+    return(data)
+  }
+  my.insert.callback.msd <- function(data, row) {
+    if((data[row,1]>length(codonseq))){
+      stop(paste("Pleaser enter a value between ", "1 and ", length(codonseq), ".", sep=""))
+    }
+    if(data[row,1]<1){
+      stop(paste("Pleaser enter a value between ", "1 and ", length(codonseq), ".", sep=""))
+    }
+    codon<-codonseq[data[row,1]]
+    data[row,2]<-as.character(codon)
+    data[row,3]<-aaa(translate(s2c(codon)))
+    rv[[paste(sep="_", prefix, "mutations_df")]] <- data
+    rv[[paste(prefix, "mutations", sep="_")]]<-alply(rv[[paste(sep="_", prefix, "mutations_df")]], 1, function(x) as.character(c(x[1], as.character(x[,4]))))
+    output[[paste(prefix, "preview", sep="_")]]<-renderUI(print_sequence(sequence = rv[[paste(prefix, "input_sequence", sep="_")]], mutations = rv[[paste(prefix, "mutations", sep="_")]]))
+    return(data)
+  }
+  
+  my.update.callback.msd <- function(data, olddata, row) {
+    if((data[row,1]>length(codonseq))){
+      stop(paste("Pleaser enter a value between ", "1 and ", length(codonseq), ".", sep=""))
+    }
+    if(data[row,1]<1){
+      stop(paste("Pleaser enter a value between ", "1 and ", length(codonseq), ".", sep=""))
+    }
+    data[row,2] <- codonseq[data[row,1]]
+    data[row,3] <- aaa(translate(s2c(data[row,2])))
+    rv[[paste(sep="_", prefix, "mutations_df")]] <- data
+    rv[[paste(prefix, "mutations", sep="_")]]<-alply(rv[[paste(sep="_", prefix, "mutations_df")]], 1, function(x) as.character(c(x[1], as.character(x[,4]))))
+    output[[paste(prefix, "preview", sep="_")]]<-renderUI(print_sequence(sequence = rv[[paste(prefix, "input_sequence", sep="_")]], mutations = rv[[paste(prefix, "mutations", sep="_")]]))
+    return(data)
+  }
+  my.delete.callback.msd <- function(data, olddata, row) {
+    data <- data[-c(row),]
+    rv[[paste(sep="_", prefix, "mutations_df")]] <- data
+    rv[[paste(prefix, "mutations", sep="_")]]<-alply(rv[[paste(sep="_", prefix, "mutations_df")]], 1, function(x) as.character(c(x[1], as.character(x[,4]))))
+    output[[paste(prefix, "preview", sep="_")]]<-renderUI(print_sequence(sequence = rv[[paste(prefix, "input_sequence", sep="_")]], mutations = rv[[paste(prefix, "mutations", sep="_")]]))
+    return(data)
+  }
+  if(spm==T){
+    DTedit::dtedit(input, output,
+                     name = paste(prefix, "mutation_table", sep="_"),
+                     thedata = rv[[paste(sep="_", prefix, "mutations_df")]],
+                     edit.cols = c("Mutation Position", "Mutation"),
+                     input.types = c("Mutation Position" ="numericInput", "Mutation"="selectInput"),
+                     title.add = "Add Mutation",
+                     label.add = "Add Mutation",
+                     callback.update = my.update.callback.local,
+                     callback.insert = my.insert.callback.local,
+                     callback.delete = my.delete.callback.local,
+                     datatable.options = list(searching=FALSE, buttons=c("csv")),
+                     show.copy = F,
+                     defaultPageLength = 5)
+  } else {
+    DTedit::dtedit(input, output,
+                   name = paste(prefix, "mutation_table", sep="_"),
+                   thedata = rv[[paste(sep="_", prefix, "mutations_df")]],
+                   edit.cols = c("Mutation Position", "Mutation"),
+                   input.types = c("Mutation Position" ="numericInput", "Mutation"="selectInput"),
+                   title.add = "Add Mutation",
+                   label.add = "Add Mutation",
+                   callback.update = my.update.callback.msd,
+                   callback.insert = my.insert.callback.msd,
+                   callback.delete = my.delete.callback.msd,
+                   datatable.options = list(searching=FALSE, buttons=c("csv")),
+                   show.copy = F,
+                   defaultPageLength = 5)
+  }
+}
+
 #Results
 generic_results<-function(prefix, panel="Results", spm=T){
 observeEvent(input[[paste(prefix, "selection_next", sep="_")]], {
-    if(length(rv[[paste(prefix, "mutations", sep="_")]])==0) {
+   if(length(rv[[paste(prefix, "mutations", sep="_")]])==0) {
       shinyalert("No Mutations!", "No selected mutations, nothing to do!", type = "info")
     }
     else{

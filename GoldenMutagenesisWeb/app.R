@@ -20,6 +20,7 @@ source("helpers.R")
 library("shiny")
 library("DT")
 library(shinyjs)
+library("plyr")
 
 ## Read IPB coorporate identity
 ipbheader <- HTML(readLines("ipbheader.html"))
@@ -185,12 +186,13 @@ server <- function(input, output, session) {
           rv$domestication_mutations<-c(rv$domestication_mutations, mutations)
         }
       }
+      generic_simple_preview_logic("domestication")
       generic_preview("domestication")  
     }
   })
   ############PREVIEW AND SELECTION#############
   generic_simple_selection("domestication")
-  generic_simple_preview_logic("domestication")
+  #generic_simple_preview_logic("domestication")
   
   ###########RESULTS################
   generic_results("domestication")
@@ -232,12 +234,12 @@ server <- function(input, output, session) {
   levelsettings("spm")
     observeEvent(input$spm_configuration_next, {
         updateTabsetPanel(session, "spm", "Preview and Selection")
-        #output$spm_preview<-renderUI(print_sequence(sequence = input$sp_seq, mutations = rv$sp_mutations))
+        #output$spm_preview<-renderUI(print_sequence(sequence = input$sp_seq, mutations = rv$sp_mutations))+
+      generic_complex_preview_logic("spm")
       generic_preview("spm")
     })
     ############PREVIEW AND SELECTION#############
     generic_complex_selection("spm")
-    generic_complex_preview_logic("spm")
     
     ###########RESULTS################
     generic_results("spm")
@@ -258,11 +260,12 @@ server <- function(input, output, session) {
     observeEvent(input$msd_configuration_next, {
       updateTabsetPanel(session, "msd", "Preview and Selection")
       #output$spm_preview<-renderUI(print_sequence(sequence = input$sp_seq, mutations = rv$sp_mutations))
+      generic_complex_preview_logic("msd", spm=F)
+    
       generic_preview("msd")
     })
     ############PREVIEW AND SELECTION#############
     generic_complex_selection("msd", spm=F)
-    generic_complex_preview_logic("msd", spm=F)
     
     ###########RESULTS################
     generic_results("msd", spm=F)

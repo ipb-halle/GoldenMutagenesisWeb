@@ -111,39 +111,22 @@ generic_simple_selection<-function(prefix){
     selectInput(paste(prefix,"codonpos", sep="_"), "Aminoacid Position", choices = 1:length(translate(s2c(rv[[paste(prefix, "input_sequence", sep="_")]]))))
   )
   output[[paste(prefix, "preview_complete", sep="_")]]<-renderUI({tagList(
-         wellPanel(uiOutput(paste(prefix, "preview", sep="_"))), wellPanel(style="background: #b7fff0",
+         wellPanel(uiOutput(paste(prefix, "preview", sep="_"))), wellPanel(style="background: #ffffff",
                                                    fluidRow(
-                                                     column(2,uiOutput(paste(prefix,"codonnum",sep="_")))
-                                                   ),
-                                                   fluidRow(
-                                                     column(2,p("Aminoacid:"),uiOutput(paste(prefix,"aa", sep="_"))),
-                                                     column(2,checkboxInput(paste(prefix, "sm", sep="_"), label = "Silent Mutation?",value = F)),
-                                                     column(2, actionButton(paste(prefix,"sm_apply",sep="_"), "Apply"))
+                                                     #column(2,uiOutput(paste(prefix,"codonnum",sep="_")))
+                                                     column(5, uiOutput(paste(prefix, "mutation_table", sep="_")))
                                                    )
+
          ),                         
          fluidRow(column(2,actionButton(inputId = paste(prefix, "selection_next", sep="_"), 'Next'), br()))
   )})}
 ###########COMPLEX############
 generic_complex_selection<-function(prefix, spm=T){
-  output[[paste(prefix, "codonnum", sep="_")]]<-renderUI(
-    selectInput(paste(prefix,"codonpos", sep="_"), "Aminoacid Position", choices = 1:length(translate(s2c(rv[[paste(prefix, "input_sequence", sep="_")]]))))
-  )
-  if(spm==T){
-    output[[paste(prefix, "m_o", sep="_")]]<-renderUI(selectInput(paste(prefix, "m", sep="_"), "Aminoacid Replacement", choices = c("none", aaa())))
-  } else {
-    output[[paste(prefix, "m_o", sep="_")]]<-renderUI(selectInput(paste(prefix, "m", sep="_"), "Saturation ", choices = c("none", "NNN", "NNK", "NNS", "NDT", "DBK", "NRT")))
-  }
   output[[paste(prefix, "preview_complete", sep="_")]]<-renderUI({tagList(
-    wellPanel(uiOutput(paste(prefix, "preview", sep="_"))),wellPanel(style="background: #b7fff0",
+    wellPanel(uiOutput(paste(prefix, "preview", sep="_"))),wellPanel(style="background: #ffffff",
               fluidRow(
-                column(2,uiOutput(paste(prefix,"codonnum", sep="_"))),
-                column(2,uiOutput(paste(prefix, "m_o", sep="_")))
-              ),
-              fluidRow(
-                column(2,p("Aminoacid:"),uiOutput(paste(prefix, "aa", sep="_"))),
-                column(2, actionButton(paste(prefix,"m_apply", sep="_"), "Apply"))
-              )
-    ),
+                column(5,uiOutput(paste(prefix, "mutation_table", sep="_")))
+              )),
     fluidRow(column(2,actionButton(inputId = paste(prefix,"selection_next",sep="_"), 'Next'), br()))
   )})
 }
@@ -154,6 +137,7 @@ generic_primer_output<-function(prefix){
   output[[paste(prefix, "primer_complete", sep="_")]]<-renderUI({tagList(
   fluidRow(column(4, mydlB(paste(sep="_", prefix, "dl_report_pdf"), icon = "dna", lib="font-awesome", label = "Download Primer Report (PDF)")),
   column(4, mydlB(paste(sep="_", prefix, "dl_protocol_pdf"),icon="flask", lib="font-awesome", label = "Download Mutagenesis Protocol (PDF)"))),
+  fluidRow(column(5, p("The generation of the PDF report takes a few seconds."))),
   fluidRow(column(4, mydlB(paste(sep="_", prefix, "dl_report_txt"), icon="file-alt", lib="font-awesome", label = "Download Primer Report (TXT)"))),
   fluidRow(column(12, h2("Legend")), column(12, HTML(paste("<span style=\"background-color: #fcfc92; font-size: large;\">", "Prefix", "</span>",
                                                            "<span style=\"background-color: #fc9191; font-size: large;\">", "Restriction Enzyme", "</span>",
