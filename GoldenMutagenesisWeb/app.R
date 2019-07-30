@@ -41,7 +41,7 @@ ui <- fluidPage(
      tabPanel("Welcome", h3("Welcome to the GoldenMutagenesis Webtool."),br(), h4("Please cite our publication"),
               h5("Golden Mutagenesis: An efficient multi-site-saturation mutagenesis approach by Golden Gate cloning with automated primer design"),
               h6("Pascal Püllmann, Chris Ulpinnis, Sylvestre Marillonnet, Ramona Gruetzner, Steffen Neumann & Martin J. Weissenborn "),
-              br(),shiny::a("Publication as enhanced PDF on Springer Nature",href="https://rdcu.be/bMfta"),br(),br() ,p("AppVersion: 2019-07-29")), "Pre- and Postprocessing",
+              br(),shiny::a("Publication as enhanced PDF on Springer Nature",href="https://rdcu.be/bMfta"),br(),br() ,p("AppVersion: 2019-07-30")), "Pre- and Postprocessing",
         tabPanel("Domestication", 
           wellPanel(width = 15,
             tabsetPanel(id="domestication",type="tabs",

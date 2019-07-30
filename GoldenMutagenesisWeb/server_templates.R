@@ -352,6 +352,9 @@ base_distribution_shiny<-function(input_sequence, ab1file, replacements, trace_c
   }
   tracematrix_subject<-sangerseqR::traceMatrix(sanger_seq)[sangerseqR::peakPosMatrix(sanger_seq)[subject_pos],]
   sums_row<-which(rowSums(tracematrix_subject)>=trace_cutoff)
+  if(length(sums_row)==0){
+    shinyalert(paste("Could not find mutations for any positions.", "The tracematrix was empty because of the internal threshold. This means the basecall quality in the sequencing file ist too low.", sep="\n"), type = "warning")
+  }
   tracematrix_subject<-as.data.frame(tracematrix_subject[sums_row,])
   if(length(setdiff(replacements, unique(ceiling(pattern_pos/3))))){
     shinyalert(paste("Could not find mutations for position(s):",paste(sapply(setdiff(replacements, unique(ceiling(pattern_pos/3))), function(i){paste(aaa(translate(s2c(input_sequence))[i]), i, sep=" ")}), collapse = "\n"), sep="\n"), type = "warning")
