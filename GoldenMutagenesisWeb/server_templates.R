@@ -317,6 +317,7 @@ base_distribution_shiny<-function(input_sequence, ab1file, replacements, trace_c
     reverse=T
     global_Align<-global_Align_rev
     print("Reverse sequence detected!")
+    shinyalert(title="The alignment is in reverse direction.", type = "info", showCancelButton = F, showConfirmButton = T)
   }
   mismatches<-Biostrings::mismatchTable(global_Align)
   replacements_basepairs<-as.vector(sapply(replacements, FUN<-function(x){return(c(x*3-2, x*3-1, x*3))}))
@@ -379,7 +380,7 @@ base_distribution_shiny<-function(input_sequence, ab1file, replacements, trace_c
       #png(file)
       #pie(slices,labels = lbls, col=brewer.pal(4,"Spectral"),main = paste("Peak intensity distribution for \nPosition", pattern_pos[element], "(Template) -", subject_pos[element], "(Sequencing)", sep=" "))
       #browser()
-      rv[[paste0(pattern_pos[element],"_",subject_pos[element])]]<-layout(plot_ly(data.frame(cbind(slices, lbls)), labels=~lbls, values=~slices, type="pie", colors=brewer.pal(4, "Spectral"), height=700),title=list(text=paste("Peak intensity distribution for",aaa(translate(s2c(input_sequence))[ceiling(pattern_pos[element]/3)]) ,as.character(ceiling(pattern_pos[element]/3)), "\nPosition", pattern_pos[element], "(Template) -", subject_pos[element], "(Sequencing)", sep=" "), font=list(size=16)), margin=list(t=120, b=100))
+      rv[[paste0(pattern_pos[element],"_",subject_pos[element])]]<-layout(plot_ly(data.frame(cbind(slices, lbls)), labels=~lbls, values=~slices, type="pie", marker = list(colors=brewer.pal(4, "Spectral")), sort=F, height=700),title=list(text=paste("Peak intensity distribution for",aaa(translate(s2c(input_sequence))[ceiling(pattern_pos[element]/3)]) ,as.character(ceiling(pattern_pos[element]/3)), "\nPosition", pattern_pos[element], "(Template) -", subject_pos[element], "(Sequencing)", sep=" "), font=list(size=16)), margin=list(t=120, b=100))
       rv[["plotlist"]]<-c(rv[["plotlist"]], paste0(pattern_pos[element],"_",subject_pos[element]))
       #dev.off()
     }
