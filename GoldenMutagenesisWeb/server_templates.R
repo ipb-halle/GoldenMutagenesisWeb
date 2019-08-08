@@ -97,11 +97,11 @@ generic_simple_preview_logic<-function(prefix){
   }
   colnames(rv[[paste(sep="_", prefix, "mutations_df")]])<-c("Mutation Position", "Codon", "Amino Acid Residue")
   my.insert.callback.local <- function(data, row) {
-    if((data[row,1]>length(codonseq))){
-      stop(paste("Pleaser enter a value between ", "1 and ", length(codonseq), ".", sep=""))
+    if((data[row,1]>length(codonseq)-1)){
+      stop(paste("Pleaser enter a value between ", "2 and ", length(codonseq)-1, ".", sep=""))
     }
-    if(data[row,1]<1){
-      stop(paste("Pleaser enter a value between ", "1 and ", length(codonseq), ".", sep=""))
+    if(data[row,1]<2){
+      stop(paste("Pleaser enter a value between ", "2 and ", length(codonseq)-1, ".", sep=""))
     }
     codon<-codonseq[data[row,1]]
     data[row,2]<-as.character(codon)
@@ -113,11 +113,11 @@ generic_simple_preview_logic<-function(prefix){
   }
   
   my.update.callback.local <- function(data, olddata, row) {
-    if((data[row,1]>length(codonseq))){
-      stop(paste("Pleaser enter a value between ", "1 and ", length(codonseq), ".", sep=""))
+    if((data[row,1]>length(codonseq)-1)){
+      stop(paste("Pleaser enter a value between ", "2 and ", length(codonseq)-1, ".", sep=""))
     }
-    if(data[row,1]<1){
-      stop(paste("Pleaser enter a value between ", "1 and ", length(codonseq), ".", sep=""))
+    if(data[row,1]<2){
+      stop(paste("Pleaser enter a value between ", "2 and ", length(codonseq)-1, ".", sep=""))
     }
     data[row,2] <- codonseq[data[row,1]]
     data[row,3] <- translate(s2c(data[row,2]))
@@ -167,11 +167,11 @@ generic_complex_preview_logic<-function(prefix, spm=T){
   }
   colnames(rv[[paste(sep="_", prefix, "mutations_df")]])<-c("Mutation Position", "Codon", "Amino Acid Residue", "Mutation")
   my.insert.callback.local <- function(data, row) {
-    if((data[row,1]>length(codonseq))){
-      stop(paste("Pleaser enter a value between ", "1 and ", length(codonseq), ".", sep=""))
+    if((data[row,1]>length(codonseq)-1)){
+      stop(paste("Pleaser enter a value between ", "2 and ", length(codonseq)-1, ".", sep=""))
     }
-    if(data[row,1]<1){
-      stop(paste("Pleaser enter a value between ", "1 and ", length(codonseq), ".", sep=""))
+    if(data[row,1]<2){
+      stop(paste("Pleaser enter a value between ", "2 and ", length(codonseq)-1, ".", sep=""))
     }
     codon<-codonseq[data[row,1]]
     data[row,2]<-as.character(codon)
@@ -183,11 +183,11 @@ generic_complex_preview_logic<-function(prefix, spm=T){
   }
   
   my.update.callback.local <- function(data, olddata, row) {
-    if((data[row,1]>length(codonseq))){
-      stop(paste("Pleaser enter a value between ", "1 and ", length(codonseq), ".", sep=""))
+    if((data[row,1]>length(codonseq)-1)){
+      stop(paste("Pleaser enter a value between ", "2 and ", length(codonseq)-1, ".", sep=""))
     }
-    if(data[row,1]<1){
-      stop(paste("Pleaser enter a value between ", "1 and ", length(codonseq), ".", sep=""))
+    if(data[row,1]<2){
+      stop(paste("Pleaser enter a value between ", "2 and ", length(codonseq)-1, ".", sep=""))
     }
     data[row,2] <- codonseq[data[row,1]]
     data[row,3] <- aaa(translate(s2c(data[row,2])))
@@ -204,11 +204,11 @@ generic_complex_preview_logic<-function(prefix, spm=T){
     return(data)
   }
   my.insert.callback.msd <- function(data, row) {
-    if((data[row,1]>length(codonseq))){
-      stop(paste("Pleaser enter a value between ", "1 and ", length(codonseq), ".", sep=""))
+    if((data[row,1]>length(codonseq)-1)){
+      stop(paste("Pleaser enter a value between ", "2 and ", length(codonseq)-1, ".", sep=""))
     }
-    if(data[row,1]<1){
-      stop(paste("Pleaser enter a value between ", "1 and ", length(codonseq), ".", sep=""))
+    if(data[row,1]<2){
+      stop(paste("Pleaser enter a value between ", "2 and ", length(codonseq)-1, ".", sep=""))
     }
     codon<-codonseq[data[row,1]]
     data[row,2]<-as.character(codon)
@@ -220,11 +220,11 @@ generic_complex_preview_logic<-function(prefix, spm=T){
   }
   
   my.update.callback.msd <- function(data, olddata, row) {
-    if((data[row,1]>length(codonseq))){
-      stop(paste("Pleaser enter a value between ", "1 and ", length(codonseq), ".", sep=""))
+    if((data[row,1]>length(codonseq)-1)){
+      stop(paste("Pleaser enter a value between ", "2 and ", length(codonseq)-1, ".", sep=""))
     }
-    if(data[row,1]<1){
-      stop(paste("Pleaser enter a value between ", "1 and ", length(codonseq), ".", sep=""))
+    if(data[row,1]<2){
+      stop(paste("Pleaser enter a value between ", "2 and ", length(codonseq)-1, ".", sep=""))
     }
     data[row,2] <- codonseq[data[row,1]]
     data[row,3] <- aaa(translate(s2c(data[row,2])))
@@ -274,12 +274,14 @@ generic_complex_preview_logic<-function(prefix, spm=T){
 #Results
 generic_results<-function(prefix, panel="Results", spm=T){
 observeEvent(input[[paste(prefix, "selection_next", sep="_")]], {
-   if(length(rv[[paste(prefix, "mutations", sep="_")]])==0) {
+#browser()
+     if(length(rv[[paste(prefix, "mutations", sep="_")]])==0) {
       shinyalert("No Mutations!", "No selected mutations, nothing to do!", type = "info")
     }
     else{
       updateTabsetPanel(session, prefix, panel)
-      #print(input[[paste(prefix, "input_sequence", sep="_")]])
+      print(input[[paste(prefix, "input_sequence", sep="_")]])
+      print(rv[[paste(prefix, "mutations", sep="_")]])
       if(spm==T){
         rv[[paste(prefix, "primers", sep="_")]]<-mutate_spm(rv[[paste(prefix, "input_sequence", sep="_")]], prefix = input[[paste(prefix, "prefix", sep="_")]], restriction_enzyme = input[[paste(prefix, "re_enzyme", sep="_")]], suffix = input[[paste(prefix, "suffix", sep="_")]], vector = c(input[[paste(prefix, "v1", sep="_")]], input[[paste(prefix, "v2", sep="_")]]), replacements = rv[[paste(prefix, "mutations", sep="_")]],  binding_min_length = input[[paste(prefix, "binding_min_length", sep="_")]], target_temp = input[[paste(prefix, "temperature", sep="_")]], cuf = input[[paste(prefix, "cuf", sep="_")]], binding_max_length = input[[paste(prefix, "binding_max_length", sep="_")]], replacement_range = input[[paste(prefix, "replacement_range", sep="_")]],  fragment_min_size = input[[paste(prefix, "fragment_min_size", sep="_")]])
       } else {

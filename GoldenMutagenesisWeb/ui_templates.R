@@ -119,7 +119,6 @@ generic_simple_selection<-function(prefix){
   output[[paste(prefix, "preview_complete", sep="_")]]<-renderUI({tagList(
          wellPanel(uiOutput(paste(prefix, "preview", sep="_"))), wellPanel(style="background: #ffffff",
                                                    fluidRow(
-                                                     #column(2,uiOutput(paste(prefix,"codonnum",sep="_")))
                                                      column(5, uiOutput(paste(prefix, "mutation_table", sep="_")))
                                                    )
 
@@ -130,6 +129,9 @@ generic_simple_selection<-function(prefix){
 generic_complex_selection<-function(prefix, spm=T){
   output[[paste(prefix, "preview_complete", sep="_")]]<-renderUI({tagList(
     wellPanel(uiOutput(paste(prefix, "preview", sep="_"))),wellPanel(style="background: #ffffff",
+              fluidRow(
+                column(5, p("Please note that a valid ORF is required. Thus, you can not edit the start and stop codons."))
+              ),
               fluidRow(
                 column(5,uiOutput(paste(prefix, "mutation_table", sep="_")))
               )),
