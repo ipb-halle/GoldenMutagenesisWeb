@@ -101,7 +101,22 @@ levelsettings<-function(prefix){
                  column(6,textInput(paste(prefix,"lvl0_suffix",sep="_"), "Suffix", value = "AA")))       
       )      
     }
-  })}
+  })  
+  observeEvent(input[[paste(prefix, "level", sep="_")]], {
+  if(input[[paste(prefix, "template", sep="_")]] == "c") {
+    enable(paste(sep="_", prefix, "lvl0_re_enzyme_selection"))
+    enable(paste(sep="_", prefix, "av1"))
+    enable(paste(sep="_", prefix, "av2"))
+    enable(paste(sep="_", prefix, "lvl0_v1"))
+    enable(paste(sep="_", prefix, "lvl0_v2"))
+  } else {
+    disable(paste(sep="_", prefix, "lvl0_re_enzyme_selection"))
+    disable(paste(sep="_", prefix, "av1"))
+    disable(paste(sep="_", prefix, "av2"))
+    disable(paste(sep="_", prefix, "lvl0_v1"))
+    disable(paste(sep="_", prefix, "lvl0_v2"))
+  }})
+}
 
 ####SELECTION################
 #############################

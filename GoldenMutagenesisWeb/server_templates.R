@@ -29,6 +29,15 @@ generic_template_selection<-function(prefix) {
   observeEvent(input[[paste(prefix, "template", sep="_")]], {
     if(input[[paste(prefix, "template", sep="_")]] == "1") {
       print("pAGM9121 selected")
+      disable(paste(sep="_", prefix, "level"))
+      disable(paste(sep="_", prefix, "re_enzyme_selection"))
+      disable(paste(sep="_", prefix, "lvl0_re_enzyme_selection"))
+      disable(paste(sep="_", prefix, "lvl0_v1"))
+      disable(paste(sep="_", prefix, "lvl0_v2"))
+      disable(paste(sep="_", prefix, "v1"))
+      disable(paste(sep="_", prefix, "v2"))
+      disable(paste(sep="_", prefix, "av1"))
+      disable(paste(sep="_", prefix, "av2"))
       updateSelectInput(session, paste(sep="_", prefix, "level"), selected = "lv0")
       updateSelectInput(session, paste(sep="_", prefix, "re_enzyme_selection"), selected = "bbsi")
       updateTextInput(session, paste(sep="_", prefix, "v1"), value = "CTCA")
@@ -38,6 +47,15 @@ generic_template_selection<-function(prefix) {
     }
     if(input[[paste(prefix, "template", sep="_")]] == "2") {
       print("pAGM22082 selected")
+      disable(paste(sep="_", prefix, "level"))
+      disable(paste(sep="_", prefix, "re_enzyme_selection"))
+      disable(paste(sep="_", prefix, "lvl0_re_enzyme_selection"))
+      disable(paste(sep="_", prefix, "v1"))
+      disable(paste(sep="_", prefix, "v2"))
+      disable(paste(sep="_", prefix, "av1"))
+      disable(paste(sep="_", prefix, "av2"))
+      disable(paste(sep="_", prefix, "lvl0_v1"))
+      disable(paste(sep="_", prefix, "lvl0_v2"))
       updateSelectInput(session, paste(sep="_", prefix, "level"), selected = "lv2")
       updateSelectInput(session, paste(sep="_", prefix, "re_enzyme_selection"), selected = "bsai")
       updateTextInput(session, paste(sep="_", prefix, "v1"), value = "AATG")
@@ -47,6 +65,15 @@ generic_template_selection<-function(prefix) {
     }
     if(input[[paste(prefix, "template", sep="_")]] == "3") {
       print("pICH86988 selected")
+      disable(paste(sep="_", prefix, "level"))
+      disable(paste(sep="_", prefix, "re_enzyme_selection"))
+      disable(paste(sep="_", prefix, "lvl0_re_enzyme_selection"))
+      disable(paste(sep="_", prefix, "v1"))
+      disable(paste(sep="_", prefix, "v2"))
+      disable(paste(sep="_", prefix, "av1"))
+      disable(paste(sep="_", prefix, "av2"))
+      disable(paste(sep="_", prefix, "lvl0_v1"))
+      disable(paste(sep="_", prefix, "lvl0_v2"))
       updateSelectInput(session, paste(sep="_", prefix, "level"), selected = "lv2")
       updateSelectInput(session, paste(sep="_", prefix, "re_enzyme_selection"), selected = "bsai")
       updateTextInput(session, paste(sep="_", prefix, "v1"), value = "AATG")
@@ -57,6 +84,15 @@ generic_template_selection<-function(prefix) {
     if(input[[paste(prefix, "template", sep="_")]] == "c") {
       hide(id = paste(sep="_", prefix, "link"), anim = T)
       print("custom selected")
+      enable(paste(sep="_", prefix, "level"))
+      enable(paste(sep="_", prefix, "re_enzyme_selection"))
+      enable(paste(sep="_", prefix, "lvl0_re_enzyme_selection"))
+      enable(paste(sep="_", prefix, "v1"))
+      enable(paste(sep="_", prefix, "v2"))
+      enable(paste(sep="_", prefix, "av1"))
+      enable(paste(sep="_", prefix, "av2"))
+      enable(paste(sep="_", prefix, "lvl0_v1"))
+      enable(paste(sep="_", prefix, "lvl0_v2"))
     }
     else{
       show(id = paste(sep="_", prefix, "link"), anim = T)
@@ -70,12 +106,23 @@ generic_re_selection<-function(prefix) {observeEvent(input[[paste(prefix,"re_enz
     updateTextInput(session, paste(prefix,"re_enzyme",sep="_"), value = "GAAGAC")
     updateTextInput(session, paste(prefix, "suffix", sep="_"), value = "AA")
     updateTextInput(session, paste(prefix, "prefix", sep="_"), value = "TT")
-    
+    disable(paste(sep="_", prefix, "re_enzyme"))
+    disable(paste(sep="_", prefix, "suffix"))
+    disable(paste(sep="_", prefix, "prefix"))
+
   }
   if(input[[paste(prefix,"re_enzyme_selection",sep="_")]] == "bsai") {
     updateTextInput(session, paste(prefix,"re_enzyme",sep="_"), value = "GGTCTC")
     updateTextInput(session, paste(prefix, "suffix", sep="_"), value = "A")
     updateTextInput(session, paste(prefix, "prefix", sep="_"), value = "TT")
+    disable(paste(sep="_", prefix, "re_enzyme"))
+    disable(paste(sep="_", prefix, "suffix"))
+    disable(paste(sep="_", prefix, "prefix"))
+  }
+  if(input[[paste(prefix,"re_enzyme_selection",sep="_")]] == "c"){
+    enable(paste(sep="_", prefix, "re_enzyme"))
+    enable(paste(sep="_", prefix, "suffix"))
+    enable(paste(sep="_", prefix, "prefix"))
   }
 })
 }
