@@ -150,7 +150,7 @@ generic_simple_preview_logic<-function(prefix){
 
 generic_complex_preview_logic<-function(prefix, spm=T){
   codonseq<-splitseq(s2c(rv[[paste(prefix, "input_sequence", sep="_")]]))
-  if(length(rv[[paste(sep="_", prefix, "mutations")]])>0) {
+  if((length(rv[[paste(sep="_", prefix, "mutations")]])>0) & is.null(rv[[paste(prefix, "mutations_df", sep="_")]])) {
     pos<-sapply(rv[[paste(prefix, "mutations", sep="_")]], function(x) as.numeric(x[1]))
     codon<-sapply(rv[[paste(prefix, "mutations", sep="_")]], function(x) as.character(x[2]))
     if(spm==T){
@@ -158,7 +158,7 @@ generic_complex_preview_logic<-function(prefix, spm=T){
     } else{
       rv[[paste(sep="_", prefix, "mutations_df")]]<-data.frame(Mutations=pos, Codon=codonseq[pos], AminoAcid=aaa(codon), Replacement=factor(aaa(codon), levels=c("NNN", "NNK", "NNS", "NDT", "DBK", "NRT")), stringsAsFactors = FALSE) 
     }
-  } else {
+  } else if(is.null(rv[[paste(prefix, "mutations_df", sep="_")]])){
     if(spm==T){
       rv[[paste(sep="_", prefix, "mutations_df")]]<-data.frame(Mutations=as.numeric(c()), Codon=as.character(c()), AminoAcid=as.character(c()),Replacement=factor(as.character(c()), levels=aaa()), stringsAsFactors = FALSE)
     } else {
