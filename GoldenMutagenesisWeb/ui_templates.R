@@ -37,7 +37,8 @@ generic_mut_conf<-function(prefix){output[[paste(prefix, "mut_conf", sep="_")]]<
     column(6,
            wellPanel(style = "background: #cce6ff",
                      h2("Primer Configuration"),
-                     p("You can select a preconfigured template to set those settings in accordiance to your Golden Gate Mutagenesis."),
+                     p("You can select a preconfigured template to set those settings in accordiance to your Golden Gate Mutagenesis."),br(),
+                     p("You can change the defaut values by selecting custom as pre-configuration."),
                      fluidRow(column(7,selectInput(paste(prefix,"template", sep="_"), "Pre-existing configuration:", c("pAGM9121"="1", 
                                                                                                      "pAGM22082 Red" = "2",
                                                                                                      "pICH86988" = "3",
@@ -84,38 +85,44 @@ generic_mut_conf<-function(prefix){output[[paste(prefix, "mut_conf", sep="_")]]<
 
 levelsettings<-function(prefix){
   level<-reactive({input[[paste(prefix, "level", sep="_")]]})
+  template<-reactive({input[[paste(prefix, "template", sep="_")]]})
   output[[paste(prefix,"levelsettings", sep="_")]]<-renderUI({
     if(level() == "lv0") {
+      if(template() == "c") {
       tagList (
         fluidRow(checkboxInput(paste(prefix,"prepare_lvl2", sep="_"), "Prepare for use in Level2", value = TRUE, width = NULL)),
         fluidRow(column(6, textInput(paste(prefix,"av1", sep="_"), "Accepting Vector Forward 5'", value = "AATG")),column(6, textInput(paste(prefix,"av2",sep="_"), "Accepting Vector Reverse 3'", value = "AAGC")))
-      )
+      ) 
+      } else {
+        tagList (
+          fluidRow(checkboxInput(paste(prefix,"prepare_lvl2", sep="_"), "Prepare for use in Level2", value = TRUE, width = NULL)),
+          disabled(fluidRow(column(6, textInput(paste(prefix,"av1", sep="_"), "Accepting Vector Forward 5'", value = "AATG")),column(6, textInput(paste(prefix,"av2",sep="_"), "Accepting Vector Reverse 3'", value = "AAGC"))))
+        ) 
+       }
     }
     else{
-      tagList(
-        fluidRow(column(5,checkboxInput(paste(prefix,"add_lvl0",sep="_"), "Use Level0 to go in Level2?", value = TRUE, width = NULL))),
-        fluidRow(column(6,textInput(paste(prefix,"lvl0_v1",sep="_"), "Level0 Vector Forward 5'", value = "CTCA")),column(6, textInput(paste(prefix,"lvl0_v2",sep="_"), "Level0 Vector Reverse 3'", value = "CTCG"))),
-        fluidRow(column(6,selectInput(paste(prefix,"lvl0_re_enzyme_selection",sep="_"), "Restriction Enzyme:", c("BbsI"="bbsi", "BsaI"="bsai", "custom" = "c"))),
-                 column(6,textInput(paste(prefix,"lvl0_re_enzyme",sep="_"), "Restriction Enzyme Sequence", value = "GAAGAC"))),
-        fluidRow(column(6,textInput(paste(prefix,"lvl0_prefix",sep="_"), "Prefix", value = "TT")),
-                 column(6,textInput(paste(prefix,"lvl0_suffix",sep="_"), "Suffix", value = "AA")))       
-      )      
+        if(template() == "c") {
+          tagList(
+            fluidRow(column(5,checkboxInput(paste(prefix,"add_lvl0",sep="_"), "Use Level0 to go in Level2?", value = TRUE, width = NULL))),
+            fluidRow(column(6,textInput(paste(prefix,"lvl0_v1",sep="_"), "Level0 Vector Forward 5'", value = "CTCA")),column(6, textInput(paste(prefix,"lvl0_v2",sep="_"), "Level0 Vector Reverse 3'", value = "CTCG"))),
+            fluidRow(column(6,selectInput(paste(prefix,"lvl0_re_enzyme_selection",sep="_"), "Restriction Enzyme:", c("BbsI"="bbsi", "BsaI"="bsai", "custom" = "c"))),
+                    disabled(column(6,textInput(paste(prefix,"lvl0_re_enzyme",sep="_"), "Restriction Enzyme Sequence", value = "GAAGAC")))),
+            disabled(fluidRow(column(6,textInput(paste(prefix,"lvl0_prefix",sep="_"), "Prefix", value = "TT")),
+                     column(6,textInput(paste(prefix,"lvl0_suffix",sep="_"), "Suffix", value = "AA"))))       
+          ) 
+        }
+        else{
+          tagList(
+            fluidRow(column(5,checkboxInput(paste(prefix,"add_lvl0",sep="_"), "Use Level0 to go in Level2?", value = TRUE, width = NULL))),
+            disabled(fluidRow(column(6,textInput(paste(prefix,"lvl0_v1",sep="_"), "Level0 Vector Forward 5'", value = "CTCA")),column(6, textInput(paste(prefix,"lvl0_v2",sep="_"), "Level0 Vector Reverse 3'", value = "CTCG")))),
+            disabled(fluidRow(column(6,selectInput(paste(prefix,"lvl0_re_enzyme_selection",sep="_"), "Restriction Enzyme:", c("BbsI"="bbsi", "BsaI"="bsai", "custom" = "c"))),
+                     column(6,textInput(paste(prefix,"lvl0_re_enzyme",sep="_"), "Restriction Enzyme Sequence", value = "GAAGAC")))),
+            disabled(fluidRow(column(6,textInput(paste(prefix,"lvl0_prefix",sep="_"), "Prefix", value = "TT")),
+                     column(6,textInput(paste(prefix,"lvl0_suffix",sep="_"), "Suffix", value = "AA"))))       
+          ) 
+        }
     }
   })  
-  observeEvent(input[[paste(prefix, "level", sep="_")]], {
-  if(input[[paste(prefix, "template", sep="_")]] == "c") {
-    enable(paste(sep="_", prefix, "lvl0_re_enzyme_selection"))
-    enable(paste(sep="_", prefix, "av1"))
-    enable(paste(sep="_", prefix, "av2"))
-    enable(paste(sep="_", prefix, "lvl0_v1"))
-    enable(paste(sep="_", prefix, "lvl0_v2"))
-  } else {
-    disable(paste(sep="_", prefix, "lvl0_re_enzyme_selection"))
-    disable(paste(sep="_", prefix, "av1"))
-    disable(paste(sep="_", prefix, "av2"))
-    disable(paste(sep="_", prefix, "lvl0_v1"))
-    disable(paste(sep="_", prefix, "lvl0_v2"))
-  }})
 }
 
 ####SELECTION################

@@ -99,7 +99,7 @@ generic_template_selection<-function(prefix) {
     }
   })
       onclick(paste(sep="_", prefix, "link"), runjs(rv[[paste(sep="_", prefix, "addgene_button")]]))
-  }
+}
 #RESTRICTION ENZYME SELECTION
 generic_re_selection<-function(prefix) {observeEvent(input[[paste(prefix,"re_enzyme_selection",sep="_")]], {
   if(input[[paste(prefix,"re_enzyme_selection",sep="_")]] == "bbsi") {
