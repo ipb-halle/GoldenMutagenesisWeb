@@ -1,7 +1,8 @@
 FROM rocker/shiny:latest
 
 LABEL Description="Support for rapid design of primers for amino acid exchanges and saturation mutagenesis by Golden Gate cloning."
-RUN echo 'sanitize_errors off;disable_protocols xdr-streaming xhr-streaming iframe-eventsource iframe-htmlfile;' >> /etc/shiny-server/shiny-server.confRUN apt-get -y update && apt-get -y install libssl-dev libxml2-dev
+RUN echo 'sanitize_errors off;disable_protocols xdr-streaming xhr-streaming iframe-eventsource iframe-htmlfile;' >> /etc/shiny-server/shiny-server.conf
+RUN apt-get -y update && apt-get -y install libssl-dev libxml2-dev
 RUN apt-get -y --no-install-recommends install lmodern
 WORKDIR /tmp
 RUN wget https://github.com/jgm/pandoc/releases/download/2.7.3/pandoc-2.7.3-1-amd64.deb
