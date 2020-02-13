@@ -38,10 +38,18 @@ ui <- fluidPage(
   # Application title
   titlePanel(title=ipbheader, windowTitle = "GoldenMutagenesis"),
     navlistPanel(id="MainNav", widths = c(2,9), fluid = F,
-     tabPanel("Welcome", h3("Welcome to the GoldenMutagenesis Webtool."),br(), h4("Please cite our publication"),
+     tabPanel("Welcome", fluidRow(column(9, h3("Welcome to the GoldenMutagenesis web tool"),br(), h4("Read our publication"),
               h5("Golden Mutagenesis: An efficient multi-site-saturation mutagenesis approach by Golden Gate cloning with automated primer design"),
               h6("Pascal Püllmann, Chris Ulpinnis, Sylvestre Marillonnet, Ramona Gruetzner, Steffen Neumann & Martin J. Weissenborn "),
-              br(),shiny::a("Publication as enhanced PDF on Springer Nature",href="https://rdcu.be/bMfta"),br(),br() ,p("AppVersion: 2019-08-09")), "Pre- and Postprocessing",
+              shiny::a("Publication as enhanced PDF on Springer Nature",href="https://rdcu.be/bMfta"),br(),br(),
+              h4("How to cite?"),h6("Püllmann, P., Ulpinnis, C., Marillonnet, S. et al. Golden Mutagenesis:"),
+              h6("An efficient multi-site-saturation mutagenesis approach by Golden Gate cloning with automated primer design."),
+              h6("Sci Rep 9, 10932 (2019). https://doi.org/10.1038/s41598-019-47376-1"),br() ,p("AppVersion: 2020-02-13"),br(),br(),
+              span(textOutput("rInfo"), style="color:#c1c1c1;font-size:smaller")),
+              column(3,tags$img(src="img/GM_logo.svg"))
+              )),
+              
+     "Pre- and Postprocessing",
         tabPanel("Domestication", 
           wellPanel(width = 15,
             tabsetPanel(id="domestication",type="tabs",
@@ -133,7 +141,14 @@ server <- function(input, output, session) {
   #########APPLY CONFIG TEMPLATES############
   source("server_templates.R", local=T)$value
   source("ui_templates.R", local = T)$value
- 
+  #############DEBUG INFORMATION#############
+  output$rInfo <- renderText({
+    paste(
+      R.Version()$version.string, 
+      "  ", system(command = "hostname", intern = TRUE),
+      sep = ""
+    )
+  }) 
  #####################################
  ###########DOMESTICATION#############
  #####################################
