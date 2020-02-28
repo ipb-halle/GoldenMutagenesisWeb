@@ -13,6 +13,7 @@ install.packages("tinytex")
 install.packages("rmarkdown")
 install.packages("knitr")
 install.packages("pylr")
+install.packages("shinybusy")
 ## BioC dependencies
 install.packages("BiocManager")
 BiocManager::install(c("Biostrings", "sangerseqR"))
