@@ -17,10 +17,11 @@ library(RColorBrewer)
 library(graphics)
 library(plotly)
 source("helpers.R")
-library("shiny")
-library("DT")
+library(shiny)
+library(DT)
 library(shinyjs)
-library("plyr")
+library(plyr)
+library(shinybusy)
 
 ## Read IPB coorporate identity
 ipbheader <- HTML(readLines("ipbheader.html"))
@@ -38,13 +39,13 @@ ui <- fluidPage(
   # Application title
   titlePanel(title=ipbheader, windowTitle = "GoldenMutagenesis"),
     navlistPanel(id="MainNav", widths = c(2,9), fluid = F,
-     tabPanel("Welcome", fluidRow(column(9, h3("Welcome to the GoldenMutagenesis web tool"),br(), h4("Read our publication"),
+     tabPanel("Welcome", fluidRow(column(9, wellPanel( h3("Welcome to the GoldenMutagenesis web tool"),br(), h4("Read our publication"),
               h5("Golden Mutagenesis: An efficient multi-site-saturation mutagenesis approach by Golden Gate cloning with automated primer design"),
               h6("Pascal Püllmann, Chris Ulpinnis, Sylvestre Marillonnet, Ramona Gruetzner, Steffen Neumann & Martin J. Weissenborn "),
               shiny::a("Publication as enhanced PDF on Springer Nature",href="https://rdcu.be/bMfta"),br(),br(),
               h4("How to cite?"),h6("Püllmann, P., Ulpinnis, C., Marillonnet, S. et al. Golden Mutagenesis:"),
               h6("An efficient multi-site-saturation mutagenesis approach by Golden Gate cloning with automated primer design."),
-              h6("Sci Rep 9, 10932 (2019). https://doi.org/10.1038/s41598-019-47376-1"),br() ,p("AppVersion: 2020-02-13"),br(),br(),
+              h6("Sci Rep 9, 10932 (2019). https://doi.org/10.1038/s41598-019-47376-1"),br() ,p("AppVersion: 2020-02-28")),br(),br(),
               span(textOutput("rInfo"), style="color:#c1c1c1;font-size:smaller")),
               column(3,tags$img(src="img/GM_logo.svg"))
               )),
@@ -70,10 +71,10 @@ ui <- fluidPage(
                                   )
                 ),
                 tabPanel("Preview and Selection",
-                         wellPanel(style="background: #ffffff",uiOutput("domestication_preview_complete"))),
+                         wellPanel(style="background: #ffffff; width: fit-content",uiOutput("domestication_preview_complete"))),
                 tabPanel("Results", 
                          wellPanel(style="background: #ffffff",uiOutput("domestication_primer_complete"),br()),
-                         fluidRow(column(5, actionButton("domestication_result_spm", "PointMutagenesis: Keep mutations and old sequence"))),fluidRow(column(3, actionButton("domestication_result_spm_sequence", "PointMutagenesis: Keep new sequence"))), fluidRow(column(3, actionButton("domestication_result_msd_sequence", "SaturationMutagenesis: Keep new sequence")))
+                         fluidRow(column(5, actionButton("domestication_result_spm", "Point-Mutagenesis with current mutations and sequence"))),fluidRow(column(3, actionButton("domestication_result_spm_sequence", "Point-Mutagenesis with domesticated sequence"))), fluidRow(column(3, actionButton("domestication_result_msd_sequence", "Saturation-Mutagenesis with domesticated sequence")))
                          )
                 )
           )),
@@ -102,7 +103,7 @@ ui <- fluidPage(
                                     tabPanel("Configuration", wellPanel(style="background: #ffffff",h1("Mutagenesis Configuration") , uiOutput("spm_mut_conf"))
                                       ),
                                     tabPanel("Preview and Selection",
-                                             wellPanel(style="background: #ffffff",uiOutput("spm_preview_complete"))
+                                             wellPanel(style="background: #ffffff; width: fit-content",uiOutput("spm_preview_complete"))
                                     ),
                                     tabPanel("Results",
                                              wellPanel(style="background: #ffffff", uiOutput("spm_primer_complete"))
@@ -118,7 +119,7 @@ ui <- fluidPage(
                                                               tabPanel("Configuration", wellPanel(style="background: #ffffff",h1("Mutagenesis Configuration") , uiOutput("msd_mut_conf"))
                                                                        ),
                                                               tabPanel("Preview and Selection",
-                                                                       wellPanel(style="background: #ffffff",uiOutput("msd_preview_complete"))
+                                                                       wellPanel(style="background: #ffffff; width: fit-content",uiOutput("msd_preview_complete"))
                                                                        ),
                                                               tabPanel("Results",
                                                                        wellPanel(style="background: #ffffff",uiOutput("msd_primer_complete"))
@@ -153,6 +154,10 @@ server <- function(input, output, session) {
  ###########DOMESTICATION#############
  #####################################
  #########INPUT##########
+  hideTab("domestication", "Configuration")
+  hideTab("domestication", "Preview and Selection")
+  hideTab("domestication", "Results")
+  
   generic_sequence_input("domestication", default_value = "ATGGTGAGCAAGGGCGAGGAGGATAACATGGCCATCATCAAGGAGTTCATGCGCTTCAAGGTGCACATGGAGGGCTCCGTGAACGGCCACGAGTTCGAGATCGAGGGCGAGGGCGAGGGCCGCCCCTACGAGGGCACCCAGACCGCCAAGCTGAAGGTGACCAAGGGTGGCCCCCTGCCCTTCGCCTGGGACATCCTGTCCCCTCAGTTCATGTACGGCTCCAAGGCCTACGTGAAGCACCCCGCCGACATCCCCGACTACTTGAAGCTGTCCTTCCCCGAGGGCTTCAAGTGGGAGCGCGTGATGAACTTCGAGGACGGCGGCGTGGTGACCGTGACCCAGGACTCCTCCCTGCAGGACGGCGAGTTCATCTACAAGGTGAAGCTGCGCGGCACCAACTTCCCCTCCGACGGCCCCGTAATGCAGAAGAAGACGATGGGCTGGGAGGCCTCCTCCGAGCGGATGTACCCCGAGGACGGCGCCCTGAAGGGCGAGATCAAGCAGAGGCTGAAGCTGAAGGACGGCGGCCACTACGACGCTGAGGTCAAGACCACCTACAAGGCCAAGAAGCCCGTGCAGCTGCCCGGCGCCTACAACGTCAACATCAAGTTGGACATCACCTCCCACAACGAGGACTACACCATCGTGGAACAGTACGAACGCGCCGAGGGCCGCCACTCCACCGGCGGCATGGACGAGCTGTACAAGGTCGACAAGCTTGCGGCCGCACTCGAGTGA")
   generic_process_input("domestication", default_value = "ATGGTGAGCAAGGGCGAGGAGGATAACATGGCCATCATCAAGGAGTTCATGCGCTTCAAGGTGCACATGGAGGGCTCCGTGAACGGCCACGAGTTCGAGATCGAGGGCGAGGGCGAGGGCCGCCCCTACGAGGGCACCCAGACCGCCAAGCTGAAGGTGACCAAGGGTGGCCCCCTGCCCTTCGCCTGGGACATCCTGTCCCCTCAGTTCATGTACGGCTCCAAGGCCTACGTGAAGCACCCCGCCGACATCCCCGACTACTTGAAGCTGTCCTTCCCCGAGGGCTTCAAGTGGGAGCGCGTGATGAACTTCGAGGACGGCGGCGTGGTGACCGTGACCCAGGACTCCTCCCTGCAGGACGGCGAGTTCATCTACAAGGTGAAGCTGCGCGGCACCAACTTCCCCTCCGACGGCCCCGTAATGCAGAAGAAGACGATGGGCTGGGAGGCCTCCTCCGAGCGGATGTACCCCGAGGACGGCGCCCTGAAGGGCGAGATCAAGCAGAGGCTGAAGCTGAAGGACGGCGGCCACTACGACGCTGAGGTCAAGACCACCTACAAGGCCAAGAAGCCCGTGCAGCTGCCCGGCGCCTACAACGTCAACATCAAGTTGGACATCACCTCCCACAACGAGGACTACACCATCGTGGAACAGTACGAACGCGCCGAGGGCCGCCACTCCACCGGCGGCATGGACGAGCTGTACAAGGTCGACAAGCTTGCGGCCGCACTCGAGTGA")
   generic_process_fasta_input("domestication")
@@ -197,7 +202,7 @@ server <- function(input, output, session) {
     if(length(rv$restriction_sites)==0) {
       shinyalert("No Recognition Site!", "You have not selected any recognition site for domestication. Nothing to do!", type = "error")
     } else {
-      updateTabsetPanel(session, "domestication", "Preview and Selection")
+      showTab("domestication", "Preview and Selection", select = T)
       rv$domestication_mutations<-list()
       for (rs in rv$restriction_sites) {
         mutations<-domesticate(rv$domestication_input_sequence, rs, cuf = input$domestication_cuf)
@@ -222,27 +227,30 @@ server <- function(input, output, session) {
     #generic_sequence_input("spm")
     updateTextAreaInput(session, "spm_input_sequence", value = rv$domestication_primers@oldsequence)
     rv$spm_mutations<-rv$domestication_mutations
-    updateTabsetPanel(session, "spm", selected = "Configuration")
+    showTab("spm", "Configuration", select = T)
     rv[["spm_input_sequence"]]<-rv$domestication_primers@oldsequence
   })
   observeEvent(input$domestication_result_spm_sequence, {
     generic_sequence_input("spm")
     updateTextAreaInput(session, "spm_input_sequence", value = as.character(rv$domestication_primers@newsequence))
     updateTabsetPanel(session, "MainNav", selected = "Point-Mutagenesis")
-    updateTabsetPanel(session, "spm", selected = "Configuration")
+    showTab("spm", "Configuration", select = T)
     rv[["spm_input_sequence"]]<-rv$domestication_primers@newsequence
   })
   observeEvent(input$domestication_result_msd_sequence, {
     generic_sequence_input("msd")
     updateTextAreaInput(session, "msd_input_sequence", value = rv$domestication_primers@newsequence)
     updateTabsetPanel(session, "MainNav", selected = "Saturation-Mutagenesis")
-    updateTabsetPanel(session, "msd", selected = "Configuration")
+    showTab("msd", "Configuration", select = T)
     rv[["msd_input_sequence"]]<-rv$domestication_primers@newsequence
   })
   ####################################
   ######Single Point Mutagenesis#######
   #####################################
   #########INPUT##########
+  hideTab("spm", "Configuration")
+  hideTab("spm", "Preview and Selection")
+  hideTab("spm", "Results")
   generic_sequence_input("spm")
   generic_process_input("spm")
   generic_process_fasta_input("spm")
@@ -253,7 +261,7 @@ server <- function(input, output, session) {
   generic_re_selection_lvl0("spm")
   levelsettings("spm")
     observeEvent(input$spm_configuration_next, {
-        updateTabsetPanel(session, "spm", "Preview and Selection")
+        showTab("spm", "Preview and Selection", select = T)
         #output$spm_preview<-renderUI(print_sequence(sequence = input$sp_seq, mutations = rv$sp_mutations))+
       generic_complex_preview_logic("spm")
       generic_preview("spm")
@@ -269,6 +277,9 @@ server <- function(input, output, session) {
    ######Saturation Mutagenesis#######
    #####################################
    #########INPUT##########
+    hideTab("msd", "Configuration")
+    hideTab("msd", "Preview and Selection")
+    hideTab("msd", "Results")
     generic_sequence_input("msd", default_value = "ATGTCTCAGGTTCAGAGTGGCATTTTGCCAGAACATTGCCGCGCGGCGATTTGGATCGAAGCCAACGTGAAAGGGGAAGTTGACGCCCTGCGTGCGGCCAGTAAAACATTTGCCGACAAACTGGCAACTTTTGAAGCGAAATTCCCGGACGCGCATCTTGGTGCGGTGGTTGCCTTTGGTAACAACACCTGGCGCGCTCTGAGCGGCGGCGTTGGGGCAGAAGAGCTGAAAGATTTTCCGGGCTACGGTAAAGGCCTTGCGCCGACGACCCAGTTCGATGTGTTGATCCACATTCTTTCTCTGCGTCACGACGTAAACTTCTCTGTCGCCCAGGCGGCGATGGAAGCCTTTGGTGACTGCATTGAAGTGAAAGAAGAGATCCACGGCTTCCGTTGGGTTGAAGAGCGTGACCTGAGCGGCTTTGTTGACGGTACGGAAAACCCGGCGGGTGAAGAGACGCGTCGCGAAGTGGCGGTTATCAAAGACGGCGTGGATGCGGGCGGCAGCTATGTGTTTGTCCAGCGTTGGGAACACAACCTGAAGCAGCTCAACCGGATGAGCGTTCACGATCAGGAGATGGTGATCGGGCGCACCAAAGAGGCCAACGAAGAGATCGACGGCGACGAACGTCCGGAAACCTCTCACCTCACCCGCGTTGATCTGAAAGAAGATGGCAAAGGGCTGAAGATTGTTCGCCAGAGCCTGCCGTACGGCACTGCCAGTGGCACTCACGGTCTGTACTTCTGCGCCTACTGCGCGCGTCTGCATAACATTGAGCAGCAACTGCTGAGCATGTTTGGCGATACCGATGGTAAGCGTGATGCGATGTTGCGTTTCACCAAACCGGTAACCGGCGGCTATTATTTCGCACCGTCGCTGGACAAGTTGATGGCGCTGTAA")
     generic_process_input("msd", default_value = "ATGTCTCAGGTTCAGAGTGGCATTTTGCCAGAACATTGCCGCGCGGCGATTTGGATCGAAGCCAACGTGAAAGGGGAAGTTGACGCCCTGCGTGCGGCCAGTAAAACATTTGCCGACAAACTGGCAACTTTTGAAGCGAAATTCCCGGACGCGCATCTTGGTGCGGTGGTTGCCTTTGGTAACAACACCTGGCGCGCTCTGAGCGGCGGCGTTGGGGCAGAAGAGCTGAAAGATTTTCCGGGCTACGGTAAAGGCCTTGCGCCGACGACCCAGTTCGATGTGTTGATCCACATTCTTTCTCTGCGTCACGACGTAAACTTCTCTGTCGCCCAGGCGGCGATGGAAGCCTTTGGTGACTGCATTGAAGTGAAAGAAGAGATCCACGGCTTCCGTTGGGTTGAAGAGCGTGACCTGAGCGGCTTTGTTGACGGTACGGAAAACCCGGCGGGTGAAGAGACGCGTCGCGAAGTGGCGGTTATCAAAGACGGCGTGGATGCGGGCGGCAGCTATGTGTTTGTCCAGCGTTGGGAACACAACCTGAAGCAGCTCAACCGGATGAGCGTTCACGATCAGGAGATGGTGATCGGGCGCACCAAAGAGGCCAACGAAGAGATCGACGGCGACGAACGTCCGGAAACCTCTCACCTCACCCGCGTTGATCTGAAAGAAGATGGCAAAGGGCTGAAGATTGTTCGCCAGAGCCTGCCGTACGGCACTGCCAGTGGCACTCACGGTCTGTACTTCTGCGCCTACTGCGCGCGTCTGCATAACATTGAGCAGCAACTGCTGAGCATGTTTGGCGATACCGATGGTAAGCGTGATGCGATGTTGCGTTTCACCAAACCGGTAACCGGCGGCTATTATTTCGCACCGTCGCTGGACAAGTTGATGGCGCTGTAA")
     generic_process_fasta_input("msd")
@@ -279,7 +290,7 @@ server <- function(input, output, session) {
     generic_re_selection_lvl0("msd")
     levelsettings("msd")
     observeEvent(input$msd_configuration_next, {
-      updateTabsetPanel(session, "msd", "Preview and Selection")
+      showTab("msd", "Preview and Selection", select = T)
       #output$spm_preview<-renderUI(print_sequence(sequence = input$sp_seq, mutations = rv$sp_mutations))
       generic_complex_preview_logic("msd", spm=F)
     
@@ -295,6 +306,7 @@ server <- function(input, output, session) {
      ####################################
      ######Quick Quality Control #######
      #####################################
+    hideTab("qqc", "Results")
     generic_sequence_input("qqc", button=F,default_value = "ATGGTGAGCAAGGGCGAGGAGGATAACATGGCCATCATCAAGGAGTTCATGCGCTTCAAGGTGCACATGGAGGGCTCCGTGAACGGCCACGAGTTCGAGATCGAGGGCGAGGGCGAGGGCCGCCCCTACGAGGGCACCCAGACCGCCAAGCTGAAGGTGACCAAGGGTGGCCCCCTGCCCTTCGCCTGGGACATCCTGTCCCCTCAGTTCATGTACGGCTCCAAGGCCTACGTGAAGCACCCCGCCGACATCCCCGACTACTTGAAGCTGTCCTTCCCCGAGGGCTTCAAGTGGGAGCGCGTGATGAACTTCGAGGACGGCGGCGTGGTGACCGTGACCCAGGACTCCTCCCTGCAGGACGGCGAGTTCATCTACAAGGTGAAGCTGCGCGGCACCAACTTCCCCTCCGACGGCCCCGTAATGCAGAAGAAGACGATGGGCTGGGAGGCCTCCTCCGAGCGGATGTACCCCGAGGACGGCGCCCTGAAGGGCGAGATCAAGCAGAGGCTGAAGCTGAAGGACGGCGGCCACTACGACGCTGAGGTCAAGACCACCTACAAGGCCAAGAAGCCCGTGCAGCTGCCCGGCGCCTACAACGTCAACATCAAGTTGGACATCACCTCCCACAACGAGGACTACACCATCGTGGAACAGTACGAACGCGCCGAGGGCCGCCACTCCACCGGCGGCATGGACGAGCTGTACAAGGTCGACAAGCTTGCGGCCGCACTCGAGTGA") 
     observeEvent(input[[paste("qqc", "sequence_file", sep="_")]],{
       fasta<-read.fasta(file=input[[paste("qqc", "sequence_file", sep="_")]]$datapath, seqtype = "DNA", as.string = T, seqonly = T)
@@ -365,7 +377,7 @@ server <- function(input, output, session) {
        rv$plots<-NULL
        rv$plotlist<-NULL
        rv$qqc_mutations<-as.vector(rv$qqc_mutations_df[,1], mode = "numeric")
-       updateTabsetPanel(session, "qqc", "Results")
+       showTab("qqc", "Results", select = T)
        base_distribution_shiny(input$qqc_input_sequence, input$qqc_file$datapath, replacements = rv$qqc_mutations)
         rv$plots<-renderUI({
           output_list<-lapply(rv[["plotlist"]], function(i){renderPlotly(rv[[i]])})

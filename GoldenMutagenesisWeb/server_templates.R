@@ -11,7 +11,7 @@ generic_process_input<-function(prefix, next_panel="Configuration", default_valu
     sequence_check(rv[[paste(prefix, "input_sequence", sep="_")]])
     #rv[[paste(sep="_", prefix, "input_sequence")]]<-input[[paste(sep="_", prefix, "input_sequence")]]
     }
-    updateTabsetPanel(session, prefix, next_panel)
+    showTab(prefix, next_panel, select = T)
   })
 }
 generic_process_fasta_input<-function(prefix,next_panel="Configuration"){
@@ -20,7 +20,7 @@ generic_process_fasta_input<-function(prefix,next_panel="Configuration"){
     updateTextAreaInput(session, paste(prefix, "input_sequence", sep="_"), value = fasta[[1]])
     rv[[paste(sep="_", prefix, "input_sequence")]]<-fasta[[1]]
     sequence_check(rv[[paste(prefix, "input_sequence", sep="_")]])
-    updateTabsetPanel(session, prefix, next_panel)
+    showTab(prefix, next_panel, select = T)
   })
 }
 
@@ -145,10 +145,10 @@ generic_simple_preview_logic<-function(prefix){
   colnames(rv[[paste(sep="_", prefix, "mutations_df")]])<-c("Mutation Position", "Codon", "Amino Acid Residue")
   my.insert.callback.local <- function(data, row) {
     if((data[row,1]>length(codonseq)-1)){
-      stop(paste("Pleaser enter a value between ", "2 and ", length(codonseq)-1, ".", sep=""))
+      stop(paste("Please enter a value between ", "2 and ", length(codonseq)-1, ".", sep=""))
     }
     if(data[row,1]<2){
-      stop(paste("Pleaser enter a value between ", "2 and ", length(codonseq)-1, ".", sep=""))
+      stop(paste("Please enter a value between ", "2 and ", length(codonseq)-1, ".", sep=""))
     }
     codon<-codonseq[data[row,1]]
     data[row,2]<-as.character(codon)
@@ -161,10 +161,10 @@ generic_simple_preview_logic<-function(prefix){
   
   my.update.callback.local <- function(data, olddata, row) {
     if((data[row,1]>length(codonseq)-1)){
-      stop(paste("Pleaser enter a value between ", "2 and ", length(codonseq)-1, ".", sep=""))
+      stop(paste("Please enter a value between ", "2 and ", length(codonseq)-1, ".", sep=""))
     }
     if(data[row,1]<2){
-      stop(paste("Pleaser enter a value between ", "2 and ", length(codonseq)-1, ".", sep=""))
+      stop(paste("Please enter a value between ", "2 and ", length(codonseq)-1, ".", sep=""))
     }
     data[row,2] <- codonseq[data[row,1]]
     data[row,3] <- translate(s2c(data[row,2]))
@@ -215,10 +215,10 @@ generic_complex_preview_logic<-function(prefix, spm=T){
   colnames(rv[[paste(sep="_", prefix, "mutations_df")]])<-c("Mutation Position", "Codon", "Amino Acid Residue", "Mutation")
   my.insert.callback.local <- function(data, row) {
     if((data[row,1]>length(codonseq)-1)){
-      stop(paste("Pleaser enter a value between ", "2 and ", length(codonseq)-1, ".", sep=""))
+      stop(paste("Please enter a value between ", "2 and ", length(codonseq)-1, ".", sep=""))
     }
     if(data[row,1]<2){
-      stop(paste("Pleaser enter a value between ", "2 and ", length(codonseq)-1, ".", sep=""))
+      stop(paste("Please enter a value between ", "2 and ", length(codonseq)-1, ".", sep=""))
     }
     codon<-codonseq[data[row,1]]
     data[row,2]<-as.character(codon)
@@ -231,10 +231,10 @@ generic_complex_preview_logic<-function(prefix, spm=T){
   
   my.update.callback.local <- function(data, olddata, row) {
     if((data[row,1]>length(codonseq)-1)){
-      stop(paste("Pleaser enter a value between ", "2 and ", length(codonseq)-1, ".", sep=""))
+      stop(paste("Please enter a value between ", "2 and ", length(codonseq)-1, ".", sep=""))
     }
     if(data[row,1]<2){
-      stop(paste("Pleaser enter a value between ", "2 and ", length(codonseq)-1, ".", sep=""))
+      stop(paste("Please enter a value between ", "2 and ", length(codonseq)-1, ".", sep=""))
     }
     data[row,2] <- codonseq[data[row,1]]
     data[row,3] <- aaa(translate(s2c(data[row,2])))
@@ -252,10 +252,10 @@ generic_complex_preview_logic<-function(prefix, spm=T){
   }
   my.insert.callback.msd <- function(data, row) {
     if((data[row,1]>length(codonseq)-1)){
-      stop(paste("Pleaser enter a value between ", "2 and ", length(codonseq)-1, ".", sep=""))
+      stop(paste("Please enter a value between ", "2 and ", length(codonseq)-1, ".", sep=""))
     }
     if(data[row,1]<2){
-      stop(paste("Pleaser enter a value between ", "2 and ", length(codonseq)-1, ".", sep=""))
+      stop(paste("Please enter a value between ", "2 and ", length(codonseq)-1, ".", sep=""))
     }
     codon<-codonseq[data[row,1]]
     data[row,2]<-as.character(codon)
@@ -268,10 +268,10 @@ generic_complex_preview_logic<-function(prefix, spm=T){
   
   my.update.callback.msd <- function(data, olddata, row) {
     if((data[row,1]>length(codonseq)-1)){
-      stop(paste("Pleaser enter a value between ", "2 and ", length(codonseq)-1, ".", sep=""))
+      stop(paste("Please enter a value between ", "2 and ", length(codonseq)-1, ".", sep=""))
     }
     if(data[row,1]<2){
-      stop(paste("Pleaser enter a value between ", "2 and ", length(codonseq)-1, ".", sep=""))
+      stop(paste("Please enter a value between ", "2 and ", length(codonseq)-1, ".", sep=""))
     }
     data[row,2] <- codonseq[data[row,1]]
     data[row,3] <- aaa(translate(s2c(data[row,2])))
@@ -326,7 +326,7 @@ observeEvent(input[[paste(prefix, "selection_next", sep="_")]], {
       shinyalert("No Mutations!", "No selected mutations, nothing to do!", type = "info")
     }
     else{
-      updateTabsetPanel(session, prefix, panel)
+      showTab(prefix, panel, select = T)
       print(input[[paste(prefix, "input_sequence", sep="_")]])
       print(rv[[paste(prefix, "mutations", sep="_")]])
       if(spm==T){

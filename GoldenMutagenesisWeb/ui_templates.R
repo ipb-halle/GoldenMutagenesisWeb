@@ -43,7 +43,7 @@ generic_mut_conf<-function(prefix){output[[paste(prefix, "mut_conf", sep="_")]]<
                                                                                                      "pAGM22082 Red" = "2",
                                                                                                      "pICH86988" = "3",
                                                                                                      "custom" = "c"))),
-                     column(3, style = "margin-top: 25px;",
+                     column(5, style = "margin-top: 25px;",
                             actionButton(paste(prefix, "link", sep="_"), label = "View on addgene", style=" background-image: url(./img/addgene.jpg); background-position: left; background-size: contain; background-repeat: no-repeat; padding-left: 40px;"))),
                      
                      selectInput(paste(prefix,"level",sep="_"), "Golden Gate Level:", c("Level0" = "lv0", "Level2" = "lv2")),
@@ -59,7 +59,7 @@ generic_mut_conf<-function(prefix){output[[paste(prefix, "mut_conf", sep="_")]]<
     column(6,
            wellPanel(style = "background: #ffcccc",
                      h2("Algorithm Settings"),
-                     p("Those settings are documentated in the GoldenMutagenesis R-Package"),
+                     p("Those settings are documentated in the GoldenMutagenesis R-Package. You do not need to change the default values in most applications."),
                      numericInput(paste(prefix,"binding_min_length",sep="_"), 
                                   "Minimal binding length (AA)", 
                                   value = 4),
@@ -150,12 +150,12 @@ generic_simple_selection<-function(prefix){
 ###########COMPLEX############
 generic_complex_selection<-function(prefix, spm=T){
   output[[paste(prefix, "preview_complete", sep="_")]]<-renderUI({tagList(
-    wellPanel(uiOutput(paste(prefix, "preview", sep="_"))),wellPanel(style="background: #ffffff",
+    wellPanel(uiOutput(paste(prefix, "preview", sep="_"))),wellPanel(style="background: #ffffff; width=fit-content",
               fluidRow(
-                column(5, p("Please note that a valid ORF is required. Thus, you can not edit the start and stop codons."))
+                column(8, p("Please note that a valid ORF is required. Thus, you can not edit the start and stop codons."))
               ),
               fluidRow(
-                column(5,uiOutput(paste(prefix, "mutation_table", sep="_")))
+                column(6,uiOutput(paste(prefix, "mutation_table", sep="_")))
               )),
     fluidRow(column(2,actionButton(inputId = paste(prefix,"selection_next",sep="_"), 'Next'), br()))
   )})
@@ -167,7 +167,6 @@ generic_primer_output<-function(prefix){
   output[[paste(prefix, "primer_complete", sep="_")]]<-renderUI({tagList(
   fluidRow(column(4, mydlB(paste(sep="_", prefix, "dl_report_pdf"), icon = "dna", lib="font-awesome", label = "Download Primer Report (PDF)")),
   column(4, mydlB(paste(sep="_", prefix, "dl_protocol_pdf"),icon="flask", lib="font-awesome", label = "Download Mutagenesis Protocol (PDF)"))),
-  fluidRow(column(5, p("The generation of the PDF report takes a few seconds."))),
   fluidRow(column(4, mydlB(paste(sep="_", prefix, "dl_report_txt"), icon="file-alt", lib="font-awesome", label = "Download Primer Report (TXT)"))),
   fluidRow(column(12, h2("Legend")), column(12, HTML(paste("<span style=\"background-color: #fcfc92; font-size: large;\">", "Prefix", "</span>",
                                                            "<span style=\"background-color: #fc9191; font-size: large;\">", "Restriction Enzyme", "</span>",

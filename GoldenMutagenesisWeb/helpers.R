@@ -115,6 +115,7 @@ download_report<-function(primerset) {
     downloadHandler(
       filename="report.pdf",
       content = function(file) {
+        show_modal_spinner("spring", text="Your download is being prepared!")
         tempReport<-file.path(tempdir(), "primer.Rmd")
         tempReportsu<-file.path(tempdir(), "primer_subunit.Rmd")
         tempReportsty<-file.path(tempdir(), "analysis.sty")
@@ -128,6 +129,7 @@ download_report<-function(primerset) {
         params <- list(path = tempReportprimers)
         rmarkdown::render(tempReport, output_file = file, output_dir = tempdir(), params = params,knit_root_dir=tempdir(),envir = new.env(parent = globalenv()))
         #knitr::knitr(input=tempReport, output=file, envir=new.env(parent = globalenv()))
+        remove_modal_spinner()
       }
     )
   )
