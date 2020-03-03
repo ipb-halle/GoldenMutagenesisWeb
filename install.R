@@ -14,6 +14,7 @@ install.packages("rmarkdown")
 install.packages("knitr")
 install.packages("pylr")
 install.packages("shinybusy")
+install.packages("shinyBS")
 ## BioC dependencies
 install.packages("BiocManager")
 BiocManager::install(c("Biostrings", "sangerseqR"))
