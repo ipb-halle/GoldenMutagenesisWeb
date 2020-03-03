@@ -22,6 +22,7 @@ library(DT)
 library(shinyjs)
 library(plyr)
 library(shinybusy)
+library(shinyBS)
 
 ## Read IPB coorporate identity
 ipbheader <- HTML(readLines("ipbheader.html"))
