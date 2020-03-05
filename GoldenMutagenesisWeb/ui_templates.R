@@ -166,7 +166,8 @@ generic_complex_selection<-function(prefix, spm=T){
                 column(8, p("Please note that a valid ORF is required. Thus, you can not edit the start and stop codons."))
               ),
               fluidRow(
-                column(6,uiOutput(paste(prefix, "mutation_table", sep="_")))
+                column(6,uiOutput(paste(prefix, "mutation_table", sep="_"))),
+                bsTooltip(id = paste(prefix,"mutation_table",sep="_"), title = "Select the desired codons for saturation mutagenesis. TTG is available for using the 22c trick."),
               )),
     fluidRow(column(2,actionButton(inputId = paste(prefix,"selection_next",sep="_"), 'Next'), br()))
   )})
