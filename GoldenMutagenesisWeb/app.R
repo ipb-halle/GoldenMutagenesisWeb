@@ -46,7 +46,7 @@ ui <- fluidPage(
               shiny::a("Publication as enhanced PDF on Springer Nature",href="https://rdcu.be/bMfta"),br(),br(),
               h4("How to cite?"),h6("Püllmann, P., Ulpinnis, C., Marillonnet, S. et al. Golden Mutagenesis:"),
               h6("An efficient multi-site-saturation mutagenesis approach by Golden Gate cloning with automated primer design."),
-              h6("Sci Rep 9, 10932 (2019). https://doi.org/10.1038/s41598-019-47376-1"),br() ,p("AppVersion: 2020-02-28")),br(),br(),
+              h6("Sci Rep 9, 10932 (2019). https://doi.org/10.1038/s41598-019-47376-1"),br() ,p("AppVersion: 2020-03-05")),br(),br(),
               span(textOutput("rInfo"), style="color:#c1c1c1;font-size:smaller")),
               column(3,tags$img(src="img/GM_logo.svg"))
               )),
