@@ -203,13 +203,13 @@ generic_complex_preview_logic<-function(prefix, spm=T){
     if(spm==T){
       rv[[paste(sep="_", prefix, "mutations_df")]]<-data.frame(Mutations=pos, Codon=codonseq[pos], AminoAcid=aaa(codon), Replacement=factor(aaa(codon), levels=aaa()), stringsAsFactors = FALSE) 
     } else{
-      rv[[paste(sep="_", prefix, "mutations_df")]]<-data.frame(Mutations=pos, Codon=codonseq[pos], AminoAcid=aaa(codon), Replacement=factor(aaa(codon), levels=c("NNN", "NNK", "NNS", "NDT", "DBK", "NRT", "VHG", "VRK", "NYC", "KST", "TTG")), stringsAsFactors = FALSE) 
+      rv[[paste(sep="_", prefix, "mutations_df")]]<-data.frame(Mutations=pos, Codon=codonseq[pos], AminoAcid=aaa(codon), Replacement=factor(aaa(codon), levels=c("NNN", "NNK", "NNS", "NDT", "DBK", "NRT", "VHG", "VRK", "NYC", "KST", "TGG")), stringsAsFactors = FALSE) 
     }
   } else if(is.null(rv[[paste(prefix, "mutations_df", sep="_")]])){
     if(spm==T){
       rv[[paste(sep="_", prefix, "mutations_df")]]<-data.frame(Mutations=as.numeric(c()), Codon=as.character(c()), AminoAcid=as.character(c()),Replacement=factor(as.character(c()), levels=aaa()), stringsAsFactors = FALSE)
     } else {
-      rv[[paste(sep="_", prefix, "mutations_df")]]<-data.frame(Mutations=as.numeric(c()), Codon=as.character(c()), AminoAcid=as.character(c()),Replacement=factor(as.character(c()), levels=c("NNN", "NNK", "NNS", "NDT", "DBK", "NRT", "VHG", "VRK", "NYC", "KST", "TTG")), stringsAsFactors = FALSE)
+      rv[[paste(sep="_", prefix, "mutations_df")]]<-data.frame(Mutations=as.numeric(c()), Codon=as.character(c()), AminoAcid=as.character(c()),Replacement=factor(as.character(c()), levels=c("NNN", "NNK", "NNS", "NDT", "DBK", "NRT", "VHG", "VRK", "NYC", "KST", "TGG")), stringsAsFactors = FALSE)
     }
   }
   colnames(rv[[paste(sep="_", prefix, "mutations_df")]])<-c("Mutation Position", "Codon", "Amino Acid Residue", "Mutation")
