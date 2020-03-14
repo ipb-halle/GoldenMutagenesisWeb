@@ -3,7 +3,7 @@
 ![Docker Pulls](https://img.shields.io/docker/pulls/sneumann/goldenmutagenesisweb)
 ![Docker Cloud Build Status](https://img.shields.io/docker/cloud/build/sneumann/goldenmutagenesisweb)
 
-<img src=https://raw.githubusercontent.com/ipb-halle/GoldenMutagenesisWeb/master/GoldenMutagenesisWeb/www/img/GM_logo.svg?sanitize=true height="200px"></img>
+<img src="https://raw.githubusercontent.com/ipb-halle/GoldenMutagenesisWeb/master/GoldenMutagenesisWeb/www/img/GM_logo.svg?sanitize=true" height="200px">
 
 This repository includes the development of the web user-interface of the GoldenMutagenesis R Library. See https://msbi.ipb-halle.de/GoldenMutagenesis/ for more information about the project. 
 
