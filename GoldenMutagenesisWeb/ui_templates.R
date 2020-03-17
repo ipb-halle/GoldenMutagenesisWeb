@@ -167,7 +167,7 @@ generic_complex_selection<-function(prefix, spm=T){
               ),
               fluidRow(
                 column(6,uiOutput(paste(prefix, "mutation_table", sep="_"))),
-                bsTooltip(id = paste(prefix,"mutation_table",sep="_"), title = "Select the desired codons for saturation mutagenesis. TTG is available for using the 22c trick."),
+                bsTooltip(id = paste(prefix,"mutation_table",sep="_"), title = "Select the desired codons for saturation mutagenesis. TGG is available for using the 22c trick."),
               )),
     fluidRow(column(2,actionButton(inputId = paste(prefix,"selection_next",sep="_"), 'Next'), br()))
   )})
