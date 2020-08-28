@@ -419,18 +419,8 @@ base_distribution_shiny<-function(input_sequence, ab1file, replacements, trace_c
         lbls <- c("Thymine", "Guanine", "Cytosine", "Adenine")
       }
       pct <- round(slices/sum(slices)*100)
-      #lbls <- paste(lbls, pct) # add percents to labels
-      #lbls <- paste(lbls,"%",sep="") # ad % to labels
-      #print(element)
-      #file<-tempfile(fileext = ".png")
-      #plotlist<-c(plotlist,file)
-      #png(file)
-      #pie(slices,labels = lbls, col=brewer.pal(4,"Spectral"),main = paste("Peak intensity distribution for \nPosition", pattern_pos[element], "(Template) -", subject_pos[element], "(Sequencing)", sep=" "))
-      #browser()
       rv[[paste0(pattern_pos[element],"_",subject_pos[element])]]<-layout(plot_ly(data.frame(cbind(slices, lbls)), labels=~lbls, values=~slices, type="pie", marker = list(colors=brewer.pal(4, "Spectral")), sort=F, height=700),title=list(text=paste("Peak intensity distribution for",aaa(translate(s2c(input_sequence))[ceiling(pattern_pos[element]/3)]) ,as.character(ceiling(pattern_pos[element]/3)), "\nPosition", pattern_pos[element], "(Template) -", subject_pos[element], "(Sequencing)", sep=" "), font=list(size=16)), margin=list(t=120, b=100))
       rv[["plotlist"]]<-c(rv[["plotlist"]], paste0(pattern_pos[element],"_",subject_pos[element]))
-      #dev.off()
     }
-    #print(plotlist)
   })
 }
