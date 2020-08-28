@@ -29,6 +29,7 @@ generic_template_selection<-function(prefix) {
   observeEvent(input[[paste(prefix, "template", sep="_")]], {
     if(input[[paste(prefix, "template", sep="_")]] == "1") {
       print("pAGM9121 selected")
+      hide(id = paste(sep="_", prefix, "publication_link"), anim = T)
       disable(paste(sep="_", prefix, "level"))
       disable(paste(sep="_", prefix, "re_enzyme_selection"))
       disable(paste(sep="_", prefix, "lvl0_re_enzyme_selection"))
@@ -47,6 +48,7 @@ generic_template_selection<-function(prefix) {
     }
     if(input[[paste(prefix, "template", sep="_")]] == "2") {
       print("pAGM22082 selected")
+      hide(id = paste(sep="_", prefix, "publication_link"), anim = T)
       disable(paste(sep="_", prefix, "level"))
       disable(paste(sep="_", prefix, "re_enzyme_selection"))
       disable(paste(sep="_", prefix, "lvl0_re_enzyme_selection"))
@@ -65,6 +67,7 @@ generic_template_selection<-function(prefix) {
     }
     if(input[[paste(prefix, "template", sep="_")]] == "3") {
       print("pICH86988 selected")
+      hide(id = paste(sep="_", prefix, "publication_link"), anim = T)
       disable(paste(sep="_", prefix, "level"))
       disable(paste(sep="_", prefix, "re_enzyme_selection"))
       disable(paste(sep="_", prefix, "lvl0_re_enzyme_selection"))
@@ -81,8 +84,69 @@ generic_template_selection<-function(prefix) {
       updateSelectInput(session, paste(sep="_", prefix, "cuf"), selected =  "e_coli_316407.csv")
       rv[[paste(sep="_", prefix, "addgene_button")]]<-"window.open('https://www.addgene.org/48076/','_blank')"
     }
+    if(input[[paste(prefix, "template", sep="_")]] == "4") {
+      print("pPAP001 selected")
+      disable(paste(sep="_", prefix, "level"))
+      disable(paste(sep="_", prefix, "re_enzyme_selection"))
+      disable(paste(sep="_", prefix, "lvl0_re_enzyme_selection"))
+      disable(paste(sep="_", prefix, "v1"))
+      disable(paste(sep="_", prefix, "v2"))
+      disable(paste(sep="_", prefix, "av1"))
+      disable(paste(sep="_", prefix, "av2"))
+      disable(paste(sep="_", prefix, "lvl0_v1"))
+      disable(paste(sep="_", prefix, "lvl0_v2"))
+      updateSelectInput(session, paste(sep="_", prefix, "level"), selected = "lv2")
+      updateSelectInput(session, paste(sep="_", prefix, "re_enzyme_selection"), selected = "bsai")
+      updateTextInput(session, paste(sep="_", prefix, "v1"), value = "AATG")
+      updateTextInput(session, paste(sep="_", prefix, "v2"), value = "AAGC")
+      updateSelectInput(session, paste(sep="_", prefix, "cuf"), selected =  "Pichia_pastoris_4922.csv") 
+      rv[[paste(sep="_", prefix, "addgene_button")]]<-"window.open('https://www.addgene.org/153488/','_blank')"
+      rv[[paste(sep="_", prefix, "publication_button")]]<-"window.open('https://www.biorxiv.org/content/10.1101/2020.07.22.216432v1','_blank')"
+      show(id = paste(sep="_", prefix, "publication_link"), anim = T)
+    }
+    if(input[[paste(prefix, "template", sep="_")]] == "5") {
+      print("pPAP002 selected")
+      disable(paste(sep="_", prefix, "level"))
+      disable(paste(sep="_", prefix, "re_enzyme_selection"))
+      disable(paste(sep="_", prefix, "lvl0_re_enzyme_selection"))
+      disable(paste(sep="_", prefix, "v1"))
+      disable(paste(sep="_", prefix, "v2"))
+      disable(paste(sep="_", prefix, "av1"))
+      disable(paste(sep="_", prefix, "av2"))
+      disable(paste(sep="_", prefix, "lvl0_v1"))
+      disable(paste(sep="_", prefix, "lvl0_v2"))
+      updateSelectInput(session, paste(sep="_", prefix, "level"), selected = "lv2")
+      updateSelectInput(session, paste(sep="_", prefix, "re_enzyme_selection"), selected = "bsai")
+      updateTextInput(session, paste(sep="_", prefix, "v1"), value = "AATG")
+      updateTextInput(session, paste(sep="_", prefix, "v2"), value = "AAGC")
+      updateSelectInput(session, paste(sep="_", prefix, "cuf"), selected =  "Pichia_pastoris_4922.csv") 
+      rv[[paste(sep="_", prefix, "addgene_button")]]<-"window.open('https://www.addgene.org/153489/','_blank')"
+      rv[[paste(sep="_", prefix, "publication_button")]]<-"window.open('https://www.biorxiv.org/content/10.1101/2020.07.22.216432v1','_blank')"
+      show(id = paste(sep="_", prefix, "publication_link"), anim = T)
+    }
+    if(input[[paste(prefix, "template", sep="_")]] == "6") {
+      print("pAGT572_Nemo selected")
+      disable(paste(sep="_", prefix, "level"))
+      disable(paste(sep="_", prefix, "re_enzyme_selection"))
+      disable(paste(sep="_", prefix, "lvl0_re_enzyme_selection"))
+      disable(paste(sep="_", prefix, "v1"))
+      disable(paste(sep="_", prefix, "v2"))
+      disable(paste(sep="_", prefix, "av1"))
+      disable(paste(sep="_", prefix, "av2"))
+      disable(paste(sep="_", prefix, "lvl0_v1"))
+      disable(paste(sep="_", prefix, "lvl0_v2"))
+      updateSelectInput(session, paste(sep="_", prefix, "level"), selected = "lv2")
+      updateSelectInput(session, paste(sep="_", prefix, "re_enzyme_selection"), selected = "bsai")
+      updateTextInput(session, paste(sep="_", prefix, "v1"), value = "AATG")
+      updateTextInput(session, paste(sep="_", prefix, "v2"), value = "AAGC")
+      updateSelectInput(session, paste(sep="_", prefix, "cuf"), selected =  "s_cerevisiae_4932.csv") 
+      rv[[paste(sep="_", prefix, "addgene_button")]]<-"window.open('https://www.addgene.org/153487/','_blank')"
+      rv[[paste(sep="_", prefix, "publication_button")]]<-"window.open('https://www.biorxiv.org/content/10.1101/2020.07.22.216432v1','_blank')"
+      show(id = paste(sep="_", prefix, "publication_link"), anim = T)
+    }
     if(input[[paste(prefix, "template", sep="_")]] == "c") {
       hide(id = paste(sep="_", prefix, "link"), anim = T)
+      hide(id = paste(sep="_", prefix, "publication_link"), anim = T)
       print("custom selected")
       enable(paste(sep="_", prefix, "level"))
       enable(paste(sep="_", prefix, "re_enzyme_selection"))
@@ -96,9 +160,11 @@ generic_template_selection<-function(prefix) {
     }
     else{
       show(id = paste(sep="_", prefix, "link"), anim = T)
+      #hide(id = paste(sep="_", prefix, "publication_link"), anim = T)
     }
   })
       onclick(paste(sep="_", prefix, "link"), runjs(rv[[paste(sep="_", prefix, "addgene_button")]]))
+      onclick(paste(sep="_", prefix, "publication_link"), runjs(rv[[paste(sep="_", prefix, "publication_button")]]))
 }
 #RESTRICTION ENZYME SELECTION
 generic_re_selection<-function(prefix) {observeEvent(input[[paste(prefix,"re_enzyme_selection",sep="_")]], {
