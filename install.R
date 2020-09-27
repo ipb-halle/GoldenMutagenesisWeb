@@ -12,7 +12,7 @@ install.packages("shinyjs")
 install.packages("tinytex")
 install.packages("rmarkdown")
 install.packages("knitr")
-install.packages("pylr")
+install.packages("plyr")
 install.packages("shinybusy")
 install.packages("shinyBS")
 ## BioC dependencies
