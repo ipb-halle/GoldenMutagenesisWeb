@@ -16,3 +16,4 @@ RUN R -e "source('/tmp/install.R')"
 USER shiny
 ADD install_user.R /tmp
 RUN R -e "source('/tmp/install_user.R')"
+USER root
