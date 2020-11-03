@@ -38,7 +38,7 @@ ui <- fluidPage(
   #titlePanel("GoldenMutagenesis Webtool Beta"),
   
   # Application title
-  titlePanel(title=ipbheader, windowTitle = "GoldenMutagenesis"),a
+  titlePanel(title=ipbheader, windowTitle = "GoldenMutagenesis"),
     navlistPanel(id="MainNav", widths = c(2,9), fluid = F,
      tabPanel("Welcome", fluidRow(column(9, wellPanel( h3("Welcome to the GoldenMutagenesis web tool"),br(), h4("Read our publication"),
               h5("Golden Mutagenesis: An efficient multi-site-saturation mutagenesis approach by Golden Gate cloning with automated primer design"),
