@@ -145,6 +145,25 @@ generic_template_selection<-function(prefix) {
       show(id = paste(sep="_", prefix, "publication_link"), anim = T)
     }
     if(input[[paste(prefix, "template", sep="_")]] == "7") {
+      print(" pAGM1287_CDS1 selected")
+      hide(id = paste(sep="_", prefix, "publication_link"), anim = T)
+      disable(paste(sep="_", prefix, "level"))
+      disable(paste(sep="_", prefix, "re_enzyme_selection"))
+      disable(paste(sep="_", prefix, "lvl0_re_enzyme_selection"))
+      disable(paste(sep="_", prefix, "lvl0_v1"))
+      disable(paste(sep="_", prefix, "lvl0_v2"))
+      disable(paste(sep="_", prefix, "v1"))
+      disable(paste(sep="_", prefix, "v2"))
+      disable(paste(sep="_", prefix, "av1"))
+      disable(paste(sep="_", prefix, "av2"))
+      updateSelectInput(session, paste(sep="_", prefix, "level"), selected = "lv0")
+      updateSelectInput(session, paste(sep="_", prefix, "re_enzyme_selection"), selected = "bbsi")
+      updateTextInput(session, paste(sep="_", prefix, "v1"), value = "AATG")
+      updateTextInput(session, paste(sep="_", prefix, "v2"), value = "AAGC")
+      updateSelectInput(session, paste(sep="_", prefix, "cuf"), selected =  "arabidopsis.csv")
+      rv[[paste(sep="_", prefix, "addgene_button")]]<-"window.open('https://www.addgene.org/47996/','_blank')"
+    }
+    if(input[[paste(prefix, "template", sep="_")]] == "8") {
       print("pAGM1287_CDS1ns selected")
       hide(id = paste(sep="_", prefix, "publication_link"), anim = T)
       disable(paste(sep="_", prefix, "level"))
@@ -159,7 +178,7 @@ generic_template_selection<-function(prefix) {
       updateSelectInput(session, paste(sep="_", prefix, "level"), selected = "lv0")
       updateSelectInput(session, paste(sep="_", prefix, "re_enzyme_selection"), selected = "bbsi")
       updateTextInput(session, paste(sep="_", prefix, "v1"), value = "AATG")
-      updateTextInput(session, paste(sep="_", prefix, "v2"), value = "AACG")
+      updateTextInput(session, paste(sep="_", prefix, "v2"), value = "CGAA")
       updateSelectInput(session, paste(sep="_", prefix, "cuf"), selected =  "arabidopsis.csv")
       rv[[paste(sep="_", prefix, "addgene_button")]]<-"window.open('https://www.addgene.org/47996/','_blank')"
     }
