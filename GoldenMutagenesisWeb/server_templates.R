@@ -144,6 +144,44 @@ generic_template_selection<-function(prefix) {
       rv[[paste(sep="_", prefix, "publication_button")]]<-"window.open('https://www.biorxiv.org/content/10.1101/2020.07.22.216432v1','_blank')"
       show(id = paste(sep="_", prefix, "publication_link"), anim = T)
     }
+    if(input[[paste(prefix, "template", sep="_")]] == "7") {
+      print("pICH41308_CDS1 selected")
+      hide(id = paste(sep="_", prefix, "publication_link"), anim = T)
+      disable(paste(sep="_", prefix, "level"))
+      disable(paste(sep="_", prefix, "re_enzyme_selection"))
+      disable(paste(sep="_", prefix, "lvl0_re_enzyme_selection"))
+      disable(paste(sep="_", prefix, "lvl0_v1"))
+      disable(paste(sep="_", prefix, "lvl0_v2"))
+      disable(paste(sep="_", prefix, "v1"))
+      disable(paste(sep="_", prefix, "v2"))
+      disable(paste(sep="_", prefix, "av1"))
+      disable(paste(sep="_", prefix, "av2"))
+      updateSelectInput(session, paste(sep="_", prefix, "level"), selected = "lv0")
+      updateSelectInput(session, paste(sep="_", prefix, "re_enzyme_selection"), selected = "bbsi")
+      updateTextInput(session, paste(sep="_", prefix, "v1"), value = "AATG")
+      updateTextInput(session, paste(sep="_", prefix, "v2"), value = "AAGC")
+      updateSelectInput(session, paste(sep="_", prefix, "cuf"), selected =  "arabidopsis.csv")
+      rv[[paste(sep="_", prefix, "addgene_button")]]<-"window.open('https://www.addgene.org/47998/','_blank')"
+    }
+    if(input[[paste(prefix, "template", sep="_")]] == "8") {
+      print("pAGM1287_CDS1ns selected")
+      hide(id = paste(sep="_", prefix, "publication_link"), anim = T)
+      disable(paste(sep="_", prefix, "level"))
+      disable(paste(sep="_", prefix, "re_enzyme_selection"))
+      disable(paste(sep="_", prefix, "lvl0_re_enzyme_selection"))
+      disable(paste(sep="_", prefix, "lvl0_v1"))
+      disable(paste(sep="_", prefix, "lvl0_v2"))
+      disable(paste(sep="_", prefix, "v1"))
+      disable(paste(sep="_", prefix, "v2"))
+      disable(paste(sep="_", prefix, "av1"))
+      disable(paste(sep="_", prefix, "av2"))
+      updateSelectInput(session, paste(sep="_", prefix, "level"), selected = "lv0")
+      updateSelectInput(session, paste(sep="_", prefix, "re_enzyme_selection"), selected = "bbsi")
+      updateTextInput(session, paste(sep="_", prefix, "v1"), value = "AATG")
+      updateTextInput(session, paste(sep="_", prefix, "v2"), value = "CGAA")
+      updateSelectInput(session, paste(sep="_", prefix, "cuf"), selected =  "arabidopsis.csv")
+      rv[[paste(sep="_", prefix, "addgene_button")]]<-"window.open('https://www.addgene.org/47996/','_blank')"
+    }
     if(input[[paste(prefix, "template", sep="_")]] == "c") {
       hide(id = paste(sep="_", prefix, "link"), anim = T)
       hide(id = paste(sep="_", prefix, "publication_link"), anim = T)
