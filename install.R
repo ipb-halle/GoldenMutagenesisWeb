@@ -1,3 +1,5 @@
+options(repos = c(CRAN = "http://cran.rstudio.com"))
+
 ## General dependencies:
 install.packages("seqinr")
 install.packages("stringr")

@@ -2,7 +2,7 @@
 generic_sequence_input<-function(prefix, button=T , default_value="ATGGTGAGCAAGGGCGAGGAGGATAACATGGCCATCATCAAGGAGTTCATGCGCTTCAAGGTGCACATGGAGGGCTCCGTGAACGGCCACGAGTTCGAGATCGAGGGCGAGGGCGAGGGCCGCCCCTACGAGGGCACCCAGACCGCCAAGCTGAAGGTGACCAAGGGTGGCCCCCTGCCCTTCGCCTGGGACATCCTGTCCCCTCAGTTCATGTACGGCTCCAAGGCCTACGTGAAGCACCCCGCCGACATCCCCGACTACTTGAAGCTGTCCTTCCCCGAGGGCTTCAAGTGGGAGCGCGTGATGAACTTCGAGGACGGCGGCGTGGTGACCGTGACCCAGGACTCCTCCCTGCAGGACGGCGAGTTCATCTACAAGGTGAAGCTGCGCGGCACCAACTTCCCCTCCGACGGCCCCGTAATGCAGAAGAAGACGATGGGCTGGGAGGCCTCCTCCGAGCGGATGTACCCCGAGGACGGCGCCCTGAAGGGCGAGATCAAGCAGAGGCTGAAGCTGAAGGACGGCGGCCACTACGACGCTGAGGTCAAGACCACCTACAAGGCCAAGAAGCCCGTGCAGCTGCCCGGCGCCTACAACGTCAACATCAAGTTGGACATCACCTCCCACAACGAGGACTACACCATCGTGGAACAGTACGAACGCGCCGAGGGCCGCCACTCCACCGGCGGCATGGACGAGCTGTACAAGGTCGACAAGCTTGCGGCCGCACTCGAGTGA") {
   output[[paste(prefix, "input_panel", sep="_")]]<-renderUI({tagList(
                             h4("Sequence Input"),
-                            br(), 
+                            br(),
                             p("You can paste a sequence into the textbox or upload your own fasta file."),
                             tabsetPanel(type="pills",
                                         tabPanel("Manual Input", wellPanel(
@@ -39,21 +39,22 @@ generic_mut_conf<-function(prefix){output[[paste(prefix, "mut_conf", sep="_")]]<
                      h2("Primer Configuration"),
                      p("You can select a preconfigured template to set those settings in accordiance to your Golden Gate Mutagenesis."),br(),
                      p("You can change the defaut values by selecting custom as pre-configuration."),
-                     fluidRow(column(5,selectInput(paste(prefix,"template", sep="_"), "Pre-existing configuration:", c("pAGM9121"="1", 
+                     fluidRow(column(5,selectInput(paste(prefix,"template", sep="_"), "Pre-existing configuration:", c("pAGM9121"="1",
                                                                                                      "pAGM22082 Red" = "2",
                                                                                                      "pICH86988" = "3",
                                                                                                      "pPAP001" = "4",
                                                                                                      "pPAP002" = "5",
                                                                                                      "pAGT572_Nemo" = "6",
+                                                                                                     "pICH41308_CDS1" = "7",
                                                                                                      "custom" = "c"))),
                      column(4, style = "margin-top: 25px;",
                             actionButton(paste(prefix, "link", sep="_"), label = "View on Addgene", style=" background-image: url(./img/addgene.jpg); background-position: left; background-size: contain; background-repeat: no-repeat; padding-left: 40px;")),
                      column(2, style = "margin-top: 25px;",
                             actionButton(paste(prefix, "publication_link", sep="_"), label = "Publication", icon = icon("file-alt", lib = "font-awesome")))),
-                     
+
                      selectInput(paste(prefix,"level",sep="_"), "Golden Gate Level:", c("Level0" = "lv0", "Level2" = "lv2")),
                      selectInput(paste(prefix,"re_enzyme_selection", sep="_"), "Restriction Enzyme:", c("BbsI"="bbsi",
-                                                                                                        "BsaI"="bsai", 
+                                                                                                        "BsaI"="bsai",
                                                                                                         "custom" = "c")),
                      bsTooltip(id = paste(prefix,"re_enzyme",sep="_"), title = "Recognition site sequence of the respective restriction enzyme."),
                      textInput(paste(prefix,"re_enzyme", sep="_"), "Restriction Enzyme Recognition Site", value = "GAAGAC"),
@@ -71,16 +72,16 @@ generic_mut_conf<-function(prefix){output[[paste(prefix, "mut_conf", sep="_")]]<
                      h2("Algorithm Settings"),
                      p("Those settings are documentated in the GoldenMutagenesis R-Package. You do not need to change the default values in most applications."),
                      bsTooltip(id = paste(prefix,"binding_min_length",sep="_"), title = "The minimal threshold value of the length of the template binding sequence in amino acid residues"),
-                     numericInput(paste(prefix,"binding_min_length",sep="_"), 
-                                  "Minimal binding length (AA)", 
+                     numericInput(paste(prefix,"binding_min_length",sep="_"),
+                                  "Minimal binding length (AA)",
                                   value = 4),
                      bsTooltip(id = paste(prefix,"binding_max_length",sep="_"), title = "Maximal length of the binding sequence in amino acid residues"),
-                     numericInput(paste(prefix, "binding_max_length",sep="_"), 
-                                  "Maximal binding sequence length (AA)", 
+                     numericInput(paste(prefix, "binding_max_length",sep="_"),
+                                  "Maximal binding sequence length (AA)",
                                   value = 9),
                      bsTooltip(id = paste(prefix,"temperature",sep="_"), title = "Melting temperature of the binding sequence in °C"),
-                     numericInput(paste(prefix,"temperature",sep="_"), 
-                                  "Target temperature in Celsius", 
+                     numericInput(paste(prefix,"temperature",sep="_"),
+                                  "Target temperature in Celsius",
                                   value = 60),
                      bsTooltip(id = paste(prefix,"replacement_range",sep="_"), title = "Maximum distance in amino acid residues between two randomization sites to be incoporated into a single primer (reverse, end of the fragment) - has a cascading effect for following mutations."),
                      numericInput(paste(prefix, "replacement_range", sep="_"),
@@ -108,12 +109,12 @@ levelsettings<-function(prefix){
       tagList (
         fluidRow(checkboxInput(paste(prefix,"prepare_lvl2", sep="_"), "Prepare for use in Level2", value = TRUE, width = NULL)),
         fluidRow(column(6, textInput(paste(prefix,"av1", sep="_"), "Accepting Vector Forward 5'", value = "AATG")),column(6, textInput(paste(prefix,"av2",sep="_"), "Accepting Vector Reverse 3'", value = "AAGC")))
-      ) 
+      )
       } else {
         tagList (
           fluidRow(checkboxInput(paste(prefix,"prepare_lvl2", sep="_"), "Prepare for use in Level2", value = TRUE, width = NULL)),
           disabled(fluidRow(column(6, textInput(paste(prefix,"av1", sep="_"), "Accepting Vector Forward 5'", value = "AATG")),column(6, textInput(paste(prefix,"av2",sep="_"), "Accepting Vector Reverse 3'", value = "AAGC"))))
-        ) 
+        )
        }
     }
     else{
@@ -124,8 +125,8 @@ levelsettings<-function(prefix){
             fluidRow(column(6,selectInput(paste(prefix,"lvl0_re_enzyme_selection",sep="_"), "Restriction Enzyme:", c("BbsI"="bbsi", "BsaI"="bsai", "custom" = "c"))),
                     disabled(column(6,textInput(paste(prefix,"lvl0_re_enzyme",sep="_"), "Restriction Enzyme Sequence", value = "GAAGAC")))),
             disabled(fluidRow(column(6,textInput(paste(prefix,"lvl0_prefix",sep="_"), "Prefix", value = "TT")),
-                     column(6,textInput(paste(prefix,"lvl0_suffix",sep="_"), "Suffix", value = "AA"))))       
-          ) 
+                     column(6,textInput(paste(prefix,"lvl0_suffix",sep="_"), "Suffix", value = "AA"))))
+          )
         }
         else{
           tagList(
@@ -134,11 +135,11 @@ levelsettings<-function(prefix){
             disabled(fluidRow(column(6,selectInput(paste(prefix,"lvl0_re_enzyme_selection",sep="_"), "Restriction Enzyme:", c("BbsI"="bbsi", "BsaI"="bsai", "custom" = "c"))),
                      column(6,textInput(paste(prefix,"lvl0_re_enzyme",sep="_"), "Restriction Enzyme Sequence", value = "GAAGAC")))),
             disabled(fluidRow(column(6,textInput(paste(prefix,"lvl0_prefix",sep="_"), "Prefix", value = "TT")),
-                     column(6,textInput(paste(prefix,"lvl0_suffix",sep="_"), "Suffix", value = "AA"))))       
-          ) 
+                     column(6,textInput(paste(prefix,"lvl0_suffix",sep="_"), "Suffix", value = "AA"))))
+          )
         }
     }
-  })  
+  })
 }
 
 ####SELECTION################
@@ -160,7 +161,7 @@ generic_simple_selection<-function(prefix){
                                                      column(5, uiOutput(paste(prefix, "mutation_table", sep="_")))
                                                    )
 
-         ),                         
+         ),
          fluidRow(column(2,actionButton(inputId = paste(prefix, "selection_next", sep="_"), 'Next'), br()))
   )})}
 ###########COMPLEX############
@@ -194,4 +195,3 @@ generic_primer_output<-function(prefix){
                                                            "<span style=\"background-color: #a5f1ff; font-size: large;\">", "Binding Sequence", "</span>",
                                                            sep="")))),br(),uiOutput(paste(prefix,"primers", sep="_"))
   )})}
-
