@@ -62,7 +62,7 @@ generic_template_selection<-function(prefix) {
       updateSelectInput(session, paste(sep="_", prefix, "re_enzyme_selection"), selected = "bsai")
       updateTextInput(session, paste(sep="_", prefix, "v1"), value = "AATG")
       updateTextInput(session, paste(sep="_", prefix, "v2"), value = "AAGC")
-      updateSelectInput(session, paste(sep="_", prefix, "cuf"), selected =  "e_coli_316407.csv") 
+      updateSelectInput(session, paste(sep="_", prefix, "cuf"), selected =  "e_coli_316407.csv")
       rv[[paste(sep="_", prefix, "addgene_button")]]<-"window.open('https://www.addgene.org/117225/','_blank')"
     }
     if(input[[paste(prefix, "template", sep="_")]] == "3") {
@@ -99,7 +99,7 @@ generic_template_selection<-function(prefix) {
       updateSelectInput(session, paste(sep="_", prefix, "re_enzyme_selection"), selected = "bsai")
       updateTextInput(session, paste(sep="_", prefix, "v1"), value = "AATG")
       updateTextInput(session, paste(sep="_", prefix, "v2"), value = "AAGC")
-      updateSelectInput(session, paste(sep="_", prefix, "cuf"), selected =  "Pichia_pastoris_4922.csv") 
+      updateSelectInput(session, paste(sep="_", prefix, "cuf"), selected =  "Pichia_pastoris_4922.csv")
       rv[[paste(sep="_", prefix, "addgene_button")]]<-"window.open('https://www.addgene.org/153488/','_blank')"
       rv[[paste(sep="_", prefix, "publication_button")]]<-"window.open('https://www.biorxiv.org/content/10.1101/2020.07.22.216432v1','_blank')"
       show(id = paste(sep="_", prefix, "publication_link"), anim = T)
@@ -119,7 +119,7 @@ generic_template_selection<-function(prefix) {
       updateSelectInput(session, paste(sep="_", prefix, "re_enzyme_selection"), selected = "bsai")
       updateTextInput(session, paste(sep="_", prefix, "v1"), value = "AATG")
       updateTextInput(session, paste(sep="_", prefix, "v2"), value = "AAGC")
-      updateSelectInput(session, paste(sep="_", prefix, "cuf"), selected =  "Pichia_pastoris_4922.csv") 
+      updateSelectInput(session, paste(sep="_", prefix, "cuf"), selected =  "Pichia_pastoris_4922.csv")
       rv[[paste(sep="_", prefix, "addgene_button")]]<-"window.open('https://www.addgene.org/153489/','_blank')"
       rv[[paste(sep="_", prefix, "publication_button")]]<-"window.open('https://www.biorxiv.org/content/10.1101/2020.07.22.216432v1','_blank')"
       show(id = paste(sep="_", prefix, "publication_link"), anim = T)
@@ -139,7 +139,7 @@ generic_template_selection<-function(prefix) {
       updateSelectInput(session, paste(sep="_", prefix, "re_enzyme_selection"), selected = "bsai")
       updateTextInput(session, paste(sep="_", prefix, "v1"), value = "AATG")
       updateTextInput(session, paste(sep="_", prefix, "v2"), value = "AAGC")
-      updateSelectInput(session, paste(sep="_", prefix, "cuf"), selected =  "s_cerevisiae_4932.csv") 
+      updateSelectInput(session, paste(sep="_", prefix, "cuf"), selected =  "s_cerevisiae_4932.csv")
       rv[[paste(sep="_", prefix, "addgene_button")]]<-"window.open('https://www.addgene.org/153487/','_blank')"
       rv[[paste(sep="_", prefix, "publication_button")]]<-"window.open('https://www.biorxiv.org/content/10.1101/2020.07.22.216432v1','_blank')"
       show(id = paste(sep="_", prefix, "publication_link"), anim = T)
@@ -162,25 +162,6 @@ generic_template_selection<-function(prefix) {
       updateTextInput(session, paste(sep="_", prefix, "v2"), value = "AAGC")
       updateSelectInput(session, paste(sep="_", prefix, "cuf"), selected =  "arabidopsis.csv")
       rv[[paste(sep="_", prefix, "addgene_button")]]<-"window.open('https://www.addgene.org/47998/','_blank')"
-    }
-    if(input[[paste(prefix, "template", sep="_")]] == "8") {
-      print("pAGM1287_CDS1ns selected")
-      hide(id = paste(sep="_", prefix, "publication_link"), anim = T)
-      disable(paste(sep="_", prefix, "level"))
-      disable(paste(sep="_", prefix, "re_enzyme_selection"))
-      disable(paste(sep="_", prefix, "lvl0_re_enzyme_selection"))
-      disable(paste(sep="_", prefix, "lvl0_v1"))
-      disable(paste(sep="_", prefix, "lvl0_v2"))
-      disable(paste(sep="_", prefix, "v1"))
-      disable(paste(sep="_", prefix, "v2"))
-      disable(paste(sep="_", prefix, "av1"))
-      disable(paste(sep="_", prefix, "av2"))
-      updateSelectInput(session, paste(sep="_", prefix, "level"), selected = "lv0")
-      updateSelectInput(session, paste(sep="_", prefix, "re_enzyme_selection"), selected = "bbsi")
-      updateTextInput(session, paste(sep="_", prefix, "v1"), value = "AATG")
-      updateTextInput(session, paste(sep="_", prefix, "v2"), value = "CGAA")
-      updateSelectInput(session, paste(sep="_", prefix, "cuf"), selected =  "arabidopsis.csv")
-      rv[[paste(sep="_", prefix, "addgene_button")]]<-"window.open('https://www.addgene.org/47996/','_blank')"
     }
     if(input[[paste(prefix, "template", sep="_")]] == "c") {
       hide(id = paste(sep="_", prefix, "link"), anim = T)
@@ -242,7 +223,7 @@ generic_simple_preview_logic<-function(prefix){
   if(length(rv[[paste(sep="_", prefix, "mutations")]])>0) {
     pos<-sapply(rv[[paste(prefix, "mutations", sep="_")]], function(x) as.numeric(x[1]))
     codon<-sapply(rv[[paste(prefix, "mutations", sep="_")]], function(x) as.character(x[2]))
-    rv[[paste(sep="_", prefix, "mutations_df")]]<-data.frame(Mutations=pos, Codon=codonseq[pos], AminoAcid=codon, stringsAsFactors = FALSE)       
+    rv[[paste(sep="_", prefix, "mutations_df")]]<-data.frame(Mutations=pos, Codon=codonseq[pos], AminoAcid=codon, stringsAsFactors = FALSE)
   } else {
     rv[[paste(sep="_", prefix, "mutations_df")]]<-data.frame(Mutations=as.numeric(c()), Codon=as.character(c()), AminoAcid=as.character(c()), stringsAsFactors = FALSE)
   }
@@ -262,7 +243,7 @@ generic_simple_preview_logic<-function(prefix){
     output[[paste(prefix, "preview", sep="_")]]<-renderUI(print_sequence(sequence = rv[[paste(prefix, "input_sequence", sep="_")]], mutations = rv[[paste(prefix, "mutations", sep="_")]]))
     return(data)
   }
-  
+
   my.update.callback.local <- function(data, olddata, row) {
     if((data[row,1]>length(codonseq)-1)){
       stop(paste("Please enter a value between ", "2 and ", length(codonseq)-1, ".", sep=""))
@@ -305,9 +286,9 @@ generic_complex_preview_logic<-function(prefix, spm=T){
     pos<-sapply(rv[[paste(prefix, "mutations", sep="_")]], function(x) as.numeric(x[1]))
     codon<-sapply(rv[[paste(prefix, "mutations", sep="_")]], function(x) as.character(x[2]))
     if(spm==T){
-      rv[[paste(sep="_", prefix, "mutations_df")]]<-data.frame(Mutations=pos, Codon=codonseq[pos], AminoAcid=aaa(codon), Replacement=factor(aaa(codon), levels=aaa()), stringsAsFactors = FALSE) 
+      rv[[paste(sep="_", prefix, "mutations_df")]]<-data.frame(Mutations=pos, Codon=codonseq[pos], AminoAcid=aaa(codon), Replacement=factor(aaa(codon), levels=aaa()), stringsAsFactors = FALSE)
     } else{
-      rv[[paste(sep="_", prefix, "mutations_df")]]<-data.frame(Mutations=pos, Codon=codonseq[pos], AminoAcid=aaa(codon), Replacement=factor(aaa(codon), levels=c("NNN", "NNK", "NNS", "NDT", "DBK", "NRT", "VHG", "VRK", "NYC", "KST", "TGG")), stringsAsFactors = FALSE) 
+      rv[[paste(sep="_", prefix, "mutations_df")]]<-data.frame(Mutations=pos, Codon=codonseq[pos], AminoAcid=aaa(codon), Replacement=factor(aaa(codon), levels=c("NNN", "NNK", "NNS", "NDT", "DBK", "NRT", "VHG", "VRK", "NYC", "KST", "TGG")), stringsAsFactors = FALSE)
     }
   } else if(is.null(rv[[paste(prefix, "mutations_df", sep="_")]])){
     if(spm==T){
@@ -332,7 +313,7 @@ generic_complex_preview_logic<-function(prefix, spm=T){
     output[[paste(prefix, "preview", sep="_")]]<-renderUI(print_sequence(sequence = rv[[paste(prefix, "input_sequence", sep="_")]], mutations = rv[[paste(prefix, "mutations", sep="_")]]))
     return(data)
   }
-  
+
   my.update.callback.local <- function(data, olddata, row) {
     if((data[row,1]>length(codonseq)-1)){
       stop(paste("Please enter a value between ", "2 and ", length(codonseq)-1, ".", sep=""))
@@ -369,7 +350,7 @@ generic_complex_preview_logic<-function(prefix, spm=T){
     output[[paste(prefix, "preview", sep="_")]]<-renderUI(print_sequence(sequence = rv[[paste(prefix, "input_sequence", sep="_")]], mutations = rv[[paste(prefix, "mutations", sep="_")]]))
     return(data)
   }
-  
+
   my.update.callback.msd <- function(data, olddata, row) {
     if((data[row,1]>length(codonseq)-1)){
       stop(paste("Please enter a value between ", "2 and ", length(codonseq)-1, ".", sep=""))
@@ -485,22 +466,22 @@ base_distribution_shiny<-function(input_sequence, ab1file, replacements, trace_c
     if(pos==1) {
       subject_pos<-c(subject_pos, subject_start, subject_start+1, subject_start+2)
       pattern_pos<-c(pattern_pos, pattern_start, pattern_start+1, pattern_start+2)
-      
+
     }
     if(pos==2) {
       subject_pos<-c(subject_pos, subject_start-1, subject_start, subject_start+1)
       pattern_pos<-c(pattern_pos, pattern_start-1, pattern_start, pattern_start+1)
-      
+
     }
     if(pos==3) {
       subject_pos<-c(subject_pos, subject_start-2, subject_start-1, subject_start)
       pattern_pos<-c(pattern_pos, pattern_start-2, pattern_start-1, pattern_start)
-      
+
     }
   }
   subject_pos<-unique(subject_pos)
   pattern_pos<-unique(pattern_pos)
-  
+
   if(reverse==T) {
     subject_pos<-length(sanger_seq@primarySeq)-subject_pos+1
   }
