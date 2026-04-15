@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html class=""><head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <script type="application/html-dependencies">jquery[3.6.0];shiny-css[1.7.1];shiny-javascript[1.7.1];bootstrap[3.4.1]</script>
+<script src="GoldenMutagenesis_files/jquery.min.js"></script>
+<link href="GoldenMutagenesis_files/shiny.min.css" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="GoldenMutagenesis_files/bootstrap.min.css" rel="stylesheet">
+<link href="GoldenMutagenesis_files/bootstrap-accessibility.min.css" rel="stylesheet">
+<script src="GoldenMutagenesis_files/bootstrap.min.js"></script>
+<script src="GoldenMutagenesis_files/bootstrap-accessibility.min.js"></script>  <style>.shinyjs-hide { display: none !important; }</style>
+  <link rel="stylesheet" type="text/css" href="GoldenMutagenesis_files/ipb-styles.css">
+  <title>GoldenMutagenesis</title>
+<link rel="stylesheet" type="text/css" href="GoldenMutagenesis_files/shiny-server.css">
+
+</head>
+<body>
+  <div class="container-fluid">
+    <h2>      <header id="header">         <div id="logo">           <a href="#" title="Startseite - Leibniz-Institut für Pflanzenbiochemie"><img style="height: 105px" src="GoldenMutagenesis_files/2013_IPB_Logo_EN.png" alt="Logo Leibniz-Institut für Pflanzenbiochemie"></a>         </div>         <div id="header-wrap">         </div>       </header></h2>
+    <div class="row">
+      <div class="col-sm-2 well">
+        <ul class="nav nav-pills nav-stacked shiny-tab-input shiny-bound-input" id="MainNav" data-tabsetid="4243" role="tablist">
+          <li class="active" role="presentation">
+            <a href="#tab-4243-1" data-toggle="tab" data-bs-toggle="tab" data-value="Welcome" role="tab" id="ui-tab-32" tabindex="0" aria-selected="true" aria-controls="tab-4243-1">Welcome</a>
+          </li>
+          <li class="navbar-brand" role="presentation">Pre- and Postprocessing</li>
+          <li role="presentation">
+            <a href="#tab-4243-3">Domestication</a>
+          </li>
+          <li role="presentation">
+            <a href="#tab-4243-4">Quick-Quality-Control</a>
+          </li>
+          <li class="navbar-brand" role="presentation">Mutagenesis</li>
+          <li role="presentation">
+            <a href="#tab-4243-6" >Point-Mutagenesis</a>
+          </li>
+          <li role="presentation">
+            <a href="#tab-4243-7" >Saturation-Mutagenesis</a>
+          </li>
+        </ul>
+      </div>
+      <div class="col-sm-9">
+        <div class="tab-content" data-tabsetid="4243">
+          <div class="tab-pane active" data-value="Welcome" id="tab-4243-1" role="tabpanel" tabindex="0" aria-hidden="false" aria-labelledby="ui-tab-32">
+            <div class="row">
+              <div class="col-sm-9">
+                <div class="well">
+                  <h3>Welcome to the GoldenMutagenesis web tool</h3>
+                  <br>
+                  <h4>Read our publication</h4>
+                  <h5>Golden Mutagenesis: An efficient multi-site-saturation mutagenesis approach by Golden Gate cloning with automated primer design</h5>
+                  <h6>Pascal Püllmann, Chris Ulpinnis, Sylvestre Marillonnet, Ramona Gruetzner, Steffen Neumann &amp; Martin J. Weissenborn </h6>
+                  <a href="https://rdcu.be/bMfta">Publication as enhanced PDF on Springer Nature</a>
+                  <br>
+                  <br>
+                  <h4>How to cite?</h4>
+                  <h6>Püllmann, P., Ulpinnis, C., Marillonnet, S. et al. Golden Mutagenesis:</h6>
+                  <h6>An efficient multi-site-saturation mutagenesis approach by Golden Gate cloning with automated primer design.</h6>
+                  <h6>Sci Rep 9, 10932 (2019). https://doi.org/10.1038/s41598-019-47376-1</h6>
+                  <br>
+                  <h4>Hosted Web App at IPB discontinued</h4>
+                    As of April 2026, we have taken the GoldenMutagenesisWeb Application 
+                    previously hosted at the Leibniz Institute of Plant Biochemistry offline. 
+                    You can still use the GitHub repository or the docker container to host your own instance. 
+                    Please contact us if you are interested to contribute or maintain the app.                    
+                  </h4>
+                  <br>
+                  <p>AppVersion: 2022-06-03</p>
+                </div>
+                <br>
+                <br>
+              </div>
+              <div class="col-sm-3">
+                <img src="GoldenMutagenesis_files/GM_logo.svg">
+              </div>
+            </div>
+          </div>
+          <div class="tab-pane" data-value="Domestication" id="tab-4243-3" role="tabpanel" tabindex="-1" aria-hidden="true" aria-labelledby="ui-tab-817">
+            <div class="well" width="15">
+              <div class="tabbable">
+                <ul class="nav nav-tabs shiny-tab-input shiny-bound-input" id="domestication" data-tabsetid="3958" role="tablist">
+                  <li class="active" role="presentation">
+                    <a href="#tab-3958-1" data-toggle="tab" data-bs-toggle="tab" data-value="Sequence Input" role="tab" id="ui-tab-22" tabindex="0" aria-selected="true" aria-controls="tab-3958-1">Sequence Input</a>
+                  </li>
+                  <li role="presentation" style="display: none;">
+                    <a href="#tab-3958-2" data-toggle="tab" data-bs-toggle="tab" data-value="Configuration" role="tab" id="ui-tab-146" tabindex="-1" aria-selected="false" aria-controls="tab-3958-2">Configuration</a>
+                  </li>
+                  <li role="presentation" style="display: none;">
+                    <a href="#tab-3958-3" data-toggle="tab" data-bs-toggle="tab" data-value="Preview and Selection" role="tab" id="ui-tab-277" tabindex="-1" aria-selected="false" aria-controls="tab-3958-3">Preview and Selection</a>
+                  </li>
+                  <li role="presentation" style="display: none;">
+                    <a href="#tab-3958-4" data-toggle="tab" data-bs-toggle="tab" data-value="Results" role="tab" id="ui-tab-13" tabindex="-1" aria-selected="false" aria-controls="tab-3958-4">Results</a>
+                  </li>
+                </ul>
+                <div class="tab-content" data-tabsetid="3958">
+                  <div class="tab-pane active" data-value="Sequence Input" id="tab-3958-1" role="tabpanel" tabindex="0" aria-hidden="false" aria-labelledby="ui-tab-22">
+                    <div class="well" style="background: #ffffff">
+                      <div id="domestication_input_panel" class="shiny-html-output shiny-bound-output" aria-live="polite"></div>
+                    </div>
+                  </div>
+                  <div class="tab-pane" data-value="Configuration" id="tab-3958-2" role="tabpanel" tabindex="-1" aria-hidden="true" aria-labelledby="ui-tab-146" style="display: none;">
+                    <div class="well" style="background: #ffffff">
+                      <div class="row">
+                        <h1>Domestication Configuration</h1>
+                        <div class="well" style="background: #ddffdd">
+                          <p>Please select the restriction enzymes you want to domesticate.</p>
+                          <div class="row">
+                            <div class="col-sm-6">
+                              <div class="row">
+                                <div class="col-sm-3">
+                                  <div class="form-group shiny-input-container">
+                                    <div class="checkbox">
+                                      <label>
+                                        <input id="d_bsai" type="checkbox" checked="checked" data-shinyjs-resettable-id="d_bsai" data-shinyjs-resettable-type="Checkbox" data-shinyjs-resettable-value="true" class="shinyjs-resettable shiny-bound-input">
+                                        <span>BsaI</span>
+                                      </label>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="col-sm-3">
+                                  <div class="form-group shiny-input-container">
+                                    <div class="checkbox">
+                                      <label>
+                                        <input id="d_bbsi" type="checkbox" checked="checked" data-shinyjs-resettable-id="d_bbsi" data-shinyjs-resettable-type="Checkbox" data-shinyjs-resettable-value="true" class="shinyjs-resettable shiny-bound-input">
+                                        <span>BbsI</span>
+                                      </label>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                              <br>
+                              <div class="row">
+                                <div class="col-sm-10">
+                                  <div class="form-group shiny-input-container">
+                                    <label class="control-label" id="d_cu-label" for="d_cu">Custom Recognition Site</label>
+                                    <input id="d_cu" type="text" class="form-control shinyjs-resettable shiny-bound-input" data-shinyjs-resettable-id="d_cu" data-shinyjs-resettable-type="Text" data-shinyjs-resettable-value="">
+                                  </div>
+                                </div>
+                              </div>
+                              <br>
+                              <div class="row">
+                                <div class="col-sm-2">
+                                  <button id="d_add_cu" type="button" class="btn btn-default action-button shiny-bound-input">Add</button>
+                                </div>
+                                <div class="col-sm-2">
+                                  <button id="d_rm_cu" type="button" class="btn btn-default action-button shiny-bound-input">Remove</button>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="col-sm-6">
+                              <div class="well">
+                                <h4>Selected Restriction Sites</h4>
+                                <div id="d_cu_list" class="shiny-html-output shiny-bound-output" aria-live="polite"></div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <h1>Mutagenesis Configuration</h1>
+                        <div id="domestication_mut_conf" class="shiny-html-output shiny-bound-output" aria-live="polite"></div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="tab-pane" data-value="Preview and Selection" id="tab-3958-3" role="tabpanel" tabindex="-1" aria-hidden="true" aria-labelledby="ui-tab-277" style="display: none;">
+                    <div class="well" style="background: #ffffff; width: fit-content">
+                      <div id="domestication_preview_complete" class="shiny-html-output shiny-bound-output" aria-live="polite"></div>
+                    </div>
+                  </div>
+                  <div class="tab-pane" data-value="Results" id="tab-3958-4" role="tabpanel" tabindex="-1" aria-hidden="true" aria-labelledby="ui-tab-13" style="display: none;">
+                    <div class="well" style="background: #ffffff">
+                      <div id="domestication_primer_complete" class="shiny-html-output shiny-bound-output" aria-live="polite"></div>
+                      <br>
+                    </div>
+                    <div class="row">
+                      <div class="col-sm-5">
+                        <button id="domestication_result_spm" type="button" class="btn btn-default action-button shiny-bound-input">Point-Mutagenesis with current mutations and sequence</button>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-sm-3">
+                        <button id="domestication_result_spm_sequence" type="button" class="btn btn-default action-button shiny-bound-input">Point-Mutagenesis with domesticated sequence</button>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-sm-3">
+                        <button id="domestication_result_msd_sequence" type="button" class="btn btn-default action-button shiny-bound-input">Saturation-Mutagenesis with domesticated sequence</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="tab-pane" data-value="Quick-Quality-Control" id="tab-4243-4" role="tabpanel" tabindex="-1" aria-hidden="true" aria-labelledby="ui-tab-322">
+            <div class="well" width="15">
+              <div class="tabbable">
+                <ul class="nav nav-tabs shiny-tab-input shiny-bound-input" id="qqc" data-tabsetid="7029" role="tablist">
+                  <li class="active" role="presentation">
+                    <a href="#tab-7029-1" data-toggle="tab" data-bs-toggle="tab" data-value="Configuration" role="tab" id="ui-tab-188" tabindex="0" aria-selected="true" aria-controls="tab-7029-1">Configuration</a>
+                  </li>
+                  <li role="presentation" style="display: none;">
+                    <a href="#tab-7029-2" data-toggle="tab" data-bs-toggle="tab" data-value="Results" role="tab" id="ui-tab-110" tabindex="-1" aria-selected="false" aria-controls="tab-7029-2">Results</a>
+                  </li>
+                </ul>
+                <div class="tab-content" data-tabsetid="7029">
+                  <div class="tab-pane active" data-value="Configuration" id="tab-7029-1" role="tabpanel" tabindex="0" aria-hidden="false" aria-labelledby="ui-tab-188">
+                    <div class="well" style="background: #ffffff">
+                      <div id="qqc_input_panel" class="shiny-html-output shiny-bound-output" aria-live="polite"></div>
+                    </div>
+                    <div class="well" style="background: #ffffff">
+                      <div class="form-group shiny-input-container">
+                        <label class="control-label" id="qqc_file-label" for="qqc_file">
+                          <h4>Select .ab1/.abf</h4>
+                        </label>
+                        <div class="input-group">
+                          <label class="input-group-btn input-group-prepend">
+                            <span class="btn btn-default btn-file">
+                              Browse...
+                              <input id="qqc_file" name="qqc_file" type="file" style="position: absolute !important; top: -99999px !important; left: -99999px !important;" accept=".ab1,.abf" data-shinyjs-resettable-id="qqc_file" data-shinyjs-resettable-type="File" data-shinyjs-resettable-value="" class="shinyjs-resettable shiny-bound-input">
+                            </span>
+                          </label>
+                          <input type="text" class="form-control" placeholder="No file selected" readonly="readonly">
+                        </div>
+                        <div id="qqc_file_progress" class="progress active shiny-file-input-progress">
+                          <div class="progress-bar"></div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="well" style="background: #ffffff">
+                      <h4>Mutation Positions</h4>
+                      <div class="row">
+                        <div class="col-sm-6">
+                          <div id="qqc_mutation_table" class="shiny-html-output shiny-bound-output" aria-live="polite"></div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div id="qqc_mut_display" class="shiny-html-output shiny-bound-output" aria-live="polite"></div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-sm-3">
+                        <button id="qqc_next" type="button" class="btn btn-default action-button shiny-bound-input">Next</button>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="tab-pane" data-value="Results" id="tab-7029-2" role="tabpanel" tabindex="-1" aria-hidden="true" aria-labelledby="ui-tab-110" style="display: none;">
+                    <div id="plots" class="shiny-html-output shiny-bound-output" aria-live="polite"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="tab-pane" data-value="Point-Mutagenesis" id="tab-4243-6" role="tabpanel" tabindex="-1" aria-hidden="true" aria-labelledby="ui-tab-631">
+            <div class="well" width="15">
+              <div class="tabbable">
+                <ul class="nav nav-tabs shiny-tab-input shiny-bound-input" id="spm" data-tabsetid="4425" role="tablist">
+                  <li class="active" role="presentation">
+                    <a href="#tab-4425-1" data-toggle="tab" data-bs-toggle="tab" data-value="Sequence Input" role="tab" id="ui-tab-133" tabindex="0" aria-selected="true" aria-controls="tab-4425-1">Sequence Input</a>
+                  </li>
+                  <li role="presentation" style="display: none;">
+                    <a href="#tab-4425-2" data-toggle="tab" data-bs-toggle="tab" data-value="Configuration" role="tab" id="ui-tab-971" tabindex="-1" aria-selected="false" aria-controls="tab-4425-2">Configuration</a>
+                  </li>
+                  <li role="presentation" style="display: none;">
+                    <a href="#tab-4425-3" data-toggle="tab" data-bs-toggle="tab" data-value="Preview and Selection" role="tab" id="ui-tab-347" tabindex="-1" aria-selected="false" aria-controls="tab-4425-3">Preview and Selection</a>
+                  </li>
+                  <li role="presentation" style="display: none;">
+                    <a href="#tab-4425-4" data-toggle="tab" data-bs-toggle="tab" data-value="Results" role="tab" id="ui-tab-182" tabindex="-1" aria-selected="false" aria-controls="tab-4425-4">Results</a>
+                  </li>
+                </ul>
+                <div class="tab-content" data-tabsetid="4425">
+                  <div class="tab-pane active" data-value="Sequence Input" id="tab-4425-1" role="tabpanel" tabindex="0" aria-hidden="false" aria-labelledby="ui-tab-133">
+                    <div class="well" style="background: #ffffff">
+                      <div id="spm_input_panel" class="shiny-html-output shiny-bound-output" aria-live="polite"></div>
+                    </div>
+                  </div>
+                  <div class="tab-pane" data-value="Configuration" id="tab-4425-2" role="tabpanel" tabindex="-1" aria-hidden="true" aria-labelledby="ui-tab-971" style="display: none;">
+                    <div class="well" style="background: #ffffff">
+                      <h1>Mutagenesis Configuration</h1>
+                      <div id="spm_mut_conf" class="shiny-html-output shiny-bound-output" aria-live="polite"></div>
+                    </div>
+                  </div>
+                  <div class="tab-pane" data-value="Preview and Selection" id="tab-4425-3" role="tabpanel" tabindex="-1" aria-hidden="true" aria-labelledby="ui-tab-347" style="display: none;">
+                    <div class="well" style="background: #ffffff; width: fit-content">
+                      <div id="spm_preview_complete" class="shiny-html-output shiny-bound-output" aria-live="polite"></div>
+                    </div>
+                  </div>
+                  <div class="tab-pane" data-value="Results" id="tab-4425-4" role="tabpanel" tabindex="-1" aria-hidden="true" aria-labelledby="ui-tab-182" style="display: none;">
+                    <div class="well" style="background: #ffffff">
+                      <div id="spm_primer_complete" class="shiny-html-output shiny-bound-output" aria-live="polite"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="tab-pane" data-value="Saturation-Mutagenesis" id="tab-4243-7" role="tabpanel" tabindex="-1" aria-hidden="true" aria-labelledby="ui-tab-842">
+            <div class="well" width="15">
+              <div class="tabbable">
+                <ul class="nav nav-tabs shiny-tab-input shiny-bound-input" id="msd" data-tabsetid="9869" role="tablist">
+                  <li class="active" role="presentation">
+                    <a href="#tab-9869-1" data-toggle="tab" data-bs-toggle="tab" data-value="Sequence Input" role="tab" id="ui-tab-632" tabindex="0" aria-selected="true" aria-controls="tab-9869-1">Sequence Input</a>
+                  </li>
+                  <li role="presentation" style="display: none;">
+                    <a href="#tab-9869-2" data-toggle="tab" data-bs-toggle="tab" data-value="Configuration" role="tab" id="ui-tab-136" tabindex="-1" aria-selected="false" aria-controls="tab-9869-2">Configuration</a>
+                  </li>
+                  <li role="presentation" style="display: none;">
+                    <a href="#tab-9869-3" data-toggle="tab" data-bs-toggle="tab" data-value="Preview and Selection" role="tab" id="ui-tab-967" tabindex="-1" aria-selected="false" aria-controls="tab-9869-3">Preview and Selection</a>
+                  </li>
+                  <li role="presentation" style="display: none;">
+                    <a href="#tab-9869-4" data-toggle="tab" data-bs-toggle="tab" data-value="Results" role="tab" id="ui-tab-573" tabindex="-1" aria-selected="false" aria-controls="tab-9869-4">Results</a>
+                  </li>
+                </ul>
+                <div class="tab-content" data-tabsetid="9869">
+                  <div class="tab-pane active" data-value="Sequence Input" id="tab-9869-1" role="tabpanel" tabindex="0" aria-hidden="false" aria-labelledby="ui-tab-632">
+                    <div class="well" style="background: #ffffff">
+                      <div id="msd_input_panel" class="shiny-html-output shiny-bound-output" aria-live="polite"></div>
+                    </div>
+                  </div>
+                  <div class="tab-pane" data-value="Configuration" id="tab-9869-2" role="tabpanel" tabindex="-1" aria-hidden="true" aria-labelledby="ui-tab-136" style="display: none;">
+                    <div class="well" style="background: #ffffff">
+                      <h1>Mutagenesis Configuration</h1>
+                      <div id="msd_mut_conf" class="shiny-html-output shiny-bound-output" aria-live="polite"></div>
+                    </div>
+                  </div>
+                  <div class="tab-pane" data-value="Preview and Selection" id="tab-9869-3" role="tabpanel" tabindex="-1" aria-hidden="true" aria-labelledby="ui-tab-967" style="display: none;">
+                    <div class="well" style="background: #ffffff; width: fit-content">
+                      <div id="msd_preview_complete" class="shiny-html-output shiny-bound-output" aria-live="polite"></div>
+                    </div>
+                  </div>
+                  <div class="tab-pane" data-value="Results" id="tab-9869-4" role="tabpanel" tabindex="-1" aria-hidden="true" aria-labelledby="ui-tab-573" style="display: none;">
+                    <div class="well" style="background: #ffffff">
+                      <div id="msd_primer_complete" class="shiny-html-output shiny-bound-output" aria-live="polite"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">    <!-- Start Second Navigation & Copyright Footer -->     <div id="second-wrap">       <div class="wrapper">         <nav id="second-nav">           <ul>             <li> 	      <svg class="octicon octicon-mark-github" style="vertical-align: sub;" height="16" viewBox="0 0 16 16" version="1.1" width="32" aria-hidden="true"><path fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"></path></svg>               <a style="padding: 0 8px 0 0;" href="https://github.com/ipb-halle/GoldenMutagenesis/">GoldenMutagenesis R Package</a>             </li>             <li>               |             </li>             <li> 	      <svg class="octicon octicon-mark-github" style="vertical-align: sub;" height="16" viewBox="0 0 16 16" version="1.1" width="32" aria-hidden="true"><path fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"></path></svg>               <a style="padding: 0 8px 0 0;" href="https://github.com/ipb-halle/GoldenMutagenesisWeb/">GoldenMutagenesisWeb source code</a>             </li>           </ul>         </nav>         <footer id="footer">           <p>             © 2020 Leibniz Institute of Plant Biochemistry           </p>         </footer>       </div>     </div>     <!-- End Second Navigation & Copyright Footer -->          <!-- Start Sitemap -->          <div id="sitemap-wrap">       <div id="sitemap-header">         <div class="wrapper">           <ul id="left-nav">             <li><a class="" href="#" rel="nofollow"><img style="height:100px" src="GoldenMutagenesis_files/Leibniz__Logo_EN_Negative_100mm.svg" alt="Die Leibniz-Gemeinschaft"></a></li>             <li><span class="border"></span></li>             <li><a href="#"><img style="height:70px" src="GoldenMutagenesis_files/2019_wch_logo_de_invertiert.png" alt="Wissenschafts Campus Halle"></a></li>           </ul>         </div>       </div>     </div>     <!-- End Sitemap -->     <!-- Start Bottom Navigation -->     <!-- End Bottom Navigation -->     </div>
+  </div>
+
+
+<div id="ss-connect-dialog" style="display: none;"></div><div id="ss-overlay" class="ss-gray-out" style="display: none;"></div></body></html>
